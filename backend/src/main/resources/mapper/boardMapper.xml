@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.enjoytrip.board.model.mapper.BoardMapper">
+    <resultMap type="com.ssafy.enjoytrip.board.model.dto.Board" id="board">
+        <id column="board_id" property="boardId"/>
+        <result column="user_id" property="userId"/>
+        <result column="current_update" property="currentUpdate"/>
+        <result column="subject" property="subject"/>
+        <result column="content" property="content"/>
+        <result column="hit" property="hit"/>
+        <result column="type" property="boardType"/>
+    </resultMap>
+
+    <select id="selectBoard" resultType="board" resultMap="board">
+        select *
+        from board
+        where board_id = #{boardId};
+    </select>
+
+    <insert id="insertFile" parameterType="List">
+        INSERT INTO file_info (board_id, file_url)
+        VALUES
+        <foreach collection="imageFiles" item="item" separator=",">
+            (#{item.boardId}, #{item.fileUrl})
+        </foreach>
+    </insert>
+    <insert id="insertBoard" parameterType="board" useGeneratedKeys="true" keyProperty="boardId">
+
+        insert into board (user_id, subject, content, type)
+        values (#{userId}, #{subject}, #{content}, #{boardType})
+    </insert>
+
+    <update id="updateBoard">
+        update board
+        set subject = #{subject},
+            content = #{content}
+        where board_id = #{boardId}
+    </update>
+
+    <delete id="deleteBoard" parameterType="int">
+        delete
+        from board
+        where board_id = #{boardId}
+    </delete>
+
+
+    <update id="updateHit" parameterType="int">
+        update board
+        set hit = hit + 1
+        where board_id = #{boardId}
+    </update>
+
+    <select id="selectAll" resultMap="board">
+        select *
+        from board order by current_update desc
+    </select>
+
+
+
+    <resultMap type="com.ssafy.enjoytrip.board.model.dto.FileInfo" id="fileInfo">
+        <id column="file_info_id" property="fileInfoId"/>
+        <result column="file_url" property="fileUrl"/>
+        <result column="board_id" property="boardId"/>
+    </resultMap>
+    <select id="selectFile" resultMap="fileInfo">
+        select *
+        from file_info
+        where board_id = #{boardId}
+    </select>
+
+    <select id="selectBoardListBySearchDto" resultMap="board">
+        select *
+        from board
+        <trim prefix="where" prefixOverrides="and|or ">
+            <if test="keyword != null">
+                and (subject like concat('%', #{keyword}, '%') or content like concat('%', #{keyword}, '%'))
+            </if>
+            <if test="category != null">
+                and type = #{category}
+            </if>
+        </trim>
+        order by current_update desc
+    </select>
+</mapper>

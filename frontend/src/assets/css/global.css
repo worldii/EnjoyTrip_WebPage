@@ -1,0 +1,54 @@
+@font-face {
+    font-family: 'lato-bold';
+    src: url('../fonts/Lato-Bold.ttf');
+}
+@font-face {
+    font-family: 'lato-extra-bold';
+    src: url('../fonts/Lato-Black.ttf');
+}
+
+@font-face {
+    font-family: 'IBM-Plex-Sans-KR-semibold';
+    src: url('../fonts/IBMPlexSansKR-SemiBold.ttf');
+}
+
+
+@font-face {
+    font-family: 'IBM-Plex-Sans-KR-regular';
+    src: url('../fonts/IBMPlexSansKR-Regular.ttf');
+}
+
+
+@font-face {
+    font-family: 'Merge-one';
+    src: url('../fonts/MergeOne-Regular.ttf');
+}
+
+
+@font-face {
+    font-family: "NotoSerifTamil_Condensed-Regular";
+    src: url("../fonts/NotoSerifTamil_Condensed-Regular.ttf");
+}
+:root {
+    --backgound-color: #ffffff;
+    --primary-color : #4461F2;
+    --black-color : #000000;
+    --gray-color : #D9D9D9;
+    --light-gray-color :#C2C2C2;
+    --placeholder-color : #797C80;
+    --form-background-color : #EAF0F7;
+    font-family: "IBM-Plex-Sans-KR-regular";
+}
+
+.nav-link:hover{
+    color:var(--primary-color) !important;
+}
+.nav-link:active {
+    color: var(--primary-color) !important;
+}
+.nav-link:focus{
+    color: var(--primary-color) !important;
+}
+
+
+

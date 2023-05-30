@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+   int insertPlanBoard(PlanBoardDto planBoardDto);
+   int insertPlanList(List<PlanDto> planDtoList);
+
+   List<PlanBoardDto> selectPlanBoardByUserId(String userId);
+   List<PlanDto> selectPlanByPlanBoardId(int planBoardId);
+   PlanBoardDto selectPlanBoardByPlanBoardId(int planBoardId);
+
+   int deletePlanList(int planBoardId, Date date);
+-->
+
+<mapper namespace="com.ssafy.enjoytrip.plan.model.mapper.PlanMapper">
+	<select id="selectPlanBoardByUserId" parameterType="string" resultType="planBoardDto">
+		select * from plan_board where user_id = #{userId}
+	</select>
+
+	<select id="selectPlanBoardByPlanBoardId" parameterType="int" resultType="planBoardDto">
+		select * from plan_board where plan_board_id = #{planBoardId}
+	</select>
+
+	<select id="selectPlanByPlanBoardId" parameterType="int" resultType="plan">
+		select * from plan where plan_board_id = #{planBoardId} order by `order`;
+	</select>
+
+	<insert id="insertPlanBoard" parameterType="planBoardDto">
+		<selectKey resultType="int" keyProperty="planBoardId" order="AFTER">
+			select MAX(plan_board_id) from plan_board
+		</selectKey>
+		insert into plan_board(title, user_id, start_date, end_date) value (#{title},#{userId},#{startDate},#{endDate})
+	</insert>
+
+	<insert id="insertPlanList" parameterType="java.util.List">
+		insert into plan(plan_board_id, place, `order`, duration,date, start_time, end_time)
+		values
+		<foreach collection="list" item="item" separator=",">
+			(
+			 #{item.planBoardId},
+			 #{item.place},
+			 #{item.order},
+			 #{item.duration},
+			 #{item.date},
+			 #{item.startTime},
+			 #{item.endTime}
+			)
+		</foreach>
+	</insert>
+</mapper>

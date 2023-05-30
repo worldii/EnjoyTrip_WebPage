@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+    User selectByUserId(String userId);
+
+    User updateByUser(User user);
+
+    int insertByUser(User user);
+
+    int deleteByUserId(String userId);
+-->
+
+<mapper namespace="com.ssafy.enjoytrip.user.model.mapper.UserMapper">
+	<select id="selectByUserId" parameterType="string" resultType="user">
+		select * from user where user_id=#{userId};
+	</select>
+
+	<insert id="insertByUser" parameterType="user">
+		insert into user(user_id, name, address, password, email) value (#{userId},#{name},#{address},#{password},#{email});
+	</insert>
+
+	<update id="updateByUser" parameterType="string">
+		update user set name = #{name},address=#{address},password=#{password},email=#{email} where user_id=#{userId};
+	</update>
+
+	<delete id="deleteByUserId" parameterType="string">
+		delete from user where user_id=#{userId};
+	</delete>
+</mapper>

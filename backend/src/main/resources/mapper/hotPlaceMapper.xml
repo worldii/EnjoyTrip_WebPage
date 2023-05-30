@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.enjoytrip.hotPlace.model.mapper.HotPlaceMapper">
+    <resultMap type="com.ssafy.enjoytrip.hotPlace.model.dto.HotPlace" id="hotPlace">
+        <id column="hot_place_id" property="hotPlaceId"/>
+        <result column="hot_place_name" property="hotPlaceName"/>
+        <result column="road_address_name" property="roadAddressName"/>
+        <result column="address_name" property="addressName"/>
+        <result column="place_url" property="placeUrl"/>
+        <result column="vote" property="vote"/>
+        <result column="x" property="x"/>
+        <result column="y" property="y"/>
+    </resultMap>
+
+    <resultMap type="com.ssafy.enjoytrip.hotPlace.model.dto.HotPlaceArticle" id="hotPlaceArticle">
+        <id column="hot_place_article_id" property="hotPlaceArticleId"/>
+        <result column="user_id" property="userId"/>
+        <result column="hot_place_id" property="hotPlaceId"/>
+        <result column="content" property="content"/>
+        <result column="createAt" property="createAt"/>
+        <result column="image_url" property="imageUrl"/>
+    </resultMap>
+
+    <resultMap id="hotPlaceTag" type="com.ssafy.enjoytrip.hotPlace.model.dto.HotPlaceTag">
+        <id column="tag_name" property="tagName"/>
+        <result column="hot_place_id" property="hotPlaceId"/>
+        <result column="count" property="count"/>
+    </resultMap>
+
+    <select id="selectAllHotPlace" resultMap="hotPlace">
+        select *
+        from hot_place order by vote desc
+    </select>
+
+    <select id="selectAllHotPlaceArticle" resultMap="hotPlaceArticle">
+        select *
+        from hot_place_article
+        where hot_place_id = #{hotPlaceId}
+    </select>
+
+    <select id="selectHotPlaceByHotPlaceId" resultMap="hotPlace">
+        select *
+        from hot_place
+        where hot_place_id = #{hotPlaceId}
+    </select>
+
+
+    <select id="selectHotPlaceArticleByArticleId" resultMap="hotPlaceArticle">
+        select *
+        from hot_place_article
+        where hot_place_article_id = #{hotPlaceArticleId}
+    </select>
+
+    <update id="updateHotPlaceArticleImage" >
+        update hot_place_article
+        set image_url = #{imageUrl}
+        where hot_place_article_id = #{hotPlaceArticleId}
+    </update>
+
+    <update id="increaseHitHotPlaceCount">
+        update hot_place
+        set vote = vote + 1
+        where hot_place_id = #{hotPlaceId}
+    </update>
+
+    <update id="decreaseHitHotPlaceCount">
+        update hot_place
+        set vote = vote - 1
+        where hot_place_id = #{hotPlaceId}
+    </update>
+
+    <insert id="insertHotPlace" parameterType="hotPlace" >
+        insert into hot_place (hot_place_id, hot_place_name, road_address_name, address_name, place_url, x, y)
+        values (#{hotPlaceId},#{hotPlaceName}, #{roadAddressName}, #{addressName}, #{placeUrl}, #{x}, #{y})
+    </insert>
+
+    <insert id="insertHotPlaceArticle" parameterType="hotPlaceArticle" useGeneratedKeys="true" keyProperty="hotPlaceArticleId">
+        insert into hot_place_article (user_id, hot_place_id, content, image_url, hot_place_name)
+        values (#{userId}, #{hotPlaceId}, #{content}, #{imageUrl}, #{hotPlaceName})
+    </insert>
+
+    <update id="updateHotPlaceTag" >
+        update hot_place_tag
+        set count = count + 1
+        where hot_place_id = #{hotPlaceId} and tag_name = #{tagName}
+    </update>
+
+    <insert id="insertHotPlaceTag" >
+        insert into hot_place_tag (hot_place_id, tag_name, count)
+        values (#{hotPlaceId}, #{tagName}, 1)
+    </insert>
+
+    <select id="selectHotPlaceTagList" resultMap="hotPlaceTag">
+        select *
+        from hot_place_tag
+        where hot_place_id = #{hotPlaceId} order by count desc limit 5
+    </select>
+
+    <select id="selectHotPlaceByKeyword" resultMap="hotPlace">
+        select *
+        from hot_place
+        where hot_place_name like concat('%', #{keyword}, '%')
+    </select>
+</mapper>
