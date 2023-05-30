@@ -14,3 +14,6 @@ Spring Boot, mybatis, mysql, vue, bootstrap, redis, amazon s3
 # 실행 방법
 ## Frontend
 npm run serve
+.env 파일 추가하여야 함. 
+## backend
+s3 파일 업로드 시 secret key 따로 설정 ->  aws configure 해줘야함
