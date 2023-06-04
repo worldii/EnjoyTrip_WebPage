@@ -10,6 +10,11 @@
 ## 상세 설명
 `MyBatis` 를 처음 이용하여 dao, service 를 설계 및 구축했다는 것이 의미있었습니다. 또한 `vue.js,`  `vuex` 를 사용하여, 백엔드 단에서 넘어온 데이터를 활용해볼 수 있어 인상깊었습니다. 또한 프론트 엔드를 제작하기 앞서, figma 를 이용하여 프로토 타입을 제작해본 경험도 좋았던 것 같습니다. 회원가입/로그인을 할 때, jwt 토큰 발급 과정을 이해하고, spring 단에서 `interceptor`를 이용, 그리고 `redis` 를 활용해 성능 향상을 시켰습니다. 핫플레이스와 여행 경로 계획에서는 각각 `kakao Map API` , `kakao Mobility API` 를 사용하여 구현하였습니다. 
 
+## 기타 사항 
+총 세번에 나누어 걸쳐 리팩토링을 진행하였습니다.
+1. servlet, jsp 사용 https://github.com/worldii/EnjoyTrip_servlet
+2. spring boot, jsp 사용 https://github.com/worldii/EnjoyTrip_WebPage_ver1
+3. spring boot, vue (현재) 
 ## 주요 기능
 핫플레이스 장소 등록. 핫플레이스에 대한 의견 등록. 핫플레이스 투표 기능. 공지사항, 커뮤니티 기능. 회원가입/ 로그인 기능, 여행 경로, 계획 기능 
 ## 기술 스택
