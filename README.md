@@ -17,6 +17,10 @@ npm run serve
 ## backend
 s3 파일 업로드 시 secret key 따로 설정 ->  aws configure 해줘야함
 
+## 기록
+### Notion
+https://infrequent-quit-9d3.notion.site/ENJOYTRIP-db521fac87f54caeaaff4e94913e4e7a
+
 # 첨부 자료 
 ### Home
 <img width="500" alt="home" src="https://github.com/worldii/SSAFY_FINAL/assets/87687210/364ce327-53a2-49d3-b1fd-56fbcfffd655"><br>
