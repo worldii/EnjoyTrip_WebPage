@@ -11,6 +11,7 @@ import com.ssafy.enjoytrip.hotPlace.service.HotPlaceService;
 import static com.ssafy.enjoytrip.util.ApiUtil.ApiResult;
 import static com.ssafy.enjoytrip.util.ApiUtil.success;
 
+import com.ssafy.enjoytrip.jwt.model.dto.NoAuth;
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,28 +33,35 @@ public class HotPlaceController {
     private final HotPlaceService hotPlaceService;
     private final S3Service s3Service;
 
+    @NoAuth
     @GetMapping
     public ApiResult<List<HotPlace>> getHotPlaceList() {
         List<HotPlace> hotPlaces = hotPlaceService.selectAllHotPlace();
         return success(hotPlaces);
     }
 
+    @NoAuth
     @GetMapping("/search")
     public ApiResult<List<HotPlace>> getHotPlaceList(@RequestParam String keyword) {
         List<HotPlace> hotPlaces = hotPlaceService.selectHotPlaceByKeyword(keyword);
         return success(hotPlaces);
     }
 
+    @NoAuth
     @GetMapping("/articleAll/{hotPlaceId}")
     public ApiResult<List<HotPlaceArticle>> getHotPlaceArticleList(@PathVariable String hotPlaceId) {
         List<HotPlaceArticle> hotPlaceArticles = hotPlaceService.selectAllHotPlaceArticle(hotPlaceId);
         return success(hotPlaceArticles);
     }
+
+    @NoAuth
     @GetMapping("/{hotPlaceId}")
     public ApiResult<HotPlace> getHotPlaceDetail(@PathVariable String hotPlaceId) {
         HotPlace hotPlace = hotPlaceService.selectHotPlaceByHotPlaceId(hotPlaceId);
         return success(hotPlace);
     }
+
+    @NoAuth
     @GetMapping("/article/{hotPlaceArticleId}")
     public ApiResult<HotPlaceArticle> getHotPlaceArticleList(@PathVariable int hotPlaceArticleId) {
         HotPlaceArticle hotPlaceArticle = hotPlaceService.selectHotPlaceArticleByArticleId(hotPlaceArticleId);
@@ -74,6 +82,7 @@ public class HotPlaceController {
         hotPlaceService.increaseHitHotPlaceCount(hotPlaceId);
         return success(true);
     }
+
     @PostMapping("/{hotPlaceId}/unvote")
     public ApiResult<Boolean> unvoteHotPlace(@PathVariable String hotPlaceId) {
         hotPlaceService.decreaseHitHotPlaceCount(hotPlaceId);
@@ -103,11 +112,14 @@ public class HotPlaceController {
         hotPlaceService.insertHotPlaceTagList(hotPlaceId, tagList);
         return success(true);
     }
+
     @PutMapping("/{hotPlaceId}/tag")
     public ApiResult<Boolean> updateHotPlaceTag(@PathVariable String hotPlaceId, @RequestBody List<String> tagList) {
         hotPlaceService.updateHotPlaceTagList(hotPlaceId, tagList);
         return success(true);
     }
+
+    @NoAuth
     @GetMapping("/{hotPlaceId}/tag")
     public ApiResult<List<HotPlaceTag>> getHotPlaceTagList(@PathVariable String hotPlaceId) {
         List<HotPlaceTag> hotPlaceTags = hotPlaceService.selectHotPlaceTagList(hotPlaceId);

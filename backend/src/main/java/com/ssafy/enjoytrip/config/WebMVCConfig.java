@@ -26,12 +26,12 @@ public class WebMVCConfig implements WebMvcConfigurer {
                 //.excludePathPatterns("/user/login");
     }
     
-//    @Override
-//    public void addCorsMappings(CorsRegistry registry) {
-//        log.info("CORS Setting");
-//        registry.addMapping("/**")
-//                .allowedOrigins("*")
-//                .maxAge(1800);
-//    }
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        log.info("CORS Setting");
+        registry.addMapping("/**")
+                .allowedOrigins("*")
+                .maxAge(1800);
+    }
 
 }

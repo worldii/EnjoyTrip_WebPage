@@ -33,16 +33,13 @@ public class JwtInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        boolean check=checkAnnotation(handler, NoAuth.class);
-
-        if(check) return true;
-
         // ToDo: cors preflight 방지 배포시 삭제
         if("OPTIONS".equals(request.getMethod())){
             response.setStatus(HttpServletResponse.SC_ACCEPTED);
             return true;
         }
-
+        boolean check=checkAnnotation(handler, NoAuth.class);
+        if (check) return true;
         final String token = request.getHeader(HEADER_AUTH);
         log.info("JWT Target Token - {} ",token);
 

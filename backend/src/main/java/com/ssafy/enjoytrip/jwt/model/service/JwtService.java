@@ -18,10 +18,11 @@ import java.util.Optional;
 public class JwtService {
 
     private final String SALT;
-    private final Long EXPIRE_MIN;
+    private final Long EXPIRE_MIN ;
     private final JwtRepository jwtRepository;
 
-    public JwtService(@Value("${jwt.salt}") String SALT,@Value("${jwt.expmin}") Long EXPIRE_MIN, JwtRepository jwtRepository) {
+
+    public JwtService(@Value("${jwt.salt}") String SALT,@Value("${jwt.expmin}0") Long EXPIRE_MIN, JwtRepository jwtRepository) {
         this.SALT = SALT;
         this.EXPIRE_MIN = EXPIRE_MIN;
         this.jwtRepository = jwtRepository;
@@ -29,7 +30,7 @@ public class JwtService {
 
     // ToDo: RefreshToken, AccessToken 유지 시간 설정
     public String generateRefreshToken(String userId){
-        String refreshToken = generateToken("userId",userId,"refresh-token",1000 * 10 * 5 * EXPIRE_MIN);
+        String refreshToken = generateToken("userId",userId,"refresh-token",1000 * 10 * 5 * 25 * EXPIRE_MIN);
         jwtRepository.save(new RefreshTokenDto(refreshToken,userId));
 
         return refreshToken;

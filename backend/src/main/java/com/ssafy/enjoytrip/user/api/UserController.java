@@ -31,16 +31,15 @@ public class UserController {
     public ResponseEntity<Map<String, Object>> login(@RequestBody User requestUser){
         Map<String, Object> resultMap = new HashMap<>();
         HttpStatus status = null;
-
         try {
             User loginUser = userService.login(requestUser.getUserId(),requestUser.getPassword());
             if (loginUser != null) {
                 String accessToken = jwtService.generateAccessToken(requestUser.getUserId());
                 String refreshToken = jwtService.generateRefreshToken(requestUser.getUserId());
-
                 resultMap.put("access-token", accessToken);
                 resultMap.put("refresh-token", refreshToken);
                 resultMap.put("success", true);
+
             } else {
                 resultMap.put("success", false);
             }
@@ -52,6 +51,7 @@ public class UserController {
         return new ResponseEntity<>(resultMap, status);
     }
 
+    @NoAuth
     @PostMapping
     public ResponseEntity<?> join(@RequestBody User requestUser){
         Map<String, Object> resultMap = new HashMap<>();
@@ -82,6 +82,7 @@ public class UserController {
         return new ResponseEntity<>(resultMap,HttpStatus.ACCEPTED);
     }
 
+    @NoAuth
     @DeleteMapping("/{userId}")
     public ResponseEntity<?> leave(@PathVariable String userId){
         Map<String, Object> resultMap = new HashMap<>();
@@ -99,6 +100,7 @@ public class UserController {
     }
 
 
+    @NoAuth
     @PostMapping("/refresh")
     public ResponseEntity<?> refreshToken(@RequestBody User user, HttpServletRequest request){
         Map<String, Object> resultMap = new HashMap<>();
@@ -106,11 +108,10 @@ public class UserController {
 
         String token = request.getHeader("refresh-token");
 
+        log.info("refresh token : {}", token);
         if (jwtService.checkValidToken(token)) {
             if (jwtService.canRefresh(token,user.getUserId())) {
-
                 String accessToken = jwtService.generateAccessToken(user.getUserId());
-
                 resultMap.put("access-token", accessToken);
                 status = HttpStatus.ACCEPTED;
             }else{
