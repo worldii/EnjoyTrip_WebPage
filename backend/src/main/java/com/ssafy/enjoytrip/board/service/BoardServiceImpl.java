@@ -8,6 +8,7 @@ import com.ssafy.enjoytrip.board.model.dto.SearchDto;
 import com.ssafy.enjoytrip.board.model.mapper.BoardMapper;
 import com.ssafy.enjoytrip.board.model.mapper.CommentMapper;
 import com.ssafy.enjoytrip.error.BoardNotFoundException;
+import com.ssafy.enjoytrip.error.UserNotFoundException;
 import com.ssafy.enjoytrip.user.model.dto.User;
 import com.ssafy.enjoytrip.user.model.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
@@ -41,8 +42,14 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     @Transactional
-    public int modify(int boardId, BoardRequestDto boardRequestDto) {
+    public int modify(int boardId, String userId, BoardRequestDto boardRequestDto) {
         boardRequestDto.setBoardId(boardId);
+        User user = userMapper.selectByUserId(userId);
+        Board board = boardMapper.selectBoard(boardId).orElseThrow(() -> new BoardNotFoundException("해당 boardId에 해당하는 board가 없습니다."));
+        if (user == null) throw new RuntimeException("해당 유저가 없습니다.");
+        if (user.getAuthority() == 1) {
+            if (!board.getUserId().equals(user.getUserId())) throw new UserNotFoundException("해당 유저가 아닙니다.");
+        }
         return boardMapper.updateBoard(boardRequestDto.toEntity());
     }
 
@@ -51,10 +58,11 @@ public class BoardServiceImpl implements BoardService {
     public int delete(int boardId, String userId) {
         log.info("userId : {}", userId);
         User user = userMapper.selectByUserId(userId);
+        Board board = boardMapper.selectBoard(boardId).orElseThrow(() -> new BoardNotFoundException("해당 boardId에 해당하는 board가 없습니다."));
         log.info("user : {}", user);
         if (user == null) throw new RuntimeException("해당 유저가 없습니다.");
-        if (user.getAuthority()==1) {
-            if (!user.getUserId().equals(userId)) throw new RuntimeException("해당 유저가 아닙니다.");
+        if (user.getAuthority() == 1) {
+            if (!board.getUserId().equals(user.getUserId())) throw new UserNotFoundException("해당 유저가 아닙니다.");
         }
         commentMapper.deleteAll(boardId);
         return boardMapper.deleteBoard(boardId);

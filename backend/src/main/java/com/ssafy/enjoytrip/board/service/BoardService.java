@@ -11,7 +11,7 @@ public interface BoardService {
 
     int regist(BoardRequestDto boardRequestDto, String userId);
 
-    int modify(int boardId, BoardRequestDto boardRequestDto);
+    int modify(int boardId, String userId, BoardRequestDto boardRequestDto);
 
     int delete(int boardId, String userId);
 

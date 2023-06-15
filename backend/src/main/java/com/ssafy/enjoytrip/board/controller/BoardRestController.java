@@ -105,9 +105,9 @@ public class BoardRestController {
     }
 
     @PutMapping("/{boardId}")
-    public ApiResult<Boolean> modifyBoard(@PathVariable int boardId, @RequestBody @Valid BoardRequestDto boardRequestDto) {
+    public ApiResult<Boolean> modifyBoard(@PathVariable int boardId, @RequestBody @Valid BoardRequestDto boardRequestDto, @RequestParam String userId) {
         log.info("boardId : {}", boardId);
-        boardService.modify(boardId, boardRequestDto);
+        boardService.modify(boardId, userId, boardRequestDto);
         return success(true);
     }
 
