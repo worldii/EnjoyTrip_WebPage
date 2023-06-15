@@ -1,5 +1,8 @@
 package com.ssafy.enjoytrip.board.model.dto;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,16 +15,21 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ApiModel(value = "게시글 요청 정보", description = "게시글 요청 정보")
 public class BoardRequestDto {
+    @ApiModelProperty(value = "게시글 번호")
     private int boardId;
+    @ApiModelProperty(value = "게시글 제목")
     @NotBlank(message = "제목을 입력해주세요.")
     private String subject;
+    @ApiModelProperty(value = "게시글 내용")
     @NotBlank(message = "내용을 입력해주세요.")
     private String content;
+    @ApiModelProperty(value = "작성자 아이디")
     private String userId;
+    @ApiModelProperty(value = "게시글 타입")
     private BoardType boardType;
-
-    // 첨부이미지
+    @ApiModelProperty(value = "게시글 이미지")
     private List<FileInfo> imageFiles;
 
     public void setBoardId(int boardId) {

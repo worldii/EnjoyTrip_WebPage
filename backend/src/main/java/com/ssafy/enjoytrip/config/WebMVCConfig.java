@@ -20,10 +20,9 @@ public class WebMVCConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         log.info("Interceptor Setting");
-        // ToDo: 인증 서비스 URL 추가
         registry.addInterceptor(jwtInterceptor)
-                .addPathPatterns("/**");
-                //.excludePathPatterns("/user/login");
+                .addPathPatterns("/**")
+                .excludePathPatterns("/swagger-ui/**", "/swagger-resources/**", "/v2/api-docs", "/webjars/**", "/error/**", "/api/**", "/h2-console/**", "/favicon.ico");
     }
     
     @Override
