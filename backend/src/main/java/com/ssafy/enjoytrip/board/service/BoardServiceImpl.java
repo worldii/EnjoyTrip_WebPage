@@ -3,9 +3,13 @@ package com.ssafy.enjoytrip.board.service;
 import com.github.pagehelper.Page;
 import com.ssafy.enjoytrip.board.model.dto.Board;
 import com.ssafy.enjoytrip.board.model.dto.BoardRequestDto;
+import com.ssafy.enjoytrip.board.model.dto.Comment;
 import com.ssafy.enjoytrip.board.model.dto.SearchDto;
 import com.ssafy.enjoytrip.board.model.mapper.BoardMapper;
+import com.ssafy.enjoytrip.board.model.mapper.CommentMapper;
 import com.ssafy.enjoytrip.error.BoardNotFoundException;
+import com.ssafy.enjoytrip.user.model.dto.User;
+import com.ssafy.enjoytrip.user.model.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class BoardServiceImpl implements BoardService {
 
     private final BoardMapper boardMapper;
+    private final UserMapper userMapper;
+    private final CommentMapper commentMapper;
 
     @Transactional(readOnly = true)
     @Override
@@ -42,7 +48,15 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     @Transactional
-    public int delete(int boardId) {
+    public int delete(int boardId, String userId) {
+        log.info("userId : {}", userId);
+        User user = userMapper.selectByUserId(userId);
+        log.info("user : {}", user);
+        if (user == null) throw new RuntimeException("해당 유저가 없습니다.");
+        if (user.getAuthority()==1) {
+            if (!user.getUserId().equals(userId)) throw new RuntimeException("해당 유저가 아닙니다.");
+        }
+        commentMapper.deleteAll(boardId);
         return boardMapper.deleteBoard(boardId);
     }
 

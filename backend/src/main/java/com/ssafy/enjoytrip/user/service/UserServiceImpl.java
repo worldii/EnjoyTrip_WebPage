@@ -15,13 +15,12 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
+    @Transactional
     public User login(String userId,String password) {
         User user = userMapper.selectByUserId(userId);
-
-        if(user != null && UserEncoder.isMatch(password,user.getPassword())){
+        if (user != null && UserEncoder.isMatch(password,user.getPassword())){
             return user;
         }
-
         return null;
     }
 
@@ -47,5 +46,6 @@ public class UserServiceImpl implements UserService {
     public User getInformation(String userId) {
         return userMapper.selectByUserId(userId);
     }
+
 }
 

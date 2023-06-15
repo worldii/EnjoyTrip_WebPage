@@ -21,23 +21,21 @@ public class JwtService {
     private final Long EXPIRE_MIN ;
     private final JwtRepository jwtRepository;
 
-
-    public JwtService(@Value("${jwt.salt}") String SALT,@Value("${jwt.expmin}0") Long EXPIRE_MIN, JwtRepository jwtRepository) {
+    public JwtService(@Value("${jwt.salt}") String SALT,@Value("${jwt.expmin}") Long EXPIRE_MIN, JwtRepository jwtRepository) {
         this.SALT = SALT;
         this.EXPIRE_MIN = EXPIRE_MIN;
         this.jwtRepository = jwtRepository;
     }
 
-    // ToDo: RefreshToken, AccessToken 유지 시간 설정
     public String generateRefreshToken(String userId){
-        String refreshToken = generateToken("userId",userId,"refresh-token",1000 * 10 * 5 * 25 * EXPIRE_MIN);
+        String refreshToken = generateToken("userId",userId,"refresh-token", 2 * 7 * 24 * 60 * 60 * 1000);
         jwtRepository.save(new RefreshTokenDto(refreshToken,userId));
 
         return refreshToken;
     }
 
     public String generateAccessToken(String userId){
-        return generateToken("userId",userId,"access-token", 1000 * 10 * 1 *EXPIRE_MIN);
+        return generateToken("userId",userId,"access-token",  60 * 1000 * 1 *EXPIRE_MIN);
     }
 
     public boolean canRefresh(String refreshToken, String userId){

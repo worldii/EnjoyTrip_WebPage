@@ -68,10 +68,9 @@ public class BoardRestController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-
     @NoAuth
     @GetMapping("/list/search")
-    public ResponseEntity<Map<String, Object>> getListBySearchDto(PageInfoDto pageInfoDto,@ModelAttribute SearchDto searchDto, HttpServletRequest request) {
+    public ResponseEntity<Map<String, Object>> getListBySearchDto(PageInfoDto pageInfoDto, @ModelAttribute SearchDto searchDto, HttpServletRequest request) {
         log.info("searchDto : {}", searchDto);
         Map<String, Object> map = new HashMap<>();
         if (pageInfoDto.getPage() == 0) {
@@ -85,26 +84,22 @@ public class BoardRestController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-
-
     @NoAuth
     @GetMapping("/{boardId}")
     public ApiResult<BoardResponseDto> getBoard(@PathVariable("boardId") int boardId) {
-        System.out.println("getBoard");
         log.info("boardId : {}", boardId);
         return success(new BoardResponseDto(boardService.detail(boardId)));
     }
 
     @PostMapping
     public ApiResult<Boolean> registerBoard(@RequestParam @Valid String json, List<MultipartFile> files) throws IOException {
-        log.info("json : {}", json);
         ObjectMapper objectMapper = new ObjectMapper();
         BoardRequestDto boardRequestDto = objectMapper.readValue(json, BoardRequestDto.class);
         log.info("boardRequestDto : {}", boardRequestDto);
         int pk = boardService.regist(boardRequestDto, boardRequestDto.getUserId());
         log.info(pk + "번 게시글에 파일 업로드");
         if (files != null) {
-            fileService.insertFile(pk, files,"board/");
+            fileService.insertFile(pk, files, "board/");
         }
         return success(true);
     }
@@ -112,15 +107,13 @@ public class BoardRestController {
     @PutMapping("/{boardId}")
     public ApiResult<Boolean> modifyBoard(@PathVariable int boardId, @RequestBody @Valid BoardRequestDto boardRequestDto) {
         log.info("boardId : {}", boardId);
-        log.info("boardRequestDto : {}", boardRequestDto);
-        log.info("update board");
         boardService.modify(boardId, boardRequestDto);
         return success(true);
     }
 
     @DeleteMapping("/{boardId}")
-    public ApiResult<Boolean> deleteBoard(@PathVariable int boardId) {
-        boardService.delete(boardId);
+    public ApiResult<Boolean> deleteBoard(@PathVariable int boardId, @RequestParam String userId) {
+        boardService.delete(boardId, userId);
         return success(true);
     }
 
@@ -131,7 +124,6 @@ public class BoardRestController {
         return success(true);
     }
 
-
     @NoAuth
     @GetMapping("/file/{boardId}")
     public ApiResult<List<FileInfo>> get(@PathVariable int boardId) {
@@ -139,5 +131,4 @@ public class BoardRestController {
         log.info("list : {}", list);
         return success(list);
     }
-
 }

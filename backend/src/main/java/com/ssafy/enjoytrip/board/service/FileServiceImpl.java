@@ -32,6 +32,11 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
+    public int deleteFile(int boardId) {
+        return 0;
+    }
+
+    @Override
     public List<FileInfo> selectFile(int boardId) {
         return boardMapper.selectFile(boardId);
     }

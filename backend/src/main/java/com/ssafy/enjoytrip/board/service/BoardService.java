@@ -13,7 +13,7 @@ public interface BoardService {
 
     int modify(int boardId, BoardRequestDto boardRequestDto);
 
-    int delete(int boardId);
+    int delete(int boardId, String userId);
 
     int updateHit(int boardId);
 

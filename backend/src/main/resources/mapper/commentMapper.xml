@@ -34,4 +34,10 @@
         from comment
         where board_id = #{boardId}
     </select>
+
+    <delete id="deleteAll" parameterType="int">
+        delete
+        from comment
+        where board_id = #{boardId}
+    </delete>
 </mapper>
