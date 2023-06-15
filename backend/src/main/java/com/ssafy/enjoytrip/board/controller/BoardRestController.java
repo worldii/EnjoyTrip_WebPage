@@ -6,6 +6,7 @@ import com.github.pagehelper.PageHelper;
 import com.ssafy.enjoytrip.board.model.dto.*;
 import com.ssafy.enjoytrip.board.service.BoardService;
 import com.ssafy.enjoytrip.board.service.FileService;
+import com.ssafy.enjoytrip.jwt.model.dto.NoAuth;
 import com.ssafy.enjoytrip.util.PageNavigationForPageHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,7 @@ public class BoardRestController {
     private final BoardService boardService;
     private final FileService fileService;
 
+    @NoAuth
     @GetMapping
     public ResponseEntity<Map<String, Object>> getList(PageInfoDto pageInfoDto, HttpServletRequest request) {
         Map<String, Object> map = new HashMap<>();
@@ -50,7 +52,7 @@ public class BoardRestController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-
+    @NoAuth
     @GetMapping("/list/{currentPage}")
     public ResponseEntity<Map<String, Object>> getListByPage(@PathVariable int currentPage, @RequestParam(required = false) Integer pageSize, HttpServletRequest request) {
         log.info("page By currentPage : {}", currentPage);
@@ -67,6 +69,7 @@ public class BoardRestController {
     }
 
 
+    @NoAuth
     @GetMapping("/list/search")
     public ResponseEntity<Map<String, Object>> getListBySearchDto(PageInfoDto pageInfoDto,@ModelAttribute SearchDto searchDto, HttpServletRequest request) {
         log.info("searchDto : {}", searchDto);
@@ -84,6 +87,7 @@ public class BoardRestController {
 
 
 
+    @NoAuth
     @GetMapping("/{boardId}")
     public ApiResult<BoardResponseDto> getBoard(@PathVariable("boardId") int boardId) {
         System.out.println("getBoard");
@@ -120,6 +124,7 @@ public class BoardRestController {
         return success(true);
     }
 
+    @NoAuth
     @PostMapping("/hit/{boardId}")
     public ApiResult<Boolean> updateHit(@PathVariable int boardId) {
         boardService.updateHit(boardId);
@@ -127,6 +132,7 @@ public class BoardRestController {
     }
 
 
+    @NoAuth
     @GetMapping("/file/{boardId}")
     public ApiResult<List<FileInfo>> get(@PathVariable int boardId) {
         List<FileInfo> list = fileService.selectFile(boardId);

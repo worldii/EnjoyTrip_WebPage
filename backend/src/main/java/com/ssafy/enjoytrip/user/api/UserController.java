@@ -1,6 +1,7 @@
 package com.ssafy.enjoytrip.user.api;
 
 
+import com.ssafy.enjoytrip.jwt.model.dto.NoAuth;
 import com.ssafy.enjoytrip.jwt.model.service.JwtService;
 import com.ssafy.enjoytrip.user.model.dto.User;
 import com.ssafy.enjoytrip.user.service.UserService;
@@ -25,6 +26,7 @@ public class UserController {
     private final UserService userService;
     private final JwtService jwtService;
 
+    @NoAuth
     @PostMapping("/login")
     public ResponseEntity<Map<String, Object>> login(@RequestBody User requestUser){
         Map<String, Object> resultMap = new HashMap<>();

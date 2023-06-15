@@ -3,6 +3,7 @@ package com.ssafy.enjoytrip.board.controller;
 import com.ssafy.enjoytrip.board.model.dto.CommentRequestDto;
 import com.ssafy.enjoytrip.board.model.dto.CommentResponseDto;
 import com.ssafy.enjoytrip.board.service.CommentService;
+import com.ssafy.enjoytrip.jwt.model.dto.NoAuth;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
@@ -20,6 +21,7 @@ import static com.ssafy.enjoytrip.util.ApiUtil.*;
 public class CommentController {
     private final CommentService commentService;
 
+    @NoAuth
     @GetMapping("/{boardId}")
     public ApiResult<List<CommentResponseDto>> getCommentList(@PathVariable int boardId) {
         List<CommentResponseDto> commentList = commentService.getCommentList(boardId);
