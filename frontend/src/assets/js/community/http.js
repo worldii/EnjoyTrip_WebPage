@@ -1,9 +1,6 @@
-import axios from "axios";
+import { createUserAxios } from "@/assets/js/user/userAxios";
 
-// axios 객체 생성
-export default axios.create({
-  baseURL: "http://localhost:4029/",
-  headers: {
-    "Content-Type": "application/json;charset=utf-8",
-  },
-});
+const axios = createUserAxios();
+// export axios
+
+export default axios;

@@ -36,7 +36,7 @@ export default {
         return {
             commentList: [],
             content: "",
-          
+
         };
     },
     components: {
@@ -44,31 +44,38 @@ export default {
     },
     methods: {
         submitComment() {
-            // if (!this.isLogin) {
-            //     alert("로그인이 필요한 서비스입니다.");
-            //     this.$router.push("/user/login");
-            // }
+            if (!this.isLogin) {
+                alert("로그인이 필요한 서비스입니다.");
+                this.$router.push("/user/login");
+                return;
+            }
             if (this.content == "") {
                 alert("댓글을 입력해주세요");
                 return;
             }
-            http.post(`/comment/${this.boardId}`, {
-                boardId: this.boardId,
-                content: this.content,
-                userId: this.$store.state.userStore.userId,
-            }).then((response) => {
+            http.post(`/comment/${this.boardId}`,
+                {
+                    boardId: this.boardId,
+                    content: this.content,
+                    userId: this.$store.state.userStore.userId,
+                }, {
+                    headers: {
+                    "access-token": sessionStorage.getItem("access-token"),
+                },
+                }).then((response) => {
                 console.log(response.data);
                 http.get(`/comment/${this.boardId}`).then((response) => {
                     console.log(response.data);
                     this.commentList = response.data.response;
+                    alert("댓글이 등록되었습니다.");
+                    this.content = "";
                 }).catch((error) => {
                     console.log(error);
+
                 });
             }).catch((error) => {
                 console.log(error);
             });
-            alert("댓글이 등록되었습니다.");
-            this.content = "";
         },
         deleteComment(commentId) {
             console.log(commentId)

@@ -66,7 +66,7 @@
 
 <script>
 import BeforeSite from "../common/BeforeSite.vue";
-import http from "@/assets/js/community/http";
+import axios from "@/assets/js/community/http";
 import { mapState } from "vuex";
 export default {
     components: {
@@ -117,8 +117,9 @@ export default {
                 formData.append(`files`, this.selectedFile[i]);
                 console.log(this.selectedFile[i]);
             }
-            
-            http
+
+            console.log(sessionStorage.getItem("access-token"));
+            axios
                 .post("/board", formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
@@ -129,8 +130,7 @@ export default {
                     this.$router.push("/community/list/1");
                 })
                 .catch((error) => {
-                    alert("오류가 발생하였습니다.");
-
+                    alert("게시판 오류가 발생하였습니다.");
                     console.log(error);
                 });
         },

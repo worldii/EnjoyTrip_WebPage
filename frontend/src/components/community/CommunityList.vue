@@ -41,7 +41,6 @@
                 <b-table id="community-table" hover :items="articles" :fields="fields" @row-clicked="viewArticle" :current-page="currentPage">
                   <template #cell(boardType)="data">
                     <span>{{formatName(data.item.boardType)}}</span>
-
                 <router-link :to="{ name: 'boardview', params: { boardId: data.item.boardId } }">
                 </router-link>
               </template>
@@ -99,19 +98,13 @@ export default {
         };
     },
 
-
-
     created() {
-       
-
         this.currentPage = this.$route.params.currentPage;
           http.get(`/board/list/${this.currentPage}`).then((response) => {
             console.log(response.data);
             this.articles = response.data?.boards?.page;
               this.currentPage = this.$route.params.currentPage;
-              this.endPage = response.data?.boards?.endPage;
-
-            
+              this.endPage = response.data?.boards?.endPage;            
         }).catch((error) => {
             console.log(error);
         });
@@ -159,11 +152,7 @@ export default {
             });
         },
         getList() { 
-            http.get(`/board/list/${this.currentPage}`, {
-                headers: {
-                    VUE_APP_ACCESS_TOKEN_HEADER: this.$store.state.userStore.accessToken,
-                },
-            }
+            http.get(`/board/list/${this.currentPage}`
             ).then((response) => {
                 console.log(response.data);
                 this.articles = response.data?.boards?.page;
