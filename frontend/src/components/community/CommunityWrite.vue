@@ -36,7 +36,7 @@
         <b-row class="mt-2" id="uploadButtonTemplate">
             <b-col></b-col>
             <b-col cols="10">
-                <input accept="image/*" type="file" ref="fileInput" @change="handleFileInputChange" multiple>
+                <input id="uploadButton" accept="image/*" type="file" ref="fileInput" @change="handleFileInputChange" multiple >
             </b-col>
             <b-col></b-col>
         </b-row>
@@ -66,7 +66,7 @@
 
 <script>
 import BeforeSite from "../common/BeforeSite.vue";
-import axios from "@/assets/js/community/http";
+import writeAxios from "@/assets/js/community/writeAxios.js";
 import { mapState } from "vuex";
 export default {
     components: {
@@ -96,6 +96,10 @@ export default {
         console.log(this.article.userId)
     },
     methods: {
+        clickFunc() {
+
+            console.log("hello");
+        },
 
         handleFileInputChange(event) {
             this.selectedFile = event.target.files;
@@ -119,7 +123,7 @@ export default {
             }
 
             console.log(sessionStorage.getItem("access-token"));
-            axios
+            writeAxios
                 .post("/board", formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",

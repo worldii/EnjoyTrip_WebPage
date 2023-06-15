@@ -43,7 +43,7 @@
         <!-- 작성자 일때만 수정 및 삭제기 가능해야 함 -->
         <b-row class="mt-2">
             <b-col></b-col>
-            <b-col  v-if="article.userId == this.$store.state.userStore.userId" cols="10" class="text-right">
+            <b-col  cols="10" class="text-right">
                 <b-button class="m-1" id="modifyBoardButton" @click="modifyBoard">수정</b-button>
                 <b-button id="deleteBoardButton" @click="deleteBoard">삭제</b-button>
             </b-col>
@@ -90,11 +90,14 @@ export default {
         },
         deleteBoard() {
             console.log(this.$route.params.boardId);
-            http.delete(`/board/${this.$route.params.boardId}`).then((response) => {
+            http.delete(`/board/${this.$route.params.boardId}?userId=${this.userId}`).then((response) => {
                 console.log(response.data.response);
                 alert("삭제되었습니다.");
                 this.$router.push("/community/list/1");
-            });
+            }).catch((error) => {
+                console.log(error);
+                alert(error.response.data.error.message);
+            })
         },
     },
     created() { 

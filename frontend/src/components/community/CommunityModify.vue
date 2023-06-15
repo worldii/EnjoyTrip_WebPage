@@ -39,6 +39,7 @@ import UploadButton from "@/components/common/UploadButton.vue";
 export default {
     data() {
         return {
+            userId : this.$store.state.userId,
             article: {
                 title: "",
                 content: "",
@@ -53,16 +54,13 @@ export default {
     },
     methods: {
         saveArticle() {
-            console.log(this.article.boardId);
-            console.log(this.article);
-            http.put(`/board/${this.$route.params.boardId}`, this.article).then((response) => {
+            http.put(`/board/${this.$route.params.boardId}?userId=${this.userId}`, this.article).then((response) => {
                 console.log(response.data);
                 alert("게시글이 수정되었습니다.");
                 this.$router.push({ name: "boardview", params: { boardId: this.$route.params.boardId } });
-
             }).catch((error) => {
                 console.log(error);
-                alert("게시글이 수정 중 오류가 발생하였습니다");
+                alert(error?.response?.data?.error?.message);
                 this.$router.push({ name: "boardview", params: { boardId: this.$route.params.boardId } });
             });
 
