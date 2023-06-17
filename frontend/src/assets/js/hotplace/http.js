@@ -1,11 +1,13 @@
-import axios from "axios";
+import { createUserAxios } from "@/assets/js/user/userAxios";
+
+const axios = createUserAxios();
 import { createPlanAxios } from "@/assets/js/plan/planAxios";
 
 const planAxios = createPlanAxios();
 
 // axios 객체 생성
 export default axios.create({
-  baseURL: "http://localhost:4029/",
+  baseURL: process.env.VUE_APP_API_BASE_URL,
   headers: {
     "Content-Type": "application/json;charset=utf-8",
   },

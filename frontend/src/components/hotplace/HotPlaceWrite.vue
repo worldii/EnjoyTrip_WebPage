@@ -128,7 +128,7 @@ export default {
     mounted() {
         if (!window.kakao || !window.kakao.map) {
             const script = document.createElement("script");
-            const key = "0b84fd1237aed5cea2801ea80e6e9738";
+            const key = process.env.VUE_APP_KAKAO_KEY;
             script.src = "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" + key;
             /*global kakao*/
             script.addEventListener("load", () => {
@@ -160,8 +160,6 @@ export default {
                 alert("핫플을 선택해주세요");
                 return;
             }
-            alert("핫플 등록 완료");
-            console.log(this.searchItem);
             let hotPlace = {
                 x: this.searchItem.x,
                 y: this.searchItem.y,
@@ -191,7 +189,6 @@ export default {
                         console.log(response);
                         http.post("/hotplace/article", article).then((response) => {
                             let articleId = response.data.response;
-
                             http.put(`/hotplace/${this.searchItem.id}/tag`, tagList).then((response) => {
                                 console.log(response);
                                 console.log("tag List", tagList);
@@ -214,7 +211,7 @@ export default {
                                         console.log(response);
                                         this.$router.push("/hotplace/list");
                                     }).catch((error) => {
-                                        alert("핫플 등록 실패");
+                                        alert(error.response.data.error.message)
                                         console.log(error);
                                         this.$router.push("/hotplace/list");
                                     });
@@ -224,17 +221,17 @@ export default {
                                     this.$router.push("/hotplace/list");
                                 }
                             }).catch((error) => {
-                                alert("핫플 등록 실패");
+                                alert(error.response.data.error.message)
                                 console.log(error);
                                 this.$router.push("/hotplace/list");
                             });
                         }).catch((error) => {
-                            alert("핫플 등록 실패");
+                            alert(error.response.data.error.message)
                             console.log(error);
                             this.$router.push("/hotplace/list");
                         });
                     }).catch((error) => {
-                        alert("핫플 등록 실패");
+                        alert(error.response.data.error.message)
                         console.log(error);
                         this.$router.push("/hotplace/list");
                     });
@@ -243,7 +240,6 @@ export default {
                     http.post("/hotplace/article", article).then((response) => {
                         console.log(response);
                         let articleId = response.data.response;
-
                         http.put(`/hotplace/${this.searchItem.id}/tag`, tagList).then((response) => {
                             console.log(response);
                             // Response에서 article 의 id 를 반환함

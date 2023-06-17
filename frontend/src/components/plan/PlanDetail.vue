@@ -1,5 +1,5 @@
 <script>
-import {searchBlog, searchMap, searchRoute} from "@/assets/js/plan/plan";
+import { searchBlog, searchMap, searchRoute } from "@/assets/js/plan/plan";
 import draggable from "vuedraggable";
 import router from "@/router";
 
@@ -56,19 +56,19 @@ export default {
                 category_group_code: null,
             },
             options: [
-                {value: null, text: "카테고리"},
-                {value: "AT4", text: "관광명소"},
-                {value: "AD5", text: "숙박"},
-                {value: "FD6", text: "음식점"},
-                {value: "CE7", text: "카페"},
-                {value: "MT1", text: "대형마트"},
-                {value: "CS2", text: "편의점"},
-                {value: "PK6", text: "주차장"},
-                {value: "OL7", text: "주유소, 충전소"},
-                {value: "SW8", text: "지하철역"},
-                {value: "BK9", text: "은행"},
-                {value: "CT1", text: "문화시설"},
-                {value: "PO3", text: "공공기관"},
+                { value: null, text: "카테고리" },
+                { value: "AT4", text: "관광명소" },
+                { value: "AD5", text: "숙박" },
+                { value: "FD6", text: "음식점" },
+                { value: "CE7", text: "카페" },
+                { value: "MT1", text: "대형마트" },
+                { value: "CS2", text: "편의점" },
+                { value: "PK6", text: "주차장" },
+                { value: "OL7", text: "주유소, 충전소" },
+                { value: "SW8", text: "지하철역" },
+                { value: "BK9", text: "은행" },
+                { value: "CT1", text: "문화시설" },
+                { value: "PO3", text: "공공기관" },
             ],
             colors: ['red', 'orange', 'yellow', 'green', 'blue', 'navy', 'purple'],
             selectDate: null,
@@ -83,7 +83,7 @@ export default {
                 startDate: '',
                 endDate: '',
                 planDateMap: {},
-                planDateMapTmp:{},
+                planDateMapTmp: {},
             },
         }
     },
@@ -112,16 +112,16 @@ export default {
 
         this.planBoard.title = this.$route.params.planBoard.subject;
         this.planBoard.startDate = this.$route.params.planBoard.startDate;
-        this.planBoard.endDate =this.$route.params.planBoard.endDate;
+        this.planBoard.endDate = this.$route.params.planBoard.endDate;
 
-        for(let date = new Date(this.planBoard.startDate); date <= new Date(this.planBoard.endDate); date.setDate(date.getDate()+1)){
-            this.planBoard.planDateMap[date.toISOString().split('T')[0]]= [];
+        for (let date = new Date(this.planBoard.startDate); date <= new Date(this.planBoard.endDate); date.setDate(date.getDate() + 1)) {
+            this.planBoard.planDateMap[date.toISOString().split('T')[0]] = [];
         }
     },
     mounted() {
         if (!window.kakao || !window.kakao.map) {
             const script = document.createElement("script");
-            const key = "0b84fd1237aed5cea2801ea80e6e9738";
+            const key = process.env.VUE_APP_KAKAO_KEY;
             script.src = "//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" + key;
 
             /*global kakao*/
@@ -177,7 +177,7 @@ export default {
         async searchConfirm() {
             await searchMap(
                 this.params,
-                ({data}) => {
+                ({ data }) => {
                     if (data.documents.length > 0) {
                         this.removeAllMarker();
                         this.closeAllInfowindow();
@@ -196,7 +196,7 @@ export default {
                                 title: searchItem["place_name"],
                             });
 
-                            let infowindow = new kakao.maps.InfoWindow({zIndex: 1});
+                            let infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
 
                             kakao.maps.event.addListener(marker, 'click', async () => {
                                 if (this.isClose) {
@@ -248,11 +248,10 @@ export default {
             );
         },
         async searchBlogConfirm() {
-            await searchBlog(
-                {
+            await searchBlog({
                     query: this.searchItem.place_name,
                 },
-                ({data}) => {
+                ({ data }) => {
                     this.blogList = data.documents;
                 },
                 (error) => {
@@ -316,7 +315,7 @@ export default {
             await searchRoute(
                 origin,
                 destination,
-                ({data}) => {
+                ({ data }) => {
                     this.totalDuration += data.routes[0].summary.duration;
                     let roads = data.routes[0].sections[0].roads;
                     this.durations.push(data.routes[0].sections[0].duration);
@@ -341,9 +340,12 @@ export default {
         movePlanSave() {
             this.markerToPlan();
 
-            router.push({name:"save",params:{
-                    planBoard:this.planBoard
-                }})
+            router.push({
+                name: "save",
+                params: {
+                    planBoard: this.planBoard
+                }
+            })
         },
         markerToPlan() {
             Object.entries(this.planBoard.planDateMap)
@@ -365,7 +367,7 @@ export default {
                             });
                         }
                     }
-                    this.planBoard.planDateMapTmp[date]=planList;
+                    this.planBoard.planDateMapTmp[date] = planList;
                 });
         }
     },
@@ -374,84 +376,29 @@ export default {
 
 <template>
     <div class="p-3">
-        <b-row>
-            <b-col cols="2" class="p-0">
-                <div class="accordion" role="tablist" style="height: 50em; overflow-y: scroll;">
-                    <b-button block @click="movePlanSave" class="plan-save-btn">
-                        <b-icon-calendar-plus></b-icon-calendar-plus>
-                        Save
-                    </b-button>
-                    <b-card
-                            no-body
-                            v-for="(planList,date) in planBoard.planDateMap"
-                            :key="date"
-                            style="background-color: white;"
-                    >
-                        <b-card-header header-tag="header" class="p-0" role="tab">
-                            <b-button block v-b-toggle="targetAccordian(date)" @click="selectDateConfirm(date)"
-                                      class="plan-accordian-btn">
-                                <b-icon-calendar></b-icon-calendar> &nbsp; {{ date }}
-                            </b-button>
-                        </b-card-header>
-
-                        <b-collapse :id="date" accordion="plan-board" role="tabpanel">
-                            <b-card-body class="p-3">
-                                <div v-if="planList.length===0" style="text-align: center;">
-                                            <span style="color: #4461F2; font-size: 0.7em;">
-                                                <b-icon-plus-circle></b-icon-plus-circle> 장소 추가
-                                            </span>
-                                </div>
-                                <div v-else>
-                                    <b-table-simple hover>
-                                        <b-thead>
-                                        </b-thead>
-                                        <b-tbody>
-                                            <draggable
-                                                    :class="{ [`cursor-grabbing`]: drag === true }"
-                                                    v-model="planBoard.planDateMap[date]"
-                                                    group="planList"
-                                                    @start="drag = true"
-                                                    @end="drag = false"
-                                                    @change="drawLine"
-                                                    tag="tbody"
-                                            >
-                                                <b-tr v-for="(marker,index) in planBoard.planDateMap[date]"
-                                                      :key="index">
-                                                    <b-td class="plan-select-place-td">
-                                                        {{ marker.getTitle() }}
-                                                    </b-td>
-                                                    <b-td class="plan-select-place-td">
-                                                        <template v-if="index>0">
-                                                            <span v-if="durations[index-1]>3600">{{ hourDurations[index - 1] }}시간</span>
-                                                            {{ minuteDurations[index - 1] }} 분
-                                                            {{ secondDurations[index - 1] }} 초
-                                                        </template>
-                                                    </b-td>
-                                                    <b-td @click="deletePlace(date,index)">
-                                                        <b-icon-trash></b-icon-trash>
-                                                    </b-td>
-                                                </b-tr>
-                                                <b-tr v-if="planBoard.planDateMap[date].length>1">
-                                                    <b-td class="plan-select-place-td">종합</b-td>
-                                                    <b-td class="plan-select-place-td">
-                                                        <span v-if="totalDuration>3600">{{ hourTotalDuration }} 시간</span>
-                                                        {{ minuteTotalDuration }} 분
-                                                        {{ secondTotalDuration }} 초
-                                                    </b-td>
-                                                    <b-td></b-td>
-                                                </b-tr>
-                                            </draggable>
-                                        </b-tbody>
-                                    </b-table-simple>
-                                </div>
-                            </b-card-body>
-                        </b-collapse>
-                    </b-card>
-
-                </div>
+        <b-row id="planContainer" class="p-3">
+            <b-col cols="3" class="m-1">
+                <b-button style="width: 100%;" block>블로그 검색 결과 </b-button>
+                <b-list-group v-if="searchItem.place_name" style="height: 50em; overflow-y: scroll;">
+                    <b-list-group-item v-for="(blogItem, index) in blogList" :key="index" :href="blogItem.url">
+                        <div>
+                            <b-row>
+                                <b-col>
+                                    <span id="blog-title" v-html="blogItem.blogname"></span><br/>
+                                    <span id="blog-datetime" v-html="blogItem.datetime.split('T')[0]"></span><br/>
+                                    <span id="blog-content" v-html="blogItem.title"></span><br/>
+                                </b-col>
+                                <b-col>
+                                    <b-img right :src="blogItem.thumbnail" alt="Image" rounded>
+                                    </b-img>
+                                </b-col>
+                            </b-row>
+                        </div>
+                    </b-list-group-item>
+    
+                </b-list-group>
             </b-col>
-
-            <b-col class="p-0">
+            <b-col class="m-1">
                 <div>
                     <b-input-group>
                         <b-form-input class="w-75" v-model="params.query">
@@ -469,36 +416,76 @@ export default {
                 </div>
                 <div id="map" style="width:100%; height:47em;"></div>
             </b-col>
+    
+    
+            <b-col cols="3" class="m-1">
+                <div class="accordion" role="tablist" style="height: 50em; overflow-y: scroll;">
+                    <b-button block @click="movePlanSave" class="plan-save-btn">
+                        <b-icon-calendar-plus></b-icon-calendar-plus>
+                        저장
+                    </b-button>
+                    <b-card no-body v-for="(planList, date) in planBoard.planDateMap" :key="date" style="background-color: white;">
+                        <b-card-header header-tag="header" class="p-0" role="tab">
+                            <b-button block v-b-toggle="targetAccordian(date)" @click="selectDateConfirm(date)" class="plan-accordian-btn">
+                                <b-icon-calendar></b-icon-calendar> &nbsp; {{ date }}
+                            </b-button>
+                        </b-card-header>
+    
+                        <b-collapse :id="date" accordion="plan-board" role="tabpanel">
+                            <b-card-body class="p-3">
+                                <div v-if="planList.length === 0" style="text-align: center;">
+                                    <span style="color: #4461F2; font-size: 0.7em;">
+                                                        <b-icon-plus-circle></b-icon-plus-circle> 장소 추가
+                                                    </span>
+                                </div>
+                                <div v-else>
+                                    <b-table-simple hover>
+                                        <b-thead>
+                                        </b-thead>
+                                        <b-tbody>
+                                            <draggable :class="{ [`cursor-grabbing`]: drag === true }" v-model="planBoard.planDateMap[date]" group="planList" @start="drag = true" @end="drag = false" @change="drawLine" tag="tbody">
+                                                <b-tr v-for="(marker, index) in planBoard.planDateMap[date]" :key="index">
+                                                    <b-td class="plan-select-place-td">
+                                                        {{ marker.getTitle() }}
+                                                    </b-td>
+                                                    <b-td class="plan-select-place-td">
+                                                        <template v-if="index > 0">
+                                                                    <span v-if="durations[index - 1] > 3600">{{ hourDurations[index - 1] }}시간</span>
+                                                                    {{ minuteDurations[index - 1] }} 분
+                                                                    {{ secondDurations[index - 1] }} 초
+</template>
+                                                        </b-td>
+                                                        <b-td @click="deletePlace(date, index)">
+                                                            <b-icon-trash></b-icon-trash>
+                                                        </b-td>
+                                                    </b-tr>
+                                                    <b-tr v-if="planBoard.planDateMap[date].length > 1">
+                                                        <b-td class="plan-select-place-td">종합</b-td>
+                                                        <b-td class="plan-select-place-td">
+                                                            <span v-if="totalDuration > 3600">{{ hourTotalDuration }} 시간</span>
+                                                            {{ minuteTotalDuration }} 분
+                                                            {{ secondTotalDuration }} 초
+                                                        </b-td>
+                                                        <b-td></b-td>
+                                                    </b-tr>
+                                                </draggable>
+                                            </b-tbody>
+                                        </b-table-simple>
+                                    </div>
+                                </b-card-body>
+                            </b-collapse>
+                        </b-card>
 
-            <b-col cols="3" class="p-0">
-                <b-list-group v-if="searchItem.place_name" style="height: 50em; overflow-y: scroll;">
-                    <b-list-group-item
-                            v-for="(blogItem,index) in blogList"
-                            :key="index"
-                            :href="blogItem.url"
-                    >
-                        <div>
-                            <b-row>
-                                <b-col>
-                                    <span id="blog-title" v-html="blogItem.blogname"></span><br/>
-                                    <span id="blog-datetime" v-html="blogItem.datetime.split('T')[0]"></span><br/>
-                                    <span id="blog-content" v-html="blogItem.title"></span><br/>
-                                </b-col>
-                                <b-col>
-                                    <b-img right :src="blogItem.thumbnail" alt="Image" rounded>
-                                    </b-img>
-                                </b-col>
-                            </b-row>
-                        </div>
-                    </b-list-group-item>
-
-                </b-list-group>
-            </b-col>
+                    </div>
+                </b-col>
         </b-row>
     </div>
 </template>
 
 <style scoped>
+.planContainer {
+    font-family: "IBM-Plex-Sans-KR-regular";
+}
 
 #blog-title {
     font-weight: bold;
@@ -546,5 +533,4 @@ export default {
     color: var(--placeholder-color) !important;
     font-weight: bold;
 }
-
 </style>
