@@ -93,17 +93,14 @@ export default {
     },
     created() {
         this.article.userId = this.userId;
-        console.log(this.article.userId)
     },
     methods: {
         clickFunc() {
 
-            console.log("hello");
         },
 
         handleFileInputChange(event) {
             this.selectedFile = event.target.files;
-            console.log(this.selectedFile);
             this.imageUrl = [];
             for (let i = 0; i < this.selectedFile.length; i++) {
                 this.imageUrl.push(URL.createObjectURL(this.selectedFile[i]));
@@ -119,7 +116,6 @@ export default {
 
             for (let i = 0; i < this.selectedFile.length; i++) {
                 formData.append(`files`, this.selectedFile[i]);
-                console.log(this.selectedFile[i]);
             }
 
             console.log(sessionStorage.getItem("access-token"));
@@ -133,9 +129,8 @@ export default {
                     alert("게시글이 등록되었습니다.");
                     this.$router.push("/community/list/1");
                 })
-                .catch((error) => {
+                .catch(() => {
                     alert("게시판 오류가 발생하였습니다.");
-                    console.log(error);
                 });
         },
     },

@@ -62,28 +62,22 @@ export default {
                     headers: {
                     "access-token": sessionStorage.getItem("access-token"),
                 },
-                }).then((response) => {
-                console.log(response.data);
+                }).then(() => {
                 http.get(`/comment/${this.boardId}`).then((response) => {
-                    console.log(response.data);
                     this.commentList = response.data.response;
                     alert("댓글이 등록되었습니다.");
                     this.content = "";
                 }).catch((error) => {
                     console.log(error);
-
                 });
             }).catch((error) => {
                 console.log(error);
             });
         },
         deleteComment(commentId) {
-            console.log(commentId)
-            http.delete(`/comment/${this.boardId}/${commentId}`).then((response) => {
-                console.log(response.data);
+            http.delete(`/comment/${this.boardId}/${commentId}`).then(() => {
                 alert("댓글이 삭제되었습니다.");
                 http.get(`/comment/${this.boardId}`).then((response) => {
-                    console.log(response.data);
                     this.commentList = response.data.response;
                 }).catch((error) => {
                     console.log(error);
@@ -94,17 +88,14 @@ export default {
         },
 
         modifyCommentComplete(commentId, content) {
-            console.log(commentId, content);
             http.put(`/comment/${commentId}`, {
                 content: content,
                 boardId: this.boardId,
 
                 userId: this.$store.state.userStore.userId,
-            }).then((response) => {
-                console.log(response.data);
+            }).then(() => {
                 alert("댓글이 수정되었습니다.");
                 http.get(`/comment/${this.boardId}`).then((response) => {
-                    console.log(response.data);
                     this.commentList = response.data.response;
                 }).catch((error) => {
                     console.log(error);
@@ -118,7 +109,6 @@ export default {
     created() {
 
         http.get(`/comment/${this.boardId}`).then((response) => {
-            console.log(response.data);
             this.commentList = response.data.response;
         }).catch((error) => {
             console.log(error);

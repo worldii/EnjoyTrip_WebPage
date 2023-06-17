@@ -29,8 +29,6 @@ export default {
                 }});
         },
         pickEndDate(){
-            console.log(this.planBoard.startDate);
-            console.log(this.planBoard.endDate);
         },
     },
 

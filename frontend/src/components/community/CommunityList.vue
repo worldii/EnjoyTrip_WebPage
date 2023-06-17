@@ -101,7 +101,6 @@ export default {
     created() {
         this.currentPage = this.$route.params.currentPage;
           http.get(`/board/list/${this.currentPage}`).then((response) => {
-            console.log(response.data);
             this.articles = response.data?.boards?.page;
               this.currentPage = this.$route.params.currentPage;
               this.endPage = response.data?.boards?.endPage;            

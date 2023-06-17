@@ -238,27 +238,21 @@ export default {
                 }
                 else {
                     http.post("/hotplace/article", article).then((response) => {
-                        console.log(response);
                         let articleId = response.data.response;
-                        http.put(`/hotplace/${this.searchItem.id}/tag`, tagList).then((response) => {
-                            console.log(response);
+                        http.put(`/hotplace/${this.searchItem.id}/tag`, tagList).then(() => {
                             // Response에서 article 의 id 를 반환함
                             if (this.imageUrl && this.imageUrl.length > 0) {
-                                console.log(articleId);
                                 const formData = new FormData();
                                 for (let i = 0; i < this.selectedFile.length; i++) {
                                     formData.append(`files`, this.selectedFile[i]);
-                                    console.log(this.selectedFile[i]);
                                 }
                                 formData.append("files", this.selectedFile);
-                                console.log(formData);
                                 http.post(`/hotplace/article/${articleId}/flleUpload`, formData, {
                                     headers: {
                                         "Content-Type": "multipart/form-data",
                                     },
-                                }).then((response) => {
+                                }).then(() => {
                                     alert("핫플을 정상적으로 등록하였습니다.");
-                                    console.log(response);
                                     this.$router.push("/hotplace/list");
                                 }).catch((error) => {
                                     alert("핫플 등록 실패");
@@ -289,7 +283,6 @@ export default {
         },
         selectTag(e) {
             const tag = e.target.innerText;
-            console.log(tag);
             for (let i = 0; i < this.tags.length; i++) {
                 if (this.tags[i].tagName == tag) {
                     this.tags[i].isSelect = !this.tags[i].isSelect;
@@ -312,13 +305,10 @@ export default {
                 return;
             }
             this.selectedFile = event.target.files;
-            console.log(this.selectedFile);
             this.imageUrl = URL.createObjectURL(this.selectedFile[0]);
             exifr.gps(this.selectedFile[0]).then((gps) => {
                 if (gps) {
                     const { latitude, longitude } = gps;
-                    console.log("Latitude:", latitude);
-                    console.log("Longitude:", longitude);
                     // Perform the necessary tasks with the extracted location information
                     this.searchNearbyPlaces(latitude, longitude);
                 }

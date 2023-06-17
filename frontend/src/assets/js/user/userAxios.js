@@ -23,16 +23,10 @@ function createUserAxios() {
 
       config.sent = true;
       let refreshAccessToken = await regenerateToken();
-
-      console.log("리프레시", refreshAccessToken);
       if (refreshAccessToken) {
         config.headers["access-token"] = sessionStorage.getItem("access-token");
-        console.log(sessionStorage.getItem("access-token"));
-        console.log("리프레시 성공");
         return userAxios(config);
       }
-      console.log("리프레신 토큰 만료");
-
       // Todo: 재로그인
       return Promise.reject(error);
     }

@@ -54,23 +54,17 @@ export default {
     },
     methods: {
         saveArticle() {
-            http.put(`/board/${this.$route.params.boardId}?userId=${this.userId}`, this.article).then((response) => {
-                console.log(response.data);
+            http.put(`/board/${this.$route.params.boardId}?userId=${this.userId}`, this.article).then(() => {
                 alert("게시글이 수정되었습니다.");
                 this.$router.push({ name: "boardview", params: { boardId: this.$route.params.boardId } });
             }).catch((error) => {
-                console.log(error);
                 alert(error?.response?.data?.error?.message);
                 this.$router.push({ name: "boardview", params: { boardId: this.$route.params.boardId } });
             });
-
-
         }
     },
     created() {
-        console.log(this.$route.params.boardId);
         http.get(`/board/${this.$route.params.boardId}`).then((response) => {
-            console.log(response.data.response);
             this.article = response.data.response;
         });
     },

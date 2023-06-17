@@ -89,39 +89,30 @@ export default {
             });
         },
         deleteBoard() {
-            console.log(this.$route.params.boardId);
-            http.delete(`/board/${this.$route.params.boardId}?userId=${this.userId}`).then((response) => {
-                console.log(response.data.response);
+            http.delete(`/board/${this.$route.params.boardId}?userId=${this.userId}`).then(() => {
                 alert("삭제되었습니다.");
                 this.$router.push("/community/list/1");
             }).catch((error) => {
-                console.log(error);
                 alert(error.response.data.error.message);
             })
         },
     },
     created() { 
-        console.log(this.$route.params.boardId);
         http.get(`/board/${this.$route.params.boardId}`).then((response) => {
-            console.log(response.data.response);
             this.article = response.data.response;
-            console.log(this.article.content);
         });
 
-        http.post(`/board/hit/${this.$route.params.boardId}`).then((response) => {
-            console.log(response.data.response);
+        http.post(`/board/hit/${this.$route.params.boardId}`).then(() => {
         }).catch((error) => {
             console.log(error);
         })
 
         http.get(`/board/file/${this.$route.params.boardId}`).then((response) => {
-            console.log(response.data.response);
             this.imageUrl = []
 
             response.data.response.map((image) => {
                 this.imageUrl.push(image.fileUrl);
             })
-            console.log(this.imageUrl);
         }).catch((error) => {
             console.log(error);
             this.imageUrl = [];

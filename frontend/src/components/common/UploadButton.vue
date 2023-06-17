@@ -39,43 +39,25 @@ export default {
     methods: {
         handleFileInputChange(event) {
             this.selectedFile = event.target.files;
-            console.log(this.selectedFile);
         },
         uploadImage() {
             if (this.selectedFile.length==0) {
                 alert("이미지가 없습니다.")
                 return;
             }
-            console.log(this.selectedFile);
-            
+                        
             const formData = new FormData();
             for (let i = 0; i < this.selectedFile.length; i++) { 
                 formData.append(`files`, this.selectedFile[i]);
-
-                console.log(this.selectedFile[i]);
             }
-            console.log(formData);
-
             http.post("/board/multiFileUploadTest", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
-            }).then((response) => {
-                console.log("Response Data", response.data);
-               // this.fileList = response.data;
-            
-                // // image url 로 보여주기 위해 변환
-                // this.fileList.map((file) => {
-                //     this.imageUrl.push("file:"+file.filePath);
-                // });
-
-                // console.log(this.imageUrl);
-
+            }).then(() => {
             }).catch((error) => {
                 console.log(error);
             });
-            // 현재는 그냥 보여주기만.
-            //this.imageUrl = URL.createObjectURL(this.selectedFile);
         }
     }
 }
