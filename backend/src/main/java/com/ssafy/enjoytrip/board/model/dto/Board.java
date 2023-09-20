@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.board.model.dto;
 
+import com.ssafy.enjoytrip.media.FileInfo;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;

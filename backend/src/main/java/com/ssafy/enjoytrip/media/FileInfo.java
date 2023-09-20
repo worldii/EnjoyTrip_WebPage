@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.board.model.dto;
+package com.ssafy.enjoytrip.media;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

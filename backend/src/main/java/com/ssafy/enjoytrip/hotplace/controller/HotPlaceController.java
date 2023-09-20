@@ -5,7 +5,7 @@ import com.ssafy.enjoytrip.hotplace.model.dto.HotPlaceArticle;
 import com.ssafy.enjoytrip.hotplace.model.dto.HotPlaceTag;
 import com.ssafy.enjoytrip.hotplace.model.dto.TagType;
 import com.ssafy.enjoytrip.hotplace.service.HotPlaceService;
-import com.ssafy.enjoytrip.media.S3Service;
+import com.ssafy.enjoytrip.media.service.S3Service;
 import com.ssafy.enjoytrip.user.model.dto.NoAuth;
 import java.io.IOException;
 import java.util.List;

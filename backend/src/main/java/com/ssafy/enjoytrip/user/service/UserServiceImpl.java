@@ -1,8 +1,8 @@
 package com.ssafy.enjoytrip.user.service;
 
+import com.ssafy.enjoytrip.user.UserEncoder;
 import com.ssafy.enjoytrip.user.model.dto.User;
 import com.ssafy.enjoytrip.user.model.mapper.UserMapper;
-import com.ssafy.enjoytrip.util.UserEncoder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

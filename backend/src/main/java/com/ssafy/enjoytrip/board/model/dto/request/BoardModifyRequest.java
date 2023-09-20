@@ -1,7 +1,7 @@
 package com.ssafy.enjoytrip.board.model.dto.request;
 
 import com.ssafy.enjoytrip.board.model.dto.BoardType;
-import com.ssafy.enjoytrip.board.model.dto.FileInfo;
+import com.ssafy.enjoytrip.media.FileInfo;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

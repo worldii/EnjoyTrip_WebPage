@@ -1,13 +1,13 @@
 package com.ssafy.enjoytrip.board.controller;
 
-import com.ssafy.enjoytrip.board.model.dto.FileInfo;
 import com.ssafy.enjoytrip.board.model.dto.request.BoardModifyRequest;
 import com.ssafy.enjoytrip.board.model.dto.request.PageInfoRequest;
 import com.ssafy.enjoytrip.board.model.dto.request.SearchDto;
 import com.ssafy.enjoytrip.board.model.dto.response.BoardResponse;
 import com.ssafy.enjoytrip.board.model.dto.response.PageResponse;
 import com.ssafy.enjoytrip.board.service.BoardService;
-import com.ssafy.enjoytrip.media.FileService;
+import com.ssafy.enjoytrip.media.FileInfo;
+import com.ssafy.enjoytrip.media.service.FileService;
 import com.ssafy.enjoytrip.user.model.dto.NoAuth;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -74,7 +74,7 @@ public class BoardController {
     @NoAuth
     @GetMapping("/list/search")
     public ResponseEntity<PageResponse> getListBySearchDto(
-        PageInfoRequest pageInfoRequest,
+        final PageInfoRequest pageInfoRequest,
         @ModelAttribute final SearchDto searchDto,
         final HttpServletRequest request
     ) {

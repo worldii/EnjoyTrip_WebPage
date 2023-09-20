@@ -1,6 +1,6 @@
 package com.ssafy.enjoytrip.board.model.dto.response;
 
-import com.ssafy.enjoytrip.util.PageNavigationForPageHelper;
+import com.ssafy.enjoytrip.global.util.PageNavigationForPageHelper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
