@@ -1,17 +1,21 @@
 package com.ssafy.enjoytrip.board.service;
 
 
-import com.ssafy.enjoytrip.board.model.dto.BoardRequestDto;
 import com.ssafy.enjoytrip.board.model.dto.Comment;
-import com.ssafy.enjoytrip.board.model.dto.CommentRequestDto;
-import com.ssafy.enjoytrip.board.model.dto.CommentResponseDto;
-
+import com.ssafy.enjoytrip.board.model.dto.request.CommentModifyRequest;
+import com.ssafy.enjoytrip.board.model.dto.request.CommentSaveRequest;
+import com.ssafy.enjoytrip.board.model.dto.response.CommentResponse;
 import java.util.List;
 
 public interface CommentService {
-    Comment detail(int commentId);
-    int regist(CommentRequestDto commentRequestDto, String userId, int boardId);
-    int modify(int commentId, CommentRequestDto commentRequestDto);
-    int delete(int commentId);
-    List<CommentResponseDto> getCommentList(int boardId);
+
+    Long save(final CommentSaveRequest commentSaveRequest, final String userId, final Long boardId);
+
+    Comment detail(final Long commentId);
+
+    void modify(final Long commentId, final CommentModifyRequest request);
+
+    void delete(Long commentId);
+
+    List<CommentResponse> getCommentList(Long boardId);
 }
