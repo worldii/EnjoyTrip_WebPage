@@ -1,6 +1,7 @@
-package com.ssafy.enjoytrip.board.model.dto;
+package com.ssafy.enjoytrip.board.model.dto.response;
 
-import io.swagger.annotations.Api;
+import com.ssafy.enjoytrip.board.model.dto.Board;
+import com.ssafy.enjoytrip.board.model.dto.BoardType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -11,7 +12,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ApiModel(value = "게시글 응답 정보", description = "게시글 응답 정보")
-public class BoardResponseDto {
+public class BoardResponse {
     @ApiModelProperty(value = "게시글 번호")
     private int boardId;
     @ApiModelProperty(value = "작성자 아이디")
@@ -27,7 +28,7 @@ public class BoardResponseDto {
     @ApiModelProperty(value = "게시글 수정일")
     private String currentUpdate;
 
-    public BoardResponseDto(Board board) {
+    public BoardResponse(Board board) {
         this.boardId = board.getBoardId();
         this.userId = board.getUserId();
         this.subject = board.getSubject();

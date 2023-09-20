@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.board.model.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,5 +23,6 @@ public class Board {
     private String currentUpdate;
 
     private BoardType boardType;
-    private List<FileInfo> imageFiles;
+    private List<FileInfo> imageFiles = new ArrayList<>();
+    private List<Comment> comments = new ArrayList<>();
 }

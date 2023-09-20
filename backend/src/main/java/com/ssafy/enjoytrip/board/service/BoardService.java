@@ -1,23 +1,33 @@
 package com.ssafy.enjoytrip.board.service;
 
-import com.github.pagehelper.Page;
 import com.ssafy.enjoytrip.board.model.dto.Board;
-import com.ssafy.enjoytrip.board.model.dto.BoardRequestDto;
-import com.ssafy.enjoytrip.board.model.dto.SearchDto;
+import com.ssafy.enjoytrip.board.model.dto.request.BoardModifyRequest;
+import com.ssafy.enjoytrip.board.model.dto.request.PageInfoRequest;
+import com.ssafy.enjoytrip.board.model.dto.request.SearchDto;
+import com.ssafy.enjoytrip.board.model.dto.response.PageResponse;
+import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
 
 public interface BoardService {
-    Board detail(int boardId);
 
-    int regist(BoardRequestDto boardRequestDto, String userId);
+    Long saveBoard(final String json, List<MultipartFile> files, final String userId);
 
-    int modify(int boardId, String userId, BoardRequestDto boardRequestDto);
+    Board detail(final Long boardId);
 
-    int delete(int boardId, String userId);
+    PageResponse getBoardListBySearchDto(
+        final SearchDto searchDto, final PageInfoRequest pageInfoRequest, final String path
+    );
 
-    int updateHit(int boardId);
+    PageResponse getBoardList(final PageInfoRequest pageInfoRequest, final String path);
 
-    Page<Board> getBoardList();
+    PageResponse getListByPage(final Integer currentPage, Integer pageSize, final String path);
 
-    Page<Board> getBoardListBySearchDto(SearchDto searchDto);
+
+    void modify(final Long boardId, final String userId, final BoardModifyRequest request);
+
+    void delete(final Long boardId, final String userId);
+
+    void updateHit(final Long boardId);
+
 }
