@@ -18,7 +18,7 @@ public class Board {
     private String subject;
     private String content;
 
-    private Integer hit;
+    private Long hit;
     private String currentUpdate;
 
     private BoardType boardType;
