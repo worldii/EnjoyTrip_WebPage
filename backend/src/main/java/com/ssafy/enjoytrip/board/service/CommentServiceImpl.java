@@ -14,9 +14,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class CommentServiceImpl implements CommentService {
 
     private final CommentMapper commentMapper;
@@ -24,6 +26,7 @@ public class CommentServiceImpl implements CommentService {
     private final UserMapper userMapper;
 
     @Override
+    @Transactional
     public Long save(
         final CommentSaveRequest commentSaveRequest,
         final String userId, final Long boardId
@@ -70,7 +73,8 @@ public class CommentServiceImpl implements CommentService {
 
 
     @Override
-    public void modify(Long commentId, CommentModifyRequest request) {
+    @Transactional
+    public void modify(final Long commentId, final CommentModifyRequest request) {
         boardMapper.selectBoard(request.getBoardId())
             .orElseThrow(() -> new BoardException("해당 boardId에 해당하는 board가 없습니다."));
         Comment comment = commentMapper
@@ -90,6 +94,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional
     public void delete(final Long commentId) {
         commentMapper.deleteComment(commentId);
     }
