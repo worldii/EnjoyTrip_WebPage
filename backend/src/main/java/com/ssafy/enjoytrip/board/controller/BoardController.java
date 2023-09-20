@@ -78,8 +78,8 @@ public class BoardController {
         @ModelAttribute final SearchDto searchDto,
         final HttpServletRequest request
     ) {
-        final PageResponse boardResponse = boardService.getBoardListBySearchDto(searchDto,
-            pageInfoRequest, request.getContextPath() + "/board/list/search?page");
+        final PageResponse boardResponse = boardService.getBoardListBySearchDto(
+            searchDto, pageInfoRequest, request.getContextPath() + "/board/list/search?page");
 
         return ResponseEntity.ok(boardResponse);
     }
@@ -87,7 +87,7 @@ public class BoardController {
     @NoAuth
     @GetMapping("/{boardId}")
     public ResponseEntity<BoardResponse> getBoard(@PathVariable("boardId") final Long boardId) {
-        return ResponseEntity.ok(new BoardResponse(boardService.detail(boardId)));
+        return ResponseEntity.ok(BoardResponse.from(boardService.detail(boardId)));
     }
 
     @PutMapping("/{boardId}")
@@ -118,7 +118,7 @@ public class BoardController {
 
     @NoAuth
     @GetMapping("/file/{boardId}")
-    public ResponseEntity<List<FileInfo>> getFileInfo(@PathVariable Long boardId) {
+    public ResponseEntity<List<FileInfo>> getFileInfo(@PathVariable final Long boardId) {
         return ResponseEntity.ok(fileService.selectFile(boardId));
     }
 }

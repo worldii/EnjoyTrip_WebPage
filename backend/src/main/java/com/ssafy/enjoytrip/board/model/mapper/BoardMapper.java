@@ -13,7 +13,7 @@ public interface BoardMapper {
 
     Long insertBoard(final Board board);
 
-    Optional<Board> selectBoard(final int boardId);
+    Optional<Board> selectBoard(final Long boardId);
 
     Page<Board> selectAll();
 
@@ -21,9 +21,9 @@ public interface BoardMapper {
 
     void updateBoard(final Board board);
 
-    void updateHit(final int boardId);
+    void updateHit(final Long boardId);
 
-    void deleteBoard(final int boardId);
+    void deleteBoard(final Long boardId);
 
     List<FileInfo> selectFile(final Long boardId);
 
