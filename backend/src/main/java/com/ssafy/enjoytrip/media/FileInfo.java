@@ -16,7 +16,7 @@ public class FileInfo {
     private String fileUrl;
 
     @Builder
-    public FileInfo(Long boardId, String fileUrl) {
+    public FileInfo(final Long boardId, final String fileUrl) {
         this.boardId = boardId;
         this.fileUrl = fileUrl;
     }

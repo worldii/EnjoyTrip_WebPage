@@ -33,12 +33,12 @@ public class CommentServiceImpl implements CommentService {
     ) {
         boardMapper.selectBoard(boardId)
             .orElseThrow(() -> new BoardException("해당 boardId에 해당하는 board가 없습니다."));
-        User user = userMapper.selectByUserId(userId)
+        final User user = userMapper.selectByUserId(userId)
             .orElseThrow(() -> new BoardException("해당 userId에 해당하는 user가 없습니다."));
 
         validateSameUser(user.getUserId(), userId);
 
-        Comment comment = Comment.builder()
+        final Comment comment = Comment.builder()
             .content(commentSaveRequest.getContent())
             .boardId(boardId)
             .userId(userId)
@@ -77,13 +77,13 @@ public class CommentServiceImpl implements CommentService {
     public void modify(final Long commentId, final CommentModifyRequest request) {
         boardMapper.selectBoard(request.getBoardId())
             .orElseThrow(() -> new BoardException("해당 boardId에 해당하는 board가 없습니다."));
-        Comment comment = commentMapper
+        final Comment comment = commentMapper
             .selectComment(commentId)
             .orElseThrow(() -> new BoardException("해당 commentId에 해당하는 comment가 없습니다."));
 
         validateSameUser(comment.getUserId(), request.getUserId());
 
-        Comment newComment = Comment.builder()
+        final Comment newComment = Comment.builder()
             .commentId(commentId)
             .content(request.getContent())
             .boardId(request.getBoardId())

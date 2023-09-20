@@ -7,9 +7,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface FileService {
 
-    void insertFile(Long boardId, List<MultipartFile> imageFiles, String folder);
+    void insertFile(final Long boardId, final List<MultipartFile> imageFiles, final String folder);
 
-    List<FileInfo> selectFile(Long boardId);
+    List<FileInfo> selectFile(final Long boardId);
 }
 
 

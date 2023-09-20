@@ -58,13 +58,11 @@ public class BoardController {
     @NoAuth
     @GetMapping("/list/{currentPage}")
     public ResponseEntity<PageResponse> getListByPage(
-        @PathVariable final Integer currentPage,
-        @RequestParam(required = false) final Integer pageSize,
+        final PageInfoRequest pageInfoRequest,
         final HttpServletRequest request
     ) {
         final PageResponse listByPage = boardService.getListByPage(
-            currentPage,
-            pageSize,
+            pageInfoRequest,
             request.getContextPath() + "/board/list?page"
         );
 

@@ -1,15 +1,12 @@
 package com.ssafy.enjoytrip.media.service;
 
 
-import java.io.IOException;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class S3Service {
@@ -20,12 +17,9 @@ public class S3Service {
     private String bucket;
 
     @Transactional
-    public String uploadMediaToS3(MultipartFile file, String folder) throws IOException {
+    public String uploadMediaToS3(final MultipartFile file, final String folder) {
         String fileName = file.getOriginalFilename();
-        log.info("File name: " + fileName);
-
         String contentType = file.getContentType();
-        log.info("Content Type: " + contentType);
 
 //        ObjectMetadata metadata = new ObjectMetadata();
 //        metadata.setContentType(contentType);

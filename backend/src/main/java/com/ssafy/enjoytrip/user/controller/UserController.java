@@ -10,10 +10,8 @@ import java.util.Map;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,9 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/user")
-@CrossOrigin(origins = {"http://127.0.0.1:8080", "http://192.168.0.1:8080", "http://localhost:8080",
-    "http://localhost:8081"})
-@Slf4j
 public class UserController {
 
     private final UserService userService;
@@ -115,8 +110,6 @@ public class UserController {
         HttpStatus status = HttpStatus.ACCEPTED;
 
         String token = request.getHeader("refresh-token");
-
-        log.info("refresh token : {}", token);
         if (jwtService.checkValidToken(token)) {
             if (jwtService.canRefresh(token, user.getUserId())) {
                 String accessToken = jwtService.generateAccessToken(user.getUserId());

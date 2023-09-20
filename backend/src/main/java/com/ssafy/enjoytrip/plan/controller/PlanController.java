@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/plan")
 @RequiredArgsConstructor
-public class PlanApi {
+public class PlanController {
 
-    final private PlanService planService;
+    private final PlanService planService;
 
     @PostMapping
     ResponseEntity<?> save(@RequestBody PlanBoardRequest planBoardRequest) {
