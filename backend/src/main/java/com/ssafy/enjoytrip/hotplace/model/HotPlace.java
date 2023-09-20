@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.hotplace.model.dto;
+package com.ssafy.enjoytrip.hotplace.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

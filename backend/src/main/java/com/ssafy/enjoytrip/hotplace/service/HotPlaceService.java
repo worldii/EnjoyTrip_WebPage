@@ -1,6 +1,6 @@
 package com.ssafy.enjoytrip.hotplace.service;
 
-import com.ssafy.enjoytrip.hotplace.model.dto.HotPlace;
+import com.ssafy.enjoytrip.hotplace.model.HotPlace;
 import com.ssafy.enjoytrip.hotplace.model.dto.HotPlaceArticle;
 import com.ssafy.enjoytrip.hotplace.model.dto.HotPlaceTag;
 import java.util.List;

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.enjoytrip.hotplace.model.mapper.HotPlaceMapper">
-  <resultMap type="com.ssafy.enjoytrip.hotplace.model.dto.HotPlace" id="hotPlace">
+  <resultMap type="com.ssafy.enjoytrip.hotplace.model.HotPlace" id="hotPlace">
     <id column="hot_place_id" property="hotPlaceId"/>
     <result column="hot_place_name" property="hotPlaceName"/>
     <result column="road_address_name" property="roadAddressName"/>

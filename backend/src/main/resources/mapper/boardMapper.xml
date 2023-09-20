@@ -38,14 +38,14 @@
     where board_id = #{boardId}
   </update>
 
-  <delete id="deleteBoard" parameterType="int">
+  <delete id="deleteBoard" parameterType="long">
     delete
     from board
     where board_id = #{boardId}
   </delete>
 
 
-  <update id="updateHit" parameterType="int">
+  <update id="updateHit" parameterType="long">
     update board
     set hit = hit + 1
     where board_id = #{boardId}

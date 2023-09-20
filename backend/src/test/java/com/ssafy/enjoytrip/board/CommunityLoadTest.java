@@ -7,11 +7,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class CommunityLoadTest {
+
     @Autowired
     CommentMapper commentMapper;
 
     @Test
-    void testLoadCommunityMapper(){
+    void testLoadCommunityMapper() {
 
     }
 }

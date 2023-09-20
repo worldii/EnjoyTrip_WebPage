@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.enjoytrip.board.model.mapper.CommentMapper">
 
-    <select id="selectComment" resultType="comment" >
-        select *
-        from comment
-        where comment_id = #{commentId};
-    </select>
+  <select id="selectComment" resultType="comment">
+    select *
+    from comment
+    where comment_id = #{commentId};
+  </select>
 
-    <insert id="insertComment" parameterType="comment">
-<!--        <selectKey resultType="int" keyProperty="commentId" order="AFTER">-->
-<!--            SELECT LAST_INSERT_ID()-->
-<!--        </selectKey>-->
-        insert into comment (user_id, board_id, content)
-        values (#{userId}, #{boardId}, #{content})
-    </insert>
+  <insert id="insertComment" parameterType="comment">
+    <!--        <selectKey resultType="int" keyProperty="commentId" order="AFTER">-->
+    <!--            SELECT LAST_INSERT_ID()-->
+    <!--        </selectKey>-->
+    insert into comment (user_id, board_id, content)
+    values (#{userId}, #{boardId}, #{content})
+  </insert>
 
-    <update id="updateComment" parameterType="comment">
-        update comment
-        set content = #{content}
-        where comment_id = #{commentId}
-    </update>
+  <update id="updateComment" parameterType="comment">
+    update comment
+    set content = #{content}
+    where comment_id = #{commentId}
+  </update>
 
-    <delete id="deleteComment" parameterType="int">
-        delete
-        from comment
-        where comment_id = #{commentId}
-    </delete>
+  <delete id="deleteComment" parameterType="int">
+    delete
+    from comment
+    where comment_id = #{commentId}
+  </delete>
 
-    <select id="selectAll" resultType="comment">
-        select *
-        from comment
-        where board_id = #{boardId}
-    </select>
+  <select id="selectAll" resultType="comment">
+    select *
+    from comment
+    where board_id = #{boardId}
+  </select>
 
-    <delete id="deleteAll" parameterType="int">
-        delete
-        from comment
-        where board_id = #{boardId}
-    </delete>
+  <delete id="deleteAll" parameterType="int">
+    delete
+    from comment
+    where board_id = #{boardId}
+  </delete>
 </mapper>

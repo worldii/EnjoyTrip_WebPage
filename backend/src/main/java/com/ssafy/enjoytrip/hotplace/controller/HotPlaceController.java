@@ -1,6 +1,6 @@
 package com.ssafy.enjoytrip.hotplace.controller;
 
-import com.ssafy.enjoytrip.hotplace.model.dto.HotPlace;
+import com.ssafy.enjoytrip.hotplace.model.HotPlace;
 import com.ssafy.enjoytrip.hotplace.model.dto.HotPlaceArticle;
 import com.ssafy.enjoytrip.hotplace.model.dto.HotPlaceTag;
 import com.ssafy.enjoytrip.hotplace.model.dto.TagType;
@@ -10,9 +10,7 @@ import com.ssafy.enjoytrip.user.model.dto.NoAuth;
 import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,10 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
-@CrossOrigin(origins = {"http://127.0.0.1:8080", "http://192.168.0.1:8080",
-    "http://localhost:8080"})
 @RequiredArgsConstructor
-@Slf4j
 @RequestMapping("/hotplace")
 public class HotPlaceController {
 
@@ -39,67 +34,60 @@ public class HotPlaceController {
     @NoAuth
     @GetMapping
     public ResponseEntity<List<HotPlace>> getHotPlaceList() {
-        List<HotPlace> hotPlaces = hotPlaceService.selectAllHotPlace();
-        return ResponseEntity.ok(hotPlaces);
+        return ResponseEntity.ok(hotPlaceService.selectAllHotPlace());
     }
 
     @NoAuth
     @GetMapping("/search")
-    public ResponseEntity<List<HotPlace>> getHotPlaceList(@RequestParam String keyword) {
-        List<HotPlace> hotPlaces = hotPlaceService.selectHotPlaceByKeyword(keyword);
-        return ResponseEntity.ok(hotPlaces);
+    public ResponseEntity<List<HotPlace>> getHotPlaceList(@RequestParam final String keyword) {
+        return ResponseEntity.ok(hotPlaceService.selectHotPlaceByKeyword(keyword));
     }
 
     @NoAuth
     @GetMapping("/articleAll/{hotPlaceId}")
     public ResponseEntity<List<HotPlaceArticle>> getHotPlaceArticleList(
-        @PathVariable String hotPlaceId) {
-        List<HotPlaceArticle> hotPlaceArticles = hotPlaceService.selectAllHotPlaceArticle(
-            hotPlaceId);
-        return ResponseEntity.ok(hotPlaceArticles);
+        @PathVariable final String hotPlaceId) {
+        return ResponseEntity.ok(hotPlaceService.selectAllHotPlaceArticle(hotPlaceId));
     }
 
     @NoAuth
     @GetMapping("/{hotPlaceId}")
-    public ResponseEntity<HotPlace> getHotPlaceDetail(@PathVariable String hotPlaceId) {
-        HotPlace hotPlace = hotPlaceService.selectHotPlaceByHotPlaceId(hotPlaceId);
-        return ResponseEntity.ok(hotPlace);
+    public ResponseEntity<HotPlace> getHotPlaceDetail(@PathVariable final String hotPlaceId) {
+        return ResponseEntity.ok(hotPlaceService.selectHotPlaceByHotPlaceId(hotPlaceId));
     }
 
     @NoAuth
     @GetMapping("/article/{hotPlaceArticleId}")
     public ResponseEntity<HotPlaceArticle> getHotPlaceArticleList(
-        @PathVariable int hotPlaceArticleId) {
-        HotPlaceArticle hotPlaceArticle = hotPlaceService.selectHotPlaceArticleByArticleId(
-            hotPlaceArticleId);
-        return ResponseEntity.ok(hotPlaceArticle);
+        @PathVariable final int hotPlaceArticleId) {
+        return ResponseEntity.ok(
+            hotPlaceService.selectHotPlaceArticleByArticleId(hotPlaceArticleId));
     }
 
-    // 파일 업로드
     @PostMapping("/article/{articleId}/flleUpload")
-    public ResponseEntity<Boolean> uploadImagetoArticle(@PathVariable int articleId,
-        @ModelAttribute List<MultipartFile> files) throws IOException {
-        log.info("uploadImagetoArticle Controller", articleId, files);
+    public ResponseEntity<Boolean> uploadImagetoArticle(
+        @PathVariable final int articleId,
+        @ModelAttribute final List<MultipartFile> files
+    ) throws IOException {
         String url = s3Service.uploadMediaToS3(files.get(0), "hotplace/");
         hotPlaceService.updateHotPlaceArticleImage(articleId, url);
         return ResponseEntity.ok(true);
     }
 
     @PostMapping("/{hotPlaceId}/vote")
-    public ResponseEntity<Boolean> voteHotPlace(@PathVariable String hotPlaceId) {
+    public ResponseEntity<Boolean> voteHotPlace(@PathVariable final String hotPlaceId) {
         hotPlaceService.increaseHitHotPlaceCount(hotPlaceId);
         return ResponseEntity.ok(true);
     }
 
     @PostMapping("/{hotPlaceId}/unvote")
-    public ResponseEntity<Boolean> unvoteHotPlace(@PathVariable String hotPlaceId) {
+    public ResponseEntity<Boolean> unvoteHotPlace(@PathVariable final String hotPlaceId) {
         hotPlaceService.decreaseHitHotPlaceCount(hotPlaceId);
         return ResponseEntity.ok(true);
     }
 
     @PostMapping
-    public ResponseEntity<Integer> addHotPlace(@RequestBody HotPlace hotPlace) {
-        log.info("addHotPlace Controller");
+    public ResponseEntity<Integer> addHotPlace(@RequestBody final HotPlace hotPlace) {
         int pk = hotPlaceService.insertHotPlace(hotPlace);
         // tagtype 의 모든 종류를 1로 초기화
         // tagType 의 tagName 을 List<String> tagList 로 만듦
@@ -113,8 +101,7 @@ public class HotPlaceController {
     @PostMapping("/article")
     public ResponseEntity<Integer> addHotPlaceArticle(
         @RequestBody HotPlaceArticle hotPlaceArticle) {
-        int pk = hotPlaceService.insertHotPlaceArticle(hotPlaceArticle);
-        return ResponseEntity.ok(pk);
+        return ResponseEntity.ok(hotPlaceService.insertHotPlaceArticle(hotPlaceArticle));
     }
 
     @PostMapping("/{hotPlaceId}/tag")

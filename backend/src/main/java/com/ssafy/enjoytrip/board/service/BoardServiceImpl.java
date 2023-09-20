@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.board.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -37,28 +38,25 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     @Transactional
-    public Long saveBoard(final String json, final List<MultipartFile> files, final String userId) {
+    public Long saveBoard(final String json, final List<MultipartFile> files, final String userId)
+        throws JsonProcessingException {
+        userMapper.selectByUserId(userId)
+            .orElseThrow(() -> new UserNotFoundException("해당 userId에 해당하는 user가 없습니다."));
+
         final ObjectMapper objectMapper = new ObjectMapper();
+        final BoardSaveRequest request = objectMapper.readValue(json, BoardSaveRequest.class);
 
-        try {
-            final BoardSaveRequest request = objectMapper.readValue(json, BoardSaveRequest.class);
-            final Board board = Board.builder()
-                .boardType(request.getBoardType())
-                .subject(request.getSubject())
-                .content(request.getContent())
-                .userId(userId)
-                .build();
-            final Long boardId = boardMapper.insertBoard(board);
+        final Board board = Board.builder()
+            .boardType(request.getBoardType())
+            .subject(request.getSubject())
+            .content(request.getContent())
+            .userId(userId)
+            .build();
 
-            if (files != null) {
-                fileService.insertFile(boardId, files, "board/");
-            }
+        final Long boardId = boardMapper.insertBoard(board);
+        fileService.insertFile(boardId, files, "board/");
 
-            return boardId;
-
-        } catch (final Exception e) {
-            throw new BoardException("json 파싱 에러");
-        }
+        return boardId;
     }
 
     @Override
@@ -119,13 +117,13 @@ public class BoardServiceImpl implements BoardService {
         userMapper
             .selectByUserId(userId)
             .orElseThrow(() -> new BoardException("해당 유저가 없습니다."));
-        Board board = boardMapper
+        final Board board = boardMapper
             .selectBoard(boardId)
             .orElseThrow(() -> new BoardException("해당 boardId에 해당하는 board가 없습니다."));
 
         validateSameMember(userId, board.getUserId());
 
-        Board modifyBoard = Board.builder()
+        final Board modifyBoard = Board.builder()
             .boardId(boardId)
             .userId(userId)
             .subject(boardModifyRequest.getSubject())
@@ -144,13 +142,14 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional
     public void delete(final Long boardId, final String userId) {
-        User user = userMapper.selectByUserId(userId)
+        final User user = userMapper.selectByUserId(userId)
             .orElseThrow(() -> new BoardException("해당 유저가 없습니다."));
-        Board board = boardMapper.selectBoard(boardId)
+        final Board board = boardMapper.selectBoard(boardId)
             .orElseThrow(() -> new BoardException("해당 boardId에 해당하는 Board가 없습니다."));
 
         validateSameMember(user.getUserId(), board.getUserId());
         // TODO : COMMENT -> 삭제를 BOARD 삭제할때로 바꿈
+
         commentMapper.deleteAll(boardId);
         boardMapper.deleteBoard(boardId);
     }

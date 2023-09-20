@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.board.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.ssafy.enjoytrip.board.model.dto.Board;
 import com.ssafy.enjoytrip.board.model.dto.request.BoardModifyRequest;
 import com.ssafy.enjoytrip.board.model.dto.request.PageInfoRequest;
@@ -11,13 +12,14 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface BoardService {
 
-    Long saveBoard(final String json, List<MultipartFile> files, final String userId);
+    Long saveBoard(final String json, List<MultipartFile> files, final String userId)
+        throws JsonProcessingException;
 
     Board detail(final Long boardId);
 
     PageResponse getBoardListBySearchDto(
-        final SearchDto searchDto, final PageInfoRequest pageInfoRequest, final String path
-    );
+        final SearchDto searchDto, final PageInfoRequest pageInfoRequest,
+        final String path);
 
     PageResponse getBoardList(final PageInfoRequest pageInfoRequest, final String path);
 
