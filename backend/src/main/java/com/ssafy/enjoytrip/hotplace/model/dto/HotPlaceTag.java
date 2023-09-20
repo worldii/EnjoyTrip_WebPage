@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.hotPlace.model.dto;
+package com.ssafy.enjoytrip.hotplace.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class HotPlaceTag {
+
     private String tagName;
     private String hotPlaceId;
     private int count;

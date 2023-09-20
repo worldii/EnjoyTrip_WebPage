@@ -1,13 +1,12 @@
-package com.ssafy.enjoytrip.hotPlace.service;
+package com.ssafy.enjoytrip.hotplace.service;
 
-import com.ssafy.enjoytrip.hotPlace.model.dto.HotPlace;
-import com.ssafy.enjoytrip.hotPlace.model.dto.HotPlaceArticle;
-import com.ssafy.enjoytrip.hotPlace.model.dto.HotPlaceTag;
-import com.ssafy.enjoytrip.hotPlace.model.mapper.HotPlaceMapper;
+import com.ssafy.enjoytrip.hotplace.model.dto.HotPlace;
+import com.ssafy.enjoytrip.hotplace.model.dto.HotPlaceArticle;
+import com.ssafy.enjoytrip.hotplace.model.dto.HotPlaceTag;
+import com.ssafy.enjoytrip.hotplace.model.mapper.HotPlaceMapper;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 
 @Service

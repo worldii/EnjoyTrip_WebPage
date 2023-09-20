@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.hotPlace.model.dto;
+package com.ssafy.enjoytrip.hotplace.model.dto;
 
 public enum TagType {
     ATMOSPHERE("분위기 좋은"),
@@ -14,6 +14,7 @@ public enum TagType {
     TagType(String tagName) {
         this.tagName = tagName;
     }
+
     public String getTagName() {
         return tagName;
     }
