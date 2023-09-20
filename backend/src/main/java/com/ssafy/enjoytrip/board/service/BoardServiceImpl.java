@@ -3,6 +3,7 @@ package com.ssafy.enjoytrip.board.service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.ssafy.enjoytrip.board.model.dto.Board;
+import com.ssafy.enjoytrip.board.model.dto.Comment;
 import com.ssafy.enjoytrip.board.model.dto.request.BoardModifyRequest;
 import com.ssafy.enjoytrip.board.model.dto.request.BoardSaveRequest;
 import com.ssafy.enjoytrip.board.model.dto.request.PageInfoRequest;
@@ -14,6 +15,7 @@ import com.ssafy.enjoytrip.global.error.BoardException;
 import com.ssafy.enjoytrip.global.error.UserNotFoundException;
 import com.ssafy.enjoytrip.global.util.JsonUtil;
 import com.ssafy.enjoytrip.global.util.PageNavigationForPageHelper;
+import com.ssafy.enjoytrip.media.FileInfo;
 import com.ssafy.enjoytrip.media.service.FileService;
 import com.ssafy.enjoytrip.user.model.dto.User;
 import com.ssafy.enjoytrip.user.model.mapper.UserMapper;
@@ -86,17 +88,25 @@ public class BoardServiceImpl implements BoardService {
             pageInfoRequest = new PageInfoRequest(1, 10);
         }
         PageHelper.startPage(pageInfoRequest.getPage(), pageInfoRequest.getPageSize());
-        final Page<Board> boards = boardMapper.selectBoardListBySearchDto(searchDto);
 
+        final Page<Board> boards = boardMapper.selectBoardListBySearchDto(searchDto);
         return PageResponse.from(new PageNavigationForPageHelper(boards, path));
     }
 
 
     @Override
     public Board detail(final Long boardId) {
-        return boardMapper
+        final Board board = boardMapper
             .selectBoard(boardId)
             .orElseThrow(() -> new BoardException("해당 boardId에 해당하는 board가 없습니다."));
+
+        // TODO : 한번에 조인해오기
+        final List<FileInfo> fileInfos = fileService.selectFile(boardId);
+        final List<Comment> comments = commentMapper.selectAll(boardId);
+        board.setFileInfos(fileInfos);
+        board.setComments(comments);
+
+        return board;
     }
 
     @Override
@@ -141,8 +151,10 @@ public class BoardServiceImpl implements BoardService {
 
         validateSameMember(user.getUserId(), board.getUserId());
 
+        // TODO 사진들 다 삭제 + 댓글들 다 삭제
         commentMapper.deleteAll(boardId);
         boardMapper.deleteBoard(boardId);
+        fileService.deleteFile(boardId);
     }
 
     @Override

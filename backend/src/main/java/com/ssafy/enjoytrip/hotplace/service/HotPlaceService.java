@@ -1,8 +1,8 @@
 package com.ssafy.enjoytrip.hotplace.service;
 
 import com.ssafy.enjoytrip.hotplace.model.HotPlace;
-import com.ssafy.enjoytrip.hotplace.model.dto.HotPlaceArticle;
-import com.ssafy.enjoytrip.hotplace.model.dto.HotPlaceTag;
+import com.ssafy.enjoytrip.hotplace.model.HotPlace.HotPlaceTag;
+import com.ssafy.enjoytrip.hotplace.model.HotPlaceArticle;
 import java.util.List;
 
 public interface HotPlaceService {
@@ -14,6 +14,7 @@ public interface HotPlaceService {
     HotPlace selectHotPlaceByHotPlaceId(String hotPlaceId);
 
     HotPlaceArticle selectHotPlaceArticleByArticleId(int hotPlaceId);
+
 
     int updateHotPlaceArticleImage(int hotPlaceArticleId, String imageUrl);
 

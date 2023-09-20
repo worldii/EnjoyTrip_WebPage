@@ -10,6 +10,8 @@ public interface FileService {
     void insertFile(final Long boardId, final List<MultipartFile> imageFiles, final String folder);
 
     List<FileInfo> selectFile(final Long boardId);
+
+    void deleteFile(Long boardId);
 }
 
 

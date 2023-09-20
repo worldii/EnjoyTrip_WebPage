@@ -26,4 +26,12 @@ public class Board {
     private BoardType boardType;
     private List<FileInfo> imageFiles = new ArrayList<>();
     private List<Comment> comments = new ArrayList<>();
+
+    public void setFileInfos(List<FileInfo> fileInfos) {
+        this.imageFiles = fileInfos;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
 }

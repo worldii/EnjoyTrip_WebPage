@@ -1,13 +1,12 @@
 package com.ssafy.enjoytrip.hotplace.controller;
 
 import com.ssafy.enjoytrip.hotplace.model.HotPlace;
-import com.ssafy.enjoytrip.hotplace.model.dto.HotPlaceArticle;
-import com.ssafy.enjoytrip.hotplace.model.dto.HotPlaceTag;
+import com.ssafy.enjoytrip.hotplace.model.HotPlace.HotPlaceTag;
+import com.ssafy.enjoytrip.hotplace.model.HotPlaceArticle;
 import com.ssafy.enjoytrip.hotplace.model.dto.TagType;
 import com.ssafy.enjoytrip.hotplace.service.HotPlaceService;
 import com.ssafy.enjoytrip.media.service.S3Service;
 import com.ssafy.enjoytrip.user.model.dto.NoAuth;
-import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -59,7 +58,8 @@ public class HotPlaceController {
     @NoAuth
     @GetMapping("/article/{hotPlaceArticleId}")
     public ResponseEntity<HotPlaceArticle> getHotPlaceArticleList(
-        @PathVariable final int hotPlaceArticleId) {
+        @PathVariable final int hotPlaceArticleId
+    ) {
         return ResponseEntity.ok(
             hotPlaceService.selectHotPlaceArticleByArticleId(hotPlaceArticleId));
     }
@@ -68,7 +68,7 @@ public class HotPlaceController {
     public ResponseEntity<Boolean> uploadImagetoArticle(
         @PathVariable final int articleId,
         @ModelAttribute final List<MultipartFile> files
-    ) throws IOException {
+    ) {
         String url = s3Service.uploadMediaToS3(files.get(0), "hotplace/");
         hotPlaceService.updateHotPlaceArticleImage(articleId, url);
         return ResponseEntity.ok(true);
@@ -91,7 +91,6 @@ public class HotPlaceController {
         int pk = hotPlaceService.insertHotPlace(hotPlace);
         // tagtype 의 모든 종류를 1로 초기화
         // tagType 의 tagName 을 List<String> tagList 로 만듦
-
         for (TagType tagType : TagType.values()) {
             hotPlaceService.insertHotPlaceTag(hotPlace.getHotPlaceId(), tagType.getTagName());
         }

@@ -10,4 +10,6 @@ public interface FileMapper {
     void insertFile(Long boardId, List<FileInfo> list);
 
     List<FileInfo> selectFile(Long boardId);
+
+    void deleteFile(Long boardId);
 }

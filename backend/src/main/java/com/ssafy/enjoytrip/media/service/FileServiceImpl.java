@@ -51,4 +51,9 @@ public class FileServiceImpl implements FileService {
     public List<FileInfo> selectFile(final Long boardId) {
         return fileMapper.selectFile(boardId);
     }
+
+    @Override
+    public void deleteFile(Long boardId) {
+        fileMapper.deleteFile(boardId);
+    }
 }

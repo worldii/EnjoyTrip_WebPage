@@ -13,7 +13,7 @@
     <result column="y" property="y"/>
   </resultMap>
 
-  <resultMap type="com.ssafy.enjoytrip.hotplace.model.dto.HotPlaceArticle" id="hotPlaceArticle">
+  <resultMap type="com.ssafy.enjoytrip.hotplace.model.HotPlaceArticle" id="hotPlaceArticle">
     <id column="hot_place_article_id" property="hotPlaceArticleId"/>
     <result column="user_id" property="userId"/>
     <result column="hot_place_id" property="hotPlaceId"/>
@@ -22,7 +22,7 @@
     <result column="image_url" property="imageUrl"/>
   </resultMap>
 
-  <resultMap id="hotPlaceTag" type="com.ssafy.enjoytrip.hotplace.model.dto.HotPlaceTag">
+  <resultMap id="hotPlaceTag" type="com.ssafy.enjoytrip.hotplace.model.HotPlace.HotPlaceTag">
     <id column="tag_name" property="tagName"/>
     <result column="hot_place_id" property="hotPlaceId"/>
     <result column="count" property="count"/>

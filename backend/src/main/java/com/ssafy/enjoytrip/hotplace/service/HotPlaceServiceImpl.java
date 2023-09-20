@@ -1,8 +1,8 @@
 package com.ssafy.enjoytrip.hotplace.service;
 
 import com.ssafy.enjoytrip.hotplace.model.HotPlace;
-import com.ssafy.enjoytrip.hotplace.model.dto.HotPlaceArticle;
-import com.ssafy.enjoytrip.hotplace.model.dto.HotPlaceTag;
+import com.ssafy.enjoytrip.hotplace.model.HotPlace.HotPlaceTag;
+import com.ssafy.enjoytrip.hotplace.model.HotPlaceArticle;
 import com.ssafy.enjoytrip.hotplace.model.mapper.HotPlaceMapper;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -21,73 +21,76 @@ public class HotPlaceServiceImpl implements HotPlaceService {
     }
 
     @Override
-    public List<HotPlaceArticle> selectAllHotPlaceArticle(String hotPlaceId) {
+    public List<HotPlaceArticle> selectAllHotPlaceArticle(final String hotPlaceId) {
         return hotPlaceMapper.selectAllHotPlaceArticle(hotPlaceId);
     }
 
     @Override
-    public HotPlace selectHotPlaceByHotPlaceId(String hotPlaceId) {
-        return hotPlaceMapper.selectHotPlaceByHotPlaceId(hotPlaceId);
+    public HotPlace selectHotPlaceByHotPlaceId(final String hotPlaceId) {
+        return hotPlaceMapper.selectHotPlaceByHotPlaceId(hotPlaceId)
+            .orElseThrow(() -> new RuntimeException("존재하지 않는 핫플레이스입니다."));
     }
 
     @Override
-    public HotPlaceArticle selectHotPlaceArticleByArticleId(int hotPlaceArticleId) {
-        return hotPlaceMapper.selectHotPlaceArticleByArticleId(hotPlaceArticleId);
+    public HotPlaceArticle selectHotPlaceArticleByArticleId(final int hotPlaceArticleId) {
+        return hotPlaceMapper
+            .selectHotPlaceArticleByArticleId(hotPlaceArticleId)
+            .orElseThrow(() -> new RuntimeException("존재하지 않는 핫플레이스입니다."));
     }
 
     @Override
-    public int updateHotPlaceArticleImage(int hotPlaceArticleId, String imageUrl) {
+    public int updateHotPlaceArticleImage(final int hotPlaceArticleId, final String imageUrl) {
         return hotPlaceMapper.updateHotPlaceArticleImage(hotPlaceArticleId, imageUrl);
     }
 
     @Override
-    public int increaseHitHotPlaceCount(String hotPlaceId) {
+    public int increaseHitHotPlaceCount(final String hotPlaceId) {
         return hotPlaceMapper.increaseHitHotPlaceCount(hotPlaceId);
     }
 
     @Override
-    public int decreaseHitHotPlaceCount(String hotPlaceId) {
+    public int decreaseHitHotPlaceCount(final String hotPlaceId) {
         return hotPlaceMapper.decreaseHitHotPlaceCount(hotPlaceId);
     }
 
     @Override
-    public int insertHotPlace(HotPlace hotPlace) {
+    public int insertHotPlace(final HotPlace hotPlace) {
         return hotPlaceMapper.insertHotPlace(hotPlace);
     }
 
     @Override
-    public int insertHotPlaceArticle(HotPlaceArticle hotPlaceArticle) {
+    public int insertHotPlaceArticle(final HotPlaceArticle hotPlaceArticle) {
         hotPlaceMapper.insertHotPlaceArticle(hotPlaceArticle);
         return hotPlaceArticle.getHotPlaceArticleId();
     }
 
     @Override
-    public int updateHotPlaceTag(String hotPlaceId, String tagName) {
+    public int updateHotPlaceTag(final String hotPlaceId, final String tagName) {
         return hotPlaceMapper.updateHotPlaceTag(hotPlaceId, tagName);
     }
 
     @Override
-    public void updateHotPlaceTagList(String hotPlaceId, List<String> tagIdList) {
+    public void updateHotPlaceTagList(final String hotPlaceId, final List<String> tagIdList) {
         tagIdList.forEach(tagId -> updateHotPlaceTag(hotPlaceId, tagId));
     }
 
     @Override
-    public int insertHotPlaceTag(String hotPlaceId, String tagName) {
+    public int insertHotPlaceTag(final String hotPlaceId, final String tagName) {
         return hotPlaceMapper.insertHotPlaceTag(hotPlaceId, tagName);
     }
 
     @Override
-    public void insertHotPlaceTagList(String hotPlaceId, List<String> tagIdList) {
+    public void insertHotPlaceTagList(final String hotPlaceId, final List<String> tagIdList) {
         tagIdList.forEach(tagId -> insertHotPlaceTag(hotPlaceId, tagId));
     }
 
     @Override
-    public List<HotPlaceTag> selectHotPlaceTagList(String hotPlaceId) {
+    public List<HotPlaceTag> selectHotPlaceTagList(final String hotPlaceId) {
         return hotPlaceMapper.selectHotPlaceTagList(hotPlaceId);
     }
 
     @Override
-    public List<HotPlace> selectHotPlaceByKeyword(String keyword) {
+    public List<HotPlace> selectHotPlaceByKeyword(final String keyword) {
         return hotPlaceMapper.selectHotPlaceByKeyword(keyword);
     }
 

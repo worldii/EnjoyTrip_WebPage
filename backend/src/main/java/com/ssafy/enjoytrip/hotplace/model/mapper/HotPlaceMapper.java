@@ -1,9 +1,10 @@
 package com.ssafy.enjoytrip.hotplace.model.mapper;
 
 import com.ssafy.enjoytrip.hotplace.model.HotPlace;
-import com.ssafy.enjoytrip.hotplace.model.dto.HotPlaceArticle;
-import com.ssafy.enjoytrip.hotplace.model.dto.HotPlaceTag;
+import com.ssafy.enjoytrip.hotplace.model.HotPlace.HotPlaceTag;
+import com.ssafy.enjoytrip.hotplace.model.HotPlaceArticle;
 import java.util.List;
+import java.util.Optional;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
@@ -11,27 +12,27 @@ public interface HotPlaceMapper {
 
     List<HotPlace> selectAllHotPlace();
 
-    List<HotPlaceArticle> selectAllHotPlaceArticle(String hotPlaceId);
+    List<HotPlaceArticle> selectAllHotPlaceArticle(final String hotPlaceId);
 
-    HotPlace selectHotPlaceByHotPlaceId(String hotPlaceId);
+    Optional<HotPlace> selectHotPlaceByHotPlaceId(final String hotPlaceId);
 
-    HotPlaceArticle selectHotPlaceArticleByArticleId(int articleId);
+    Optional<HotPlaceArticle> selectHotPlaceArticleByArticleId(final int articleId);
 
-    int insertHotPlace(HotPlace hotPlace);
+    int insertHotPlace(final HotPlace hotPlace);
 
-    int insertHotPlaceArticle(HotPlaceArticle hotPlaceArticle);
+    int insertHotPlaceArticle(final HotPlaceArticle hotPlaceArticle);
 
-    int updateHotPlaceArticleImage(int hotPlaceArticleId, String imageUrl);
+    int updateHotPlaceArticleImage(final int hotPlaceArticleId, String imageUrl);
 
-    int increaseHitHotPlaceCount(String hotPlaceId);
+    int increaseHitHotPlaceCount(final String hotPlaceId);
 
-    int decreaseHitHotPlaceCount(String hotPlaceId);
+    int decreaseHitHotPlaceCount(final String hotPlaceId);
 
-    int updateHotPlaceTag(String hotPlaceId, String tagName);
+    int updateHotPlaceTag(final String hotPlaceId, final String tagName);
 
-    int insertHotPlaceTag(String hotPlaceId, String tagName);
+    int insertHotPlaceTag(final String hotPlaceId, final String tagName);
 
-    List<HotPlaceTag> selectHotPlaceTagList(String hotPlaceId);
+    List<HotPlaceTag> selectHotPlaceTagList(final String hotPlaceId);
 
-    List<HotPlace> selectHotPlaceByKeyword(String keyword);
+    List<HotPlace> selectHotPlaceByKeyword(final String keyword);
 }
