@@ -1,7 +1,7 @@
 package com.ssafy.enjoytrip.jwt;
 
-import com.ssafy.enjoytrip.jwt.model.dao.JwtRepository;
-import com.ssafy.enjoytrip.jwt.model.dto.RefreshTokenDto;
+import com.ssafy.enjoytrip.user.model.dao.JwtRepository;
+import com.ssafy.enjoytrip.user.model.dto.RefreshTokenDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

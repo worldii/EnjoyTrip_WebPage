@@ -1,7 +1,7 @@
 package com.ssafy.enjoytrip.jwt;
 
 
-import com.ssafy.enjoytrip.jwt.model.service.JwtService;
+import com.ssafy.enjoytrip.user.model.service.JwtService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

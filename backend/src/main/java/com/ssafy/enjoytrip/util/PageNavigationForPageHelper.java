@@ -17,26 +17,27 @@ public class PageNavigationForPageHelper {
     private int endPage;
     private String navigation;
 
-
     private Page<?> page;
     private String path;
 
-    public PageNavigationForPageHelper(Page<?> page, String path) {
+    public PageNavigationForPageHelper(final Page<?> page, final String path) {
         this.page = page;
+
         this.startRange = page.getPageNum() <= naviSize;
         this.endRange = (page.getPages() - 1) / naviSize * naviSize < page.getPageNum();
         this.startPage = (page.getPageNum() - 1) / naviSize * naviSize + 1;
         this.endPage = startPage + naviSize - 1;
+
         if (page.getPages() < endPage) {
             endPage = page.getPages();
         }
+
         this.path = path;
         navigation = makePageNavigation();
     }
 
     public String makePageNavigation() {
         StringBuilder str = new StringBuilder();
-
         str.append("<ul class='pagination  justify-content-center'>");
         str.append(String.format("<li class='page-item'><a href='%s=%d' class='page-link'>최신</a></li>", path, 1));
         str.append(String.format("<li class='page-item'><a href='%s=%d' class='page-link'>이전</a></li>", path, startRange ? 1 : startPage - 1));

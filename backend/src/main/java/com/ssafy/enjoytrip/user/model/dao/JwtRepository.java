@@ -1,6 +1,6 @@
-package com.ssafy.enjoytrip.jwt.model.dao;
+package com.ssafy.enjoytrip.user.model.dao;
 
-import com.ssafy.enjoytrip.jwt.model.dto.RefreshTokenDto;
+import com.ssafy.enjoytrip.user.model.dto.RefreshTokenDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -8,7 +8,6 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
 
 import java.util.Objects;
-import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 @Repository

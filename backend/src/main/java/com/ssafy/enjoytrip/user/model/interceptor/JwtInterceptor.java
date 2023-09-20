@@ -1,8 +1,8 @@
-package com.ssafy.enjoytrip.jwt.model.interceptor;
+package com.ssafy.enjoytrip.user.model.interceptor;
 
-import com.ssafy.enjoytrip.error.JwtInvalidException;
-import com.ssafy.enjoytrip.jwt.model.dto.NoAuth;
-import com.ssafy.enjoytrip.jwt.model.service.JwtService;
+import com.ssafy.enjoytrip.global.error.JwtInvalidException;
+import com.ssafy.enjoytrip.user.model.dto.NoAuth;
+import com.ssafy.enjoytrip.user.model.service.JwtService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

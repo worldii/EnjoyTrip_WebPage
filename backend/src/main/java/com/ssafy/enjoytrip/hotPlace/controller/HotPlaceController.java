@@ -1,18 +1,14 @@
 package com.ssafy.enjoytrip.hotPlace.controller;
 
-import com.ssafy.enjoytrip.board.service.FileService;
-import com.ssafy.enjoytrip.board.service.S3Service;
+import com.ssafy.enjoytrip.media.S3Service;
 import com.ssafy.enjoytrip.hotPlace.model.dto.HotPlace;
 import com.ssafy.enjoytrip.hotPlace.model.dto.HotPlaceArticle;
 import com.ssafy.enjoytrip.hotPlace.model.dto.HotPlaceTag;
 import com.ssafy.enjoytrip.hotPlace.model.dto.TagType;
 import com.ssafy.enjoytrip.hotPlace.service.HotPlaceService;
 
-import static com.ssafy.enjoytrip.util.ApiUtil.ApiResult;
-import static com.ssafy.enjoytrip.util.ApiUtil.success;
 
-import com.ssafy.enjoytrip.jwt.model.dto.NoAuth;
-import io.swagger.annotations.Api;
+import com.ssafy.enjoytrip.user.model.dto.NoAuth;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -35,62 +30,62 @@ public class HotPlaceController {
 
     @NoAuth
     @GetMapping
-    public ApiResult<List<HotPlace>> getHotPlaceList() {
+    public ResponseEntity<List<HotPlace>> getHotPlaceList() {
         List<HotPlace> hotPlaces = hotPlaceService.selectAllHotPlace();
-        return success(hotPlaces);
+        return ResponseEntity.ok(hotPlaces);
     }
 
     @NoAuth
     @GetMapping("/search")
-    public ApiResult<List<HotPlace>> getHotPlaceList(@RequestParam String keyword) {
+    public ResponseEntity<List<HotPlace>> getHotPlaceList(@RequestParam String keyword) {
         List<HotPlace> hotPlaces = hotPlaceService.selectHotPlaceByKeyword(keyword);
-        return success(hotPlaces);
+        return ResponseEntity.ok(hotPlaces);
     }
 
     @NoAuth
     @GetMapping("/articleAll/{hotPlaceId}")
-    public ApiResult<List<HotPlaceArticle>> getHotPlaceArticleList(@PathVariable String hotPlaceId) {
+    public ResponseEntity<List<HotPlaceArticle>> getHotPlaceArticleList(@PathVariable String hotPlaceId) {
         List<HotPlaceArticle> hotPlaceArticles = hotPlaceService.selectAllHotPlaceArticle(hotPlaceId);
-        return success(hotPlaceArticles);
+        return ResponseEntity.ok(hotPlaceArticles);
     }
 
     @NoAuth
     @GetMapping("/{hotPlaceId}")
-    public ApiResult<HotPlace> getHotPlaceDetail(@PathVariable String hotPlaceId) {
+    public ResponseEntity<HotPlace> getHotPlaceDetail(@PathVariable String hotPlaceId) {
         HotPlace hotPlace = hotPlaceService.selectHotPlaceByHotPlaceId(hotPlaceId);
-        return success(hotPlace);
+        return ResponseEntity.ok(hotPlace);
     }
 
     @NoAuth
     @GetMapping("/article/{hotPlaceArticleId}")
-    public ApiResult<HotPlaceArticle> getHotPlaceArticleList(@PathVariable int hotPlaceArticleId) {
+    public ResponseEntity<HotPlaceArticle> getHotPlaceArticleList(@PathVariable int hotPlaceArticleId) {
         HotPlaceArticle hotPlaceArticle = hotPlaceService.selectHotPlaceArticleByArticleId(hotPlaceArticleId);
-        return success(hotPlaceArticle);
+        return ResponseEntity.ok(hotPlaceArticle);
     }
 
     // 파일 업로드
     @PostMapping("/article/{articleId}/flleUpload")
-    public ApiResult<Boolean> uploadImagetoArticle(@PathVariable int articleId, @ModelAttribute List<MultipartFile> files) throws IOException {
+    public ResponseEntity<Boolean> uploadImagetoArticle(@PathVariable int articleId, @ModelAttribute List<MultipartFile> files) throws IOException {
         log.info("uploadImagetoArticle Controller", articleId, files);
         String url = s3Service.uploadMediaToS3(files.get(0), "hotplace/");
         hotPlaceService.updateHotPlaceArticleImage(articleId, url);
-        return success(true);
+        return ResponseEntity.ok(true);
     }
 
     @PostMapping("/{hotPlaceId}/vote")
-    public ApiResult<Boolean> voteHotPlace(@PathVariable String hotPlaceId) {
+    public ResponseEntity<Boolean> voteHotPlace(@PathVariable String hotPlaceId) {
         hotPlaceService.increaseHitHotPlaceCount(hotPlaceId);
-        return success(true);
+        return ResponseEntity.ok(true);
     }
 
     @PostMapping("/{hotPlaceId}/unvote")
-    public ApiResult<Boolean> unvoteHotPlace(@PathVariable String hotPlaceId) {
+    public ResponseEntity<Boolean> unvoteHotPlace(@PathVariable String hotPlaceId) {
         hotPlaceService.decreaseHitHotPlaceCount(hotPlaceId);
-        return success(true);
+        return ResponseEntity.ok(true);
     }
 
     @PostMapping
-    public ApiResult<Integer> addHotPlace(@RequestBody HotPlace hotPlace) {
+    public ResponseEntity<Integer> addHotPlace(@RequestBody HotPlace hotPlace) {
         log.info("addHotPlace Controller");
         int pk = hotPlaceService.insertHotPlace(hotPlace);
         // tagtype 의 모든 종류를 1로 초기화
@@ -99,30 +94,30 @@ public class HotPlaceController {
         for (TagType tagType : TagType.values()) {
             hotPlaceService.insertHotPlaceTag(hotPlace.getHotPlaceId(), tagType.getTagName());
         }
-        return success(pk);
+        return ResponseEntity.ok(pk);
     }
     @PostMapping("/article")
-    public ApiResult<Integer> addHotPlaceArticle(@RequestBody HotPlaceArticle hotPlaceArticle) {
+    public ResponseEntity<Integer> addHotPlaceArticle(@RequestBody HotPlaceArticle hotPlaceArticle) {
         int pk = hotPlaceService.insertHotPlaceArticle(hotPlaceArticle);
-        return success(pk);
+        return ResponseEntity.ok(pk);
     }
 
     @PostMapping("/{hotPlaceId}/tag")
-    public ApiResult<Boolean> addHotPlaceTag(@PathVariable String hotPlaceId, @RequestBody List<String> tagList) {
+    public ResponseEntity<Boolean> addHotPlaceTag(@PathVariable String hotPlaceId, @RequestBody List<String> tagList) {
         hotPlaceService.insertHotPlaceTagList(hotPlaceId, tagList);
-        return success(true);
+        return ResponseEntity.ok(true);
     }
 
     @PutMapping("/{hotPlaceId}/tag")
-    public ApiResult<Boolean> updateHotPlaceTag(@PathVariable String hotPlaceId, @RequestBody List<String> tagList) {
+    public ResponseEntity<Boolean> updateHotPlaceTag(@PathVariable String hotPlaceId, @RequestBody List<String> tagList) {
         hotPlaceService.updateHotPlaceTagList(hotPlaceId, tagList);
-        return success(true);
+        return ResponseEntity.ok(true);
     }
 
     @NoAuth
     @GetMapping("/{hotPlaceId}/tag")
-    public ApiResult<List<HotPlaceTag>> getHotPlaceTagList(@PathVariable String hotPlaceId) {
+    public ResponseEntity<List<HotPlaceTag>> getHotPlaceTagList(@PathVariable String hotPlaceId) {
         List<HotPlaceTag> hotPlaceTags = hotPlaceService.selectHotPlaceTagList(hotPlaceId);
-        return success(hotPlaceTags);
+        return ResponseEntity.ok(hotPlaceTags);
     }
 }

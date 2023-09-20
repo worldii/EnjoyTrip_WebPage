@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.jwt.model.dto;
+package com.ssafy.enjoytrip.user.model.dto;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

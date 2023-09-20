@@ -1,9 +1,5 @@
-package com.ssafy.enjoytrip.board.service;
+package com.ssafy.enjoytrip.media;
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +16,7 @@ import java.io.IOException;
 public class S3Service {
 
 
-    private final AmazonS3 amazonS3;
+   // private final AmazonS3 amazonS3;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -33,12 +29,13 @@ public class S3Service {
         String contentType = file.getContentType();
         log.info("Content Type: " + contentType);
 
-        ObjectMetadata metadata = new ObjectMetadata();
-        metadata.setContentType(contentType);
-        amazonS3.putObject(
-                new PutObjectRequest(bucket, folder+ fileName, file.getInputStream(),
-                        metadata).withCannedAcl(
-                        CannedAccessControlList.PublicRead));
-        return amazonS3.getUrl(bucket, folder+fileName).toString();
+//        ObjectMetadata metadata = new ObjectMetadata();
+//        metadata.setContentType(contentType);
+//        amazonS3.putObject(
+//                new PutObjectRequest(bucket, folder+ fileName, file.getInputStream(),
+//                        metadata).withCannedAcl(
+//                        CannedAccessControlList.PublicRead));
+//        return amazonS3.getUrl(bucket, folder+fileName).toString();
+        return "";
     }
 }

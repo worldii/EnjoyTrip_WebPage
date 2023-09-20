@@ -1,8 +1,8 @@
 package com.ssafy.enjoytrip.user.api;
 
 
-import com.ssafy.enjoytrip.jwt.model.dto.NoAuth;
-import com.ssafy.enjoytrip.jwt.model.service.JwtService;
+import com.ssafy.enjoytrip.user.model.dto.NoAuth;
+import com.ssafy.enjoytrip.user.model.service.JwtService;
 import com.ssafy.enjoytrip.user.model.dto.User;
 import com.ssafy.enjoytrip.user.service.UserService;
 import lombok.RequiredArgsConstructor;

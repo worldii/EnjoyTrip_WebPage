@@ -1,7 +1,7 @@
-package com.ssafy.enjoytrip.jwt.model.service;
+package com.ssafy.enjoytrip.user.model.service;
 
-import com.ssafy.enjoytrip.jwt.model.dao.JwtRepository;
-import com.ssafy.enjoytrip.jwt.model.dto.RefreshTokenDto;
+import com.ssafy.enjoytrip.user.model.dao.JwtRepository;
+import com.ssafy.enjoytrip.user.model.dto.RefreshTokenDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.Objects;
-import java.util.Optional;
 
 @Slf4j
 @Service

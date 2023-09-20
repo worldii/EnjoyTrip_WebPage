@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.jwt.model.dto;
+package com.ssafy.enjoytrip.user.model.dto;
 
 import lombok.Builder;
 import lombok.Getter;

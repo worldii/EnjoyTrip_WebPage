@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.board.model.dto;
+package com.ssafy.enjoytrip.board.model.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
