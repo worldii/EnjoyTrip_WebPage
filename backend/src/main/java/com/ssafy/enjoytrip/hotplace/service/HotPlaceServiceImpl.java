@@ -3,8 +3,11 @@ package com.ssafy.enjoytrip.hotplace.service;
 import com.ssafy.enjoytrip.hotplace.model.HotPlace;
 import com.ssafy.enjoytrip.hotplace.model.HotPlace.HotPlaceTag;
 import com.ssafy.enjoytrip.hotplace.model.HotPlaceArticle;
+import com.ssafy.enjoytrip.hotplace.model.dto.HotPlaceArticleResponse;
+import com.ssafy.enjoytrip.hotplace.model.dto.HotPlaceResponse;
 import com.ssafy.enjoytrip.hotplace.model.mapper.HotPlaceMapper;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +19,20 @@ public class HotPlaceServiceImpl implements HotPlaceService {
     private final HotPlaceMapper hotPlaceMapper;
 
     @Override
-    public List<HotPlace> selectAllHotPlace() {
-        return hotPlaceMapper.selectAllHotPlace();
+    public List<HotPlaceResponse> selectAllHotPlace() {
+        final List<HotPlace> hotPlaces = hotPlaceMapper.selectAllHotPlace();
+        return hotPlaces.stream()
+            .map(HotPlaceResponse::from)
+            .collect(Collectors.toList());
     }
 
     @Override
-    public List<HotPlaceArticle> selectAllHotPlaceArticle(final String hotPlaceId) {
-        return hotPlaceMapper.selectAllHotPlaceArticle(hotPlaceId);
+    public List<HotPlaceArticleResponse> selectAllHotPlaceArticle(final String hotPlaceId) {
+        List<HotPlaceArticle> hotPlaceArticles = hotPlaceMapper.selectAllHotPlaceArticle(
+            hotPlaceId);
+        return hotPlaceArticles.stream()
+            .map(HotPlaceArticleResponse::from)
+            .collect(Collectors.toList());
     }
 
     @Override

@@ -1,5 +1,10 @@
 package com.ssafy.enjoytrip.hotplace.model.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
 public enum TagType {
     ATMOSPHERE("분위기 좋은"),
     DELICIOUS("음식이 맛있는"),
@@ -9,14 +14,5 @@ public enum TagType {
     CHEAP("저렴한 가격"),
     SAFE("가성비 있는"),
     FAMOUSMENU("유명한 메뉴");
-    String tagName;
-
-    TagType(String tagName) {
-        this.tagName = tagName;
-    }
-
-    public String getTagName() {
-        return tagName;
-    }
-
+    private String tagName;
 }

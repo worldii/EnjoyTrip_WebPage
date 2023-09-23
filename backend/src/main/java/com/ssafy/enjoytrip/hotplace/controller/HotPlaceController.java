@@ -3,6 +3,8 @@ package com.ssafy.enjoytrip.hotplace.controller;
 import com.ssafy.enjoytrip.hotplace.model.HotPlace;
 import com.ssafy.enjoytrip.hotplace.model.HotPlace.HotPlaceTag;
 import com.ssafy.enjoytrip.hotplace.model.HotPlaceArticle;
+import com.ssafy.enjoytrip.hotplace.model.dto.HotPlaceArticleResponse;
+import com.ssafy.enjoytrip.hotplace.model.dto.HotPlaceResponse;
 import com.ssafy.enjoytrip.hotplace.model.dto.TagType;
 import com.ssafy.enjoytrip.hotplace.service.HotPlaceService;
 import com.ssafy.enjoytrip.media.service.S3Service;
@@ -32,7 +34,7 @@ public class HotPlaceController {
 
     @NoAuth
     @GetMapping
-    public ResponseEntity<List<HotPlace>> getHotPlaceList() {
+    public ResponseEntity<List<HotPlaceResponse>> getHotPlaceList() {
         return ResponseEntity.ok(hotPlaceService.selectAllHotPlace());
     }
 
@@ -44,7 +46,7 @@ public class HotPlaceController {
 
     @NoAuth
     @GetMapping("/articleAll/{hotPlaceId}")
-    public ResponseEntity<List<HotPlaceArticle>> getHotPlaceArticleList(
+    public ResponseEntity<List<HotPlaceArticleResponse>> getHotPlaceArticleList(
         @PathVariable final String hotPlaceId) {
         return ResponseEntity.ok(hotPlaceService.selectAllHotPlaceArticle(hotPlaceId));
     }

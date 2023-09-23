@@ -3,20 +3,24 @@ package com.ssafy.enjoytrip.hotplace.service;
 import com.ssafy.enjoytrip.hotplace.model.HotPlace;
 import com.ssafy.enjoytrip.hotplace.model.HotPlace.HotPlaceTag;
 import com.ssafy.enjoytrip.hotplace.model.HotPlaceArticle;
+import com.ssafy.enjoytrip.hotplace.model.dto.HotPlaceArticleResponse;
+import com.ssafy.enjoytrip.hotplace.model.dto.HotPlaceResponse;
 import java.util.List;
 
 public interface HotPlaceService {
 
-    List<HotPlace> selectAllHotPlace();
+    List<HotPlaceResponse> selectAllHotPlace();
 
-    List<HotPlaceArticle> selectAllHotPlaceArticle(String hotPlaceId);
+    List<HotPlace> selectHotPlaceByKeyword(final String keyword);
 
-    HotPlace selectHotPlaceByHotPlaceId(String hotPlaceId);
+    List<HotPlaceArticleResponse> selectAllHotPlaceArticle(final String hotPlaceId);
 
-    HotPlaceArticle selectHotPlaceArticleByArticleId(int hotPlaceId);
+    HotPlace selectHotPlaceByHotPlaceId(final String hotPlaceId);
+
+    HotPlaceArticle selectHotPlaceArticleByArticleId(final int hotPlaceId);
 
 
-    int updateHotPlaceArticleImage(int hotPlaceArticleId, String imageUrl);
+    int updateHotPlaceArticleImage(final int hotPlaceArticleId, final String imageUrl);
 
     int increaseHitHotPlaceCount(String hotPlaceId);
 
@@ -36,5 +40,5 @@ public interface HotPlaceService {
 
     List<HotPlaceTag> selectHotPlaceTagList(String hotPlaceId);
 
-    List<HotPlace> selectHotPlaceByKeyword(String keyword);
+
 }
