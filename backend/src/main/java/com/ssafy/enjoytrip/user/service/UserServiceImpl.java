@@ -51,10 +51,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void modify(final UserModifyRequest request, final String userId) {
-        System.out.println("userId" + userId);
         User user = userMapper.selectByUserId(userId)
-            .orElseThrow(() -> new RuntimeException("해당 유저가 없습니다."));
-
+            .orElseThrow(() -> new UserException("해당 유저가 없습니다."));
+        
         user.updateEmail(request.getEmail());
         user.updateAddress(request.getAddress());
         user.updateName(request.getName());

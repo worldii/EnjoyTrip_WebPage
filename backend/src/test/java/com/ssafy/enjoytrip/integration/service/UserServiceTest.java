@@ -2,10 +2,13 @@ package com.ssafy.enjoytrip.integration.service;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.ssafy.enjoytrip.global.error.UserException;
 import com.ssafy.enjoytrip.user.model.dto.request.UserAddRequest;
 import com.ssafy.enjoytrip.user.model.dto.request.UserLoginRequest;
+import com.ssafy.enjoytrip.user.model.dto.request.UserModifyRequest;
+import com.ssafy.enjoytrip.user.model.entity.User;
 import com.ssafy.enjoytrip.user.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -157,5 +160,67 @@ class UserServiceTest {
         assertThatCode(() -> userService.login(userLoginRequest))
             .isInstanceOf(UserException.class)
             .hasMessage("비밀번호가 일치하지 않습니다.");
+    }
+
+
+    @Test
+    @DisplayName("유저의 정보를 수정할 수 있다")
+    void 유저_정보_수정() {
+        // given
+        UserAddRequest userAddRequest = UserAddRequest.builder()
+            .userId("jongha")
+            .name("jongha")
+            .address("test")
+            .password("test")
+            .email("test")
+            .authority(1)
+            .build();
+        userService.join(userAddRequest);
+
+        // when
+        UserModifyRequest userModifyRequest = UserModifyRequest.builder()
+            .name("jongha2")
+            .address("test2")
+            .password("test2")
+            .email("test2")
+            .build();
+        userService.modify(userModifyRequest, userAddRequest.getUserId());
+
+        // then
+        User userInfomation = userService.getInformation(userAddRequest.getUserId());
+        assertAll(
+            () -> assertThat(userInfomation.getName()).isEqualTo("jongha2"),
+            () -> assertThat(userInfomation.getAddress()).isEqualTo("test2"),
+            () -> assertThat(userInfomation.getPassword()).isEqualTo("test2"),
+            () -> assertThat(userInfomation.getEmail()).isEqualTo("test2")
+        );
+    }
+
+    @Test
+    @DisplayName("해당 유저가 존재하지 않을 때 유저의 정보를 다른 사람이 수정할 수 없다")
+    void 유저_정보_수정_할수_없다_유저가_존재하지_않을때() {
+        // given
+        UserAddRequest userAddRequest = UserAddRequest.builder()
+            .userId("jongha")
+            .name("jongha")
+            .address("test")
+            .password("test")
+            .email("test")
+            .authority(1)
+            .build();
+        userService.join(userAddRequest);
+
+        // when
+        UserModifyRequest userModifyRequest = UserModifyRequest.builder()
+            .name("jongha2")
+            .address("test2")
+            .password("test2")
+            .email("test2")
+            .build();
+
+        // then
+        assertThatCode(() -> userService.modify(userModifyRequest, "test2"))
+            .isInstanceOf(UserException.class)
+            .hasMessage("해당 유저가 없습니다.");
     }
 }

@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.integration.mapper;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
 import com.ssafy.enjoytrip.user.model.entity.User;
@@ -48,5 +49,20 @@ class UserMapperTest {
         //then
         assertThatCode(() -> user.getUserId().equals(userId))
             .doesNotThrowAnyException();
+    }
+
+    @Test
+    @DisplayName("유저를 updateByUser 수정할 수 있다.")
+    void 유저_정상적으로_수정() {
+        // given
+        User oldUser = userMapper.selectByUserId("test").get();
+
+        // when
+        oldUser.updateAddress("test2");
+        userMapper.updateByUser(oldUser);
+        User newUser = userMapper.selectByUserId("test").get();
+
+        // then
+        assertThat(newUser.getAddress()).isEqualTo("test2");
     }
 }
