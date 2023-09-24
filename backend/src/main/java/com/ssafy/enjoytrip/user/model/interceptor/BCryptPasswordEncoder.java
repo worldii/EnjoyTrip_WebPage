@@ -4,13 +4,15 @@ import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserEncoder {
+public class BCryptPasswordEncoder implements PasswordEncoder {
 
-    public static String hashPassword(String raw) {
+    @Override
+    public String hashPassword(final String raw) {
         return BCrypt.hashpw(raw, BCrypt.gensalt());
     }
 
-    public static boolean isMatch(String raw, String hashed) {
+    @Override
+    public boolean isMatch(final String raw, final String hashed) {
         return BCrypt.checkpw(raw, hashed);
     }
 }
