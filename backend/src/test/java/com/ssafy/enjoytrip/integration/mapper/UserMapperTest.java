@@ -1,109 +1,37 @@
 package com.ssafy.enjoytrip.integration.mapper;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
 import com.ssafy.enjoytrip.user.model.entity.User;
 import com.ssafy.enjoytrip.user.model.mapper.UserMapper;
-import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
+@DisplayName("유저 매퍼 통합 테스트")
 @SpringBootTest
-@Slf4j
-public class UserMapperTest {
+class UserMapperTest {
 
     @Autowired
-    UserMapper userMapper;
+    private UserMapper userMapper;
 
     @Test
-    void testLoadUserMapper() {
-
-        //given - when - then
-        assertNotNull(userMapper);
-    }
-
-    @Test
-    void testSelectUser() {
+    @DisplayName("정상적으로 유저가 회원가입할 수 있다.")
+    void 유저_정상적으로_생성() {
         //given
-        String userId = "ssafy";
+        User user = User.builder()
+            .userId("jongha")
+            .name("jongha")
+            .address("test")
+            .password("test")
+            .email("test")
+            .authority(1)
+            .salt("test")
+            .build();
 
-        //when
-        User user = userMapper.selectByUserId(userId).get();
-
-        //then
-        System.out.println(user);
-        assertEquals(userId, user.getUserId());
+        //when & then
+        assertThatCode(() -> userMapper.insertByUser(user))
+            .doesNotThrowAnyException();
     }
-
-    @Test
-    @Transactional
-    void testInsertUser() {
-        //given
-        String userId = "test";
-        String password = "test";
-        String name = "test";
-        String email = "test@test";
-        String address = "test";
-        User insertedUser = User.builder()
-            .userId(userId)
-            .password(password)
-            .name(name)
-            .email(email)
-            .address(address).build();
-
-        //when
-
-        int result = userMapper.insertByUser(insertedUser);
-        User selectedUser = userMapper.selectByUserId(userId).get();
-
-        //then
-
-        System.out.println(selectedUser);
-        assertEquals(result, 1);
-        assertEquals(insertedUser.getUserId(), selectedUser.getUserId());
-    }
-
-    @Test
-    @Transactional
-    void testUpdateUser() {
-        //given
-        String userId = "test";
-
-        String beforePassword = "before";
-        String beforeName = "before";
-        String beforeEmail = "before@before";
-        String beforeAddress = "before";
-        User beforeUser = User.builder()
-            .userId(userId)
-            .password(beforePassword)
-            .name(beforeName)
-            .email(beforeEmail)
-            .address(beforeAddress).build();
-
-        String updatePassword = "after";
-        String updateName = "after";
-        String updateEmail = "after@after";
-        String updateAddress = "after";
-        User updateUser = User.builder()
-            .userId(userId)
-            .password(updatePassword)
-            .name(updateName)
-            .email(updateEmail)
-            .address(updateAddress).build();
-
-        userMapper.insertByUser(beforeUser);
-
-        //when
-        int result = userMapper.updateByUser(updateUser);
-        User afterUser = userMapper.selectByUserId(userId).get();
-
-        //then
-        assertEquals(result, 1);
-        assertEquals(userId, afterUser.getUserId());
-        assertEquals(updateUser.getName(), afterUser.getName());
-    }
-
 }

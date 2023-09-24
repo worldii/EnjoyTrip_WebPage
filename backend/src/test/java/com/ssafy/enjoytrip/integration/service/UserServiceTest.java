@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 
+@DisplayName("유저 서비스 통합 테스트")
 @SpringBootTest
 class UserServiceTest {
 
