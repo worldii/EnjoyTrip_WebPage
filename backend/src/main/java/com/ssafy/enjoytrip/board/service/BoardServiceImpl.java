@@ -17,7 +17,7 @@ import com.ssafy.enjoytrip.global.util.JsonUtil;
 import com.ssafy.enjoytrip.global.util.PageNavigationForPageHelper;
 import com.ssafy.enjoytrip.media.model.entity.FileInfo;
 import com.ssafy.enjoytrip.media.service.FileService;
-import com.ssafy.enjoytrip.user.model.dto.User;
+import com.ssafy.enjoytrip.user.model.entity.User;
 import com.ssafy.enjoytrip.user.model.mapper.UserMapper;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

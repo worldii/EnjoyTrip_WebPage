@@ -1,9 +1,9 @@
-package com.ssafy.enjoytrip.user;
+package com.ssafy.enjoytrip.integration.mapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.ssafy.enjoytrip.user.model.dto.User;
+import com.ssafy.enjoytrip.user.model.entity.User;
 import com.ssafy.enjoytrip.user.model.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;

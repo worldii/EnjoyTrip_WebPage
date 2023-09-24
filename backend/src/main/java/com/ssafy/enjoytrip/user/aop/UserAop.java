@@ -1,6 +1,6 @@
 //package com.ssafy.enjoytrip.user.aop;
 //
-//import com.ssafy.enjoytrip.user.model.dto.User;
+//import com.ssafy.enjoytrip.user.model.entity.User;
 //import com.ssafy.enjoytrip.user.model.interceptor.UserEncoder;
 //import java.util.Arrays;
 //import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,7 @@
 //@Slf4j
 //public class UserAop {
 //
-//    @Before("execution(* com.ssafy.enjoytrip.user.service.*.*(com.ssafy.enjoytrip.user.model.dto.User))")
+//    @Before("execution(* com.ssafy.enjoytrip.user.service.*.*(com.ssafy.enjoytrip.user.model.entity.User))")
 //    public void encodePassword(final JoinPoint joinPoint) {
 //        final Object[] args = joinPoint.getArgs();
 //        final User user = (User) args[0];

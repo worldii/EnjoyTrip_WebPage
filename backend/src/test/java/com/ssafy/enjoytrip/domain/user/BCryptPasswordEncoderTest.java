@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.user;
+package com.ssafy.enjoytrip.domain.user;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;

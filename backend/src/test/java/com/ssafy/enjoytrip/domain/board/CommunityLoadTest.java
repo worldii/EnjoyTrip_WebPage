@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.board;
+package com.ssafy.enjoytrip.domain.board;
 
 import com.ssafy.enjoytrip.board.model.mapper.CommentMapper;
 import org.junit.jupiter.api.Test;

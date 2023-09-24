@@ -1,7 +1,8 @@
 package com.ssafy.enjoytrip.user.service;
 
-import com.ssafy.enjoytrip.user.model.dto.User;
-import com.ssafy.enjoytrip.user.model.interceptor.UserEncoder;
+import com.ssafy.enjoytrip.user.model.dto.request.UserAddRequest;
+import com.ssafy.enjoytrip.user.model.entity.User;
+import com.ssafy.enjoytrip.user.model.interceptor.PasswordEncoder;
 import com.ssafy.enjoytrip.user.model.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
@@ -22,7 +24,7 @@ public class UserServiceImpl implements UserService {
             .selectByUserId(userId)
             .orElseThrow(() -> new RuntimeException("해당 유저가 없습니다."));
 
-        if (user != null && UserEncoder.isMatch(password, user.getPassword())) {
+        if (user != null && passwordEncoder.isMatch(password, user.getPassword())) {
             return user;
         }
         return null;
@@ -30,8 +32,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public int join(User user) {
-        return userMapper.insertByUser(user);
+    public int join(final UserAddRequest request) {
+        return userMapper.insertByUser(request.toEntity());
     }
 
     @Override

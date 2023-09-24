@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.user.model.dto;
+package com.ssafy.enjoytrip.user.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

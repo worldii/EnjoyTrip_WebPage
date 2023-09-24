@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.hotplace;
+package com.ssafy.enjoytrip.domain.hotplace;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 

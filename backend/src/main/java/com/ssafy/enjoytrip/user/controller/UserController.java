@@ -2,7 +2,8 @@ package com.ssafy.enjoytrip.user.controller;
 
 
 import com.ssafy.enjoytrip.user.model.dto.NoAuth;
-import com.ssafy.enjoytrip.user.model.dto.User;
+import com.ssafy.enjoytrip.user.model.dto.request.UserAddRequest;
+import com.ssafy.enjoytrip.user.model.entity.User;
 import com.ssafy.enjoytrip.user.model.service.JwtService;
 import com.ssafy.enjoytrip.user.service.UserService;
 import java.util.HashMap;
@@ -56,18 +57,9 @@ public class UserController {
 
     @NoAuth
     @PostMapping
-    public ResponseEntity<?> join(@RequestBody User requestUser) {
-        Map<String, Object> resultMap = new HashMap<>();
-
-        int result = userService.join(requestUser);
-
-        if (result > 0) {
-            resultMap.put("success", true);
-        } else {
-            resultMap.put("success", false);
-        }
-
-        return new ResponseEntity<>(resultMap, HttpStatus.ACCEPTED);
+    public ResponseEntity<Void> join(@RequestBody final UserAddRequest requestUser) {
+        userService.join(requestUser);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping

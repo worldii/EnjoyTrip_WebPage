@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.board.mapper;
+package com.ssafy.enjoytrip.domain.board.mapper;
 
 import com.ssafy.enjoytrip.board.model.entity.Comment;
 import com.ssafy.enjoytrip.board.model.mapper.CommentMapper;

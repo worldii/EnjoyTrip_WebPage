@@ -1,5 +1,8 @@
-package com.ssafy.enjoytrip.jwt;
+package com.ssafy.enjoytrip.domain.jwt;
 
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.ssafy.enjoytrip.user.model.service.JwtService;
 import org.junit.jupiter.api.Test;
@@ -7,23 +10,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @SpringBootTest
 public class JwtServiceTest {
+
     @Autowired
     JwtService jwtService;
     @Autowired
     RedisTemplate<String, String> redisTemplate;
 
     @Test
-    void testLoadBean(){
+    void testLoadBean() {
         //given - when - then
         assertNotNull(jwtService);
     }
 
     @Test
-    void testGenerateRefreshToken(){
+    void testGenerateRefreshToken() {
         //given
         String userId = "test";
 
@@ -36,7 +38,7 @@ public class JwtServiceTest {
     }
 
     @Test
-    void testGenerateAccessToken(){
+    void testGenerateAccessToken() {
         //given
         String userId = "test";
 
@@ -48,15 +50,15 @@ public class JwtServiceTest {
     }
 
     @Test
-    void testCanRefresh(){
+    void testCanRefresh() {
         //given
         String correctUserId = "junyoung";
         String wrongUserId = "jongha";
         String refreshToken = jwtService.generateRefreshToken(correctUserId);
 
         //when
-        boolean canRefresh = jwtService.canRefresh(refreshToken,correctUserId);
-        boolean canNotRefresh = jwtService.canRefresh(refreshToken,wrongUserId);
+        boolean canRefresh = jwtService.canRefresh(refreshToken, correctUserId);
+        boolean canNotRefresh = jwtService.canRefresh(refreshToken, wrongUserId);
 
         //then
         assertEquals(canRefresh, true);

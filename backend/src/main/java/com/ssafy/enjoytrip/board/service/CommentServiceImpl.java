@@ -8,7 +8,7 @@ import com.ssafy.enjoytrip.board.model.mapper.BoardMapper;
 import com.ssafy.enjoytrip.board.model.mapper.CommentMapper;
 import com.ssafy.enjoytrip.global.error.BoardException;
 import com.ssafy.enjoytrip.global.error.CommentNotFoundException;
-import com.ssafy.enjoytrip.user.model.dto.User;
+import com.ssafy.enjoytrip.user.model.entity.User;
 import com.ssafy.enjoytrip.user.model.mapper.UserMapper;
 import java.util.List;
 import java.util.stream.Collectors;
