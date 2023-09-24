@@ -5,6 +5,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
 import com.ssafy.enjoytrip.global.error.UserException;
 import com.ssafy.enjoytrip.user.model.dto.request.UserAddRequest;
+import com.ssafy.enjoytrip.user.model.dto.request.UserLoginRequest;
 import com.ssafy.enjoytrip.user.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -109,5 +110,58 @@ class UserServiceTest {
         assertThatCode(() -> userService.join(userAddRequest))
             .isInstanceOf(UserException.class)
             .hasMessage("유저의 아이디는 필수 값입니다.");
+    }
+
+    @Test
+    @DisplayName("유저가 정상적으로 로그인할 수 있다")
+    void 유저_정상_로그인() {
+        // given
+        UserAddRequest userAddRequest = UserAddRequest.builder()
+            .userId("jongha")
+            .name("jongha")
+            .address("test")
+            .password("test")
+            .email("test")
+            .authority(1)
+            .salt("test")
+            .build();
+        userService.join(userAddRequest);
+
+        // when
+        UserLoginRequest userLoginRequest = UserLoginRequest.builder()
+            .userId("jongha")
+            .password("test")
+            .build();
+
+        // then
+        assertThatCode(() -> userService.login(userLoginRequest))
+            .doesNotThrowAnyException();
+    }
+
+    @Test
+    @DisplayName("유저가 비밀번호가 틀리면 로그인할 수 없다")
+    void 유저_비밀번호_틀림_로그인_실패() {
+        // given
+        UserAddRequest userAddRequest = UserAddRequest.builder()
+            .userId("jongha")
+            .name("jongha")
+            .address("test")
+            .password("test")
+            .email("test")
+            .authority(1)
+            .salt("test")
+            .build();
+        userService.join(userAddRequest);
+
+        // when
+        UserLoginRequest userLoginRequest = UserLoginRequest.builder()
+            .userId("jongha")
+            .password("wrongPassword")
+            .build();
+
+        // then
+        assertThatCode(() -> userService.login(userLoginRequest))
+            .isInstanceOf(UserException.class)
+            .hasMessage("비밀번호가 일치하지 않습니다.");
     }
 }
