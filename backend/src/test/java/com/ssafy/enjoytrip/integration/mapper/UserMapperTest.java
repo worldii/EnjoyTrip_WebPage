@@ -34,4 +34,19 @@ class UserMapperTest {
         assertThatCode(() -> userMapper.insertByUser(user))
             .doesNotThrowAnyException();
     }
+
+    @Test
+    @DisplayName("유저를 selectById로 조회할 수 있다.")
+    void 유저_정상적으로_조회() {
+        //given
+        String userId = "test";
+
+        //when
+        User user = userMapper.selectByUserId(userId)
+            .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+
+        //then
+        assertThatCode(() -> user.getUserId().equals(userId))
+            .doesNotThrowAnyException();
+    }
 }
