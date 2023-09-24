@@ -2,6 +2,7 @@ package com.ssafy.enjoytrip.user.service;
 
 import com.ssafy.enjoytrip.user.model.dto.request.UserAddRequest;
 import com.ssafy.enjoytrip.user.model.dto.request.UserLoginRequest;
+import com.ssafy.enjoytrip.user.model.dto.request.UserModifyRequest;
 import com.ssafy.enjoytrip.user.model.dto.response.TokenResponse;
 import com.ssafy.enjoytrip.user.model.entity.User;
 
@@ -9,11 +10,11 @@ public interface UserService {
 
     TokenResponse login(final UserLoginRequest request);
 
-    User getInformation(String userId);
+    User getInformation(final String userId);
 
-    boolean join(UserAddRequest user);
+    boolean join(final UserAddRequest user);
 
-    int modify(User user);
+    void modify(final UserModifyRequest request, final String userId);
 
     int leave(String userId);
 }

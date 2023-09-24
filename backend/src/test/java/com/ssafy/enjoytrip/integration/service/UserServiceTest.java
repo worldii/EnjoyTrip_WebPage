@@ -33,7 +33,6 @@ class UserServiceTest {
             .password("test")
             .email("test")
             .authority(1)
-            .salt("test")
             .build();
 
         //when
@@ -57,7 +56,6 @@ class UserServiceTest {
             .password("test")
             .email(wrongEmail)
             .authority(1)
-            .salt("test")
             .build();
 
         //then
@@ -80,7 +78,6 @@ class UserServiceTest {
             .password("test")
             .email("test")
             .authority(1)
-            .salt("test")
             .build();
 
         //then
@@ -103,7 +100,6 @@ class UserServiceTest {
             .password("test")
             .email("test")
             .authority(1)
-            .salt("test")
             .build();
 
         //then
@@ -123,7 +119,6 @@ class UserServiceTest {
             .password("test")
             .email("test")
             .authority(1)
-            .salt("test")
             .build();
         userService.join(userAddRequest);
 
@@ -149,7 +144,6 @@ class UserServiceTest {
             .password("test")
             .email("test")
             .authority(1)
-            .salt("test")
             .build();
         userService.join(userAddRequest);
 

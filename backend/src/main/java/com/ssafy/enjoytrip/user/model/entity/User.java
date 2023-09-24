@@ -67,4 +67,24 @@ public class User {
             throw new UserException("유저의 이름은 필수 값입니다.");
         }
     }
+
+    public void updateEmail(final String email) {
+        validateEmail(email);
+        this.email = email;
+    }
+
+    public void updatePassword(final String password) {
+        validatePassword(password);
+        this.password = password;
+    }
+
+    public void updateAddress(final String address) {
+        validateAddress(address);
+        this.address = address;
+    }
+
+    public void updateName(final String name) {
+        validateName(name);
+        this.name = name;
+    }
 }

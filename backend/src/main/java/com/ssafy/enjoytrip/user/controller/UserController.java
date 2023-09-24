@@ -1,9 +1,11 @@
 package com.ssafy.enjoytrip.user.controller;
 
 
+import com.ssafy.enjoytrip.user.model.dto.LoginUser;
 import com.ssafy.enjoytrip.user.model.dto.NoAuth;
 import com.ssafy.enjoytrip.user.model.dto.request.UserAddRequest;
 import com.ssafy.enjoytrip.user.model.dto.request.UserLoginRequest;
+import com.ssafy.enjoytrip.user.model.dto.request.UserModifyRequest;
 import com.ssafy.enjoytrip.user.model.dto.response.TokenResponse;
 import com.ssafy.enjoytrip.user.model.entity.User;
 import com.ssafy.enjoytrip.user.model.service.JwtService;
@@ -45,24 +47,18 @@ public class UserController {
     }
 
     @PutMapping
-    public ResponseEntity<?> modify(@RequestBody User requestUser) {
-        Map<String, Object> resultMap = new HashMap<>();
-
-        int result = userService.modify(requestUser);
-
-        if (result > 0) {
-            resultMap.put("success", true);
-        } else {
-            resultMap.put("success", false);
-        }
-
-        return new ResponseEntity<>(resultMap, HttpStatus.ACCEPTED);
+    public ResponseEntity<Void> modify(
+        @RequestBody final UserModifyRequest request,
+        @LoginUser final String userId
+    ) {
+        userService.modify(request, userId);
+        return ResponseEntity.ok().build();
     }
 
     @NoAuth
     @DeleteMapping("/{userId}")
     public ResponseEntity<?> leave(@PathVariable String userId) {
-        
+
         Map<String, Object> resultMap = new HashMap<>();
 
         int result = userService.leave(userId);

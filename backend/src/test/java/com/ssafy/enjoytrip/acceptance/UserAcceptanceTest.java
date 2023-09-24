@@ -6,6 +6,8 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import com.ssafy.enjoytrip.user.model.dto.request.UserAddRequest;
 import com.ssafy.enjoytrip.user.model.dto.request.UserLoginRequest;
+import com.ssafy.enjoytrip.user.model.dto.request.UserModifyRequest;
+import com.ssafy.enjoytrip.user.model.dto.response.TokenResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
@@ -26,7 +28,6 @@ class UserAcceptanceTest extends AcceptanceTest {
             .password("test")
             .email("test")
             .authority(1)
-            .salt("test")
             .build();
 
         // when
@@ -82,6 +83,70 @@ class UserAcceptanceTest extends AcceptanceTest {
             .log().all()
             .when()
             .post("/user/login")
+            .then()
+            .log().all()
+            .extract();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(OK.value());
+    }
+
+    @Test
+    @DisplayName("유저가 정상적으로 정보를 수정한다")
+    void 유저_정상_정보_수정() {
+        // given
+        UserAddRequest userAddRequest = UserAddRequest.builder()
+            .userId("jongha")
+            .name("jongha")
+            .address("test")
+            .password("test")
+            .email("test")
+            .authority(1)
+            .build();
+
+        RestAssured
+            .given()
+            .contentType(APPLICATION_JSON_VALUE)
+            .body(userAddRequest)
+            .log().all()
+            .when()
+            .post("/user")
+            .then()
+            .log().all()
+            .extract();
+        UserLoginRequest userLoginRequest = UserLoginRequest.builder()
+            .userId("jongha")
+            .password("test")
+            .build();
+
+        // when
+        String accessToken = RestAssured
+            .given()
+            .contentType(APPLICATION_JSON_VALUE)
+            .body(userLoginRequest)
+            .log().all()
+            .when()
+            .post("/user/login")
+            .then()
+            .log().all()
+            .extract().as(TokenResponse.class).getAccessToken();
+
+        // when
+        UserModifyRequest userModifyRequest = UserModifyRequest.builder()
+            .name("jongha")
+            .address("test")
+            .password("test")
+            .email("test")
+            .build();
+
+        ExtractableResponse<Response> response = RestAssured
+            .given()
+            .contentType(APPLICATION_JSON_VALUE)
+            .body(userModifyRequest)
+            .header("Authorization", accessToken)
+            .log().all()
+            .when()
+            .put("/user")
             .then()
             .log().all()
             .extract();

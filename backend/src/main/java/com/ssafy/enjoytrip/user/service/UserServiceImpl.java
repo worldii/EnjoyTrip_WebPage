@@ -3,6 +3,7 @@ package com.ssafy.enjoytrip.user.service;
 import com.ssafy.enjoytrip.global.error.UserException;
 import com.ssafy.enjoytrip.user.model.dto.request.UserAddRequest;
 import com.ssafy.enjoytrip.user.model.dto.request.UserLoginRequest;
+import com.ssafy.enjoytrip.user.model.dto.request.UserModifyRequest;
 import com.ssafy.enjoytrip.user.model.dto.response.TokenResponse;
 import com.ssafy.enjoytrip.user.model.entity.User;
 import com.ssafy.enjoytrip.user.model.interceptor.PasswordEncoder;
@@ -49,8 +50,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public int modify(User user) {
-        return userMapper.updateByUser(user);
+    public void modify(final UserModifyRequest request, final String userId) {
+        System.out.println("userId" + userId);
+        User user = userMapper.selectByUserId(userId)
+            .orElseThrow(() -> new RuntimeException("해당 유저가 없습니다."));
+
+        user.updateEmail(request.getEmail());
+        user.updateAddress(request.getAddress());
+        user.updateName(request.getName());
+        user.updatePassword(request.getPassword());
+
+        userMapper.updateByUser(user);
     }
 
     @Override

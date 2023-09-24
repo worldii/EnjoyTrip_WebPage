@@ -65,8 +65,8 @@ public class JwtService {
     }
 
 
-    public boolean canRefresh(String refreshToken, String userId) {
-        RefreshToken refreshTokenDto = jwtRepository
+    public boolean canRefresh(final String refreshToken, final String userId) {
+        final RefreshToken refreshTokenDto = jwtRepository
             .findByUserId(userId)
             .orElse(null);
 
@@ -76,15 +76,27 @@ public class JwtService {
 
 
     public boolean checkValidToken(final String token) {
+        if (token == null) {
+            return false;
+        }
         try {
             Jwts.parser().setSigningKey(salt.getBytes()).parseClaimsJws(token);
+            return true;
         } catch (Exception e) {
             return false;
         }
-        return true;
     }
 
     public void deleteRefreshToken(final String userId) {
         jwtRepository.deleteRefreshToken(userId);
+    }
+
+    public String parseToken(final String token) {
+        Claims body = Jwts.parser()
+            .setSigningKey(salt.getBytes())
+            .parseClaimsJws(token)
+            .getBody();
+        return body
+            .get("userId", String.class);
     }
 }

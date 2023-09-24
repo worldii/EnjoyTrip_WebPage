@@ -18,7 +18,6 @@ public class UserAddRequest {
     private String password;
     private String email;
     private int authority;
-    private String salt;
 
     public User toEntity(final String hashedPassword, final String salt) {
         return User.builder()
