@@ -26,10 +26,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public TokenResponse login(final UserLoginRequest request) {
-        final User user = userMapper
-            .selectByUserId(request.getUserId())
-            .orElseThrow(() -> new UserException("해당 유저가 없습니다."));
-
+        final User user = getInformation(request.getUserId());
         if (!passwordEncoder.isMatch(request.getPassword(), user.getPassword(), user.getSalt())) {
             throw new UserException("비밀번호가 일치하지 않습니다.");
         }
@@ -49,11 +46,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getInformation(final String userId) {
+        return userMapper.selectByUserId(userId)
+            .orElseThrow(() -> new UserException("해당 유저가 없습니다."));
+    }
+
+    @Override
     @Transactional
     public void modify(final UserModifyRequest request, final String userId) {
-        User user = userMapper.selectByUserId(userId)
-            .orElseThrow(() -> new UserException("해당 유저가 없습니다."));
-        
+        User user = getInformation(userId);
+
         user.updateEmail(request.getEmail());
         user.updateAddress(request.getAddress());
         user.updateName(request.getName());
@@ -66,12 +68,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public int leave(String userId) {
         return userMapper.deleteByUserId(userId);
-    }
-
-    @Override
-    public User getInformation(String userId) {
-        return userMapper.selectByUserId(userId)
-            .orElseThrow(() -> new RuntimeException("해당 유저가 없습니다."));
     }
 
 }

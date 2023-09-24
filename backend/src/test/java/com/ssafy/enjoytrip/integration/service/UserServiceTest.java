@@ -162,6 +162,30 @@ class UserServiceTest {
             .hasMessage("비밀번호가 일치하지 않습니다.");
     }
 
+    @Test
+    @DisplayName("유저의 정보를 조회할 수 있다")
+    void 유저_정보_조회() {
+        // given
+        UserAddRequest userAddRequest = UserAddRequest.builder()
+            .userId("jongha")
+            .name("jongha")
+            .address("test")
+            .password("test")
+            .email("test")
+            .authority(1)
+            .build();
+        userService.join(userAddRequest);
+
+        // when
+        User userInformation = userService.getInformation(userAddRequest.getUserId());
+
+        // then
+        assertAll(
+            () -> assertThat(userInformation.getName()).isEqualTo("jongha"),
+            () -> assertThat(userInformation.getAddress()).isEqualTo("test"),
+            () -> assertThat(userInformation.getEmail()).isEqualTo("test")
+        );
+    }
 
     @Test
     @DisplayName("유저의 정보를 수정할 수 있다")
