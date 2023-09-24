@@ -1,7 +1,6 @@
 package com.ssafy.enjoytrip.domain.user;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.ssafy.enjoytrip.user.model.interceptor.BCryptPasswordEncoder;
@@ -21,31 +20,33 @@ class BCryptPasswordEncoderTest {
     }
 
     @Test
-    @DisplayName("hash 가 되면 비밀번호를 다르게 암호화 한다.")
+    @DisplayName("salt 가 주어지면 hash 된 비밀번호를 반환한다.")
     void testHashPassword() {
         //given
+        String salt = passwordEncoder.generateSalt();
         String raw1 = "test";
         String raw2 = "test";
 
         //when
-        String hashed1 = passwordEncoder.hashPassword(raw1);
-        String hashed2 = passwordEncoder.hashPassword(raw2);
+        String hashed1 = passwordEncoder.hashPassword(raw1, salt);
+        String hashed2 = passwordEncoder.hashPassword(raw2, salt);
 
         //then
         assertNotNull(hashed1);
         assertNotNull(hashed2);
-        assertNotEquals(hashed1, hashed2);
+        assertEquals(hashed1, hashed2);
     }
 
     @Test
     @DisplayName("raw 와 hashed 가 주어지면 같은 비밀번호인지 확인한다.")
     void testIsMatch() {
         //given
+        String salt = passwordEncoder.generateSalt();
         String raw = "test";
-        String hashed = passwordEncoder.hashPassword(raw);
+        String hashed = passwordEncoder.hashPassword(raw, salt);
 
         //when
-        boolean result = passwordEncoder.isMatch(raw, hashed);
+        boolean result = passwordEncoder.isMatch(raw, hashed, salt);
 
         //then
         assertEquals(true, result);

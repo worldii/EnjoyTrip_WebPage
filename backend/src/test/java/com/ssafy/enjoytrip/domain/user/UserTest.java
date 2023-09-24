@@ -2,6 +2,7 @@ package com.ssafy.enjoytrip.domain.user;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
+import com.ssafy.enjoytrip.global.error.UserException;
 import com.ssafy.enjoytrip.user.model.entity.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -43,7 +44,9 @@ class UserTest {
                 .authority(1)
                 .salt("test")
                 .build()
-        ).hasMessageContaining("유저의 아이디는 필수 값입니다.");
+        )
+            .isInstanceOf(UserException.class)
+            .hasMessage("유저의 아이디는 필수 값입니다.");
     }
 
     @ParameterizedTest

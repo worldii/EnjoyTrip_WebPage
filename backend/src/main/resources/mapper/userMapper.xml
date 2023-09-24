@@ -9,6 +9,7 @@
     <result property="name" column="name"/>
     <result property="address" column="address"/>
     <result property="password" column="password"/>
+    <result property="salt" column="salt"/>
     <result property="email" column="email"/>
   </resultMap>
 
@@ -18,8 +19,8 @@
     where user_id = #{userId};
   </select>
 
-  <insert id="insertByUser" parameterType="user" useGeneratedKeys="true" keyProperty="userId">
-    insert into user(user_id, name, address, password, email) value (#{userId},#{name},#{address},#{password},#{email});
+  <insert id="insertByUser" parameterType="user">
+    insert into user(user_id, name, address, password, email, salt) value (#{userId},#{name},#{address},#{password},#{email},#{salt});
   </insert>
 
   <update id="updateByUser" parameterType="string">

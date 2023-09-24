@@ -3,6 +3,8 @@ package com.ssafy.enjoytrip.user.controller;
 
 import com.ssafy.enjoytrip.user.model.dto.NoAuth;
 import com.ssafy.enjoytrip.user.model.dto.request.UserAddRequest;
+import com.ssafy.enjoytrip.user.model.dto.request.UserLoginRequest;
+import com.ssafy.enjoytrip.user.model.dto.response.TokenResponse;
 import com.ssafy.enjoytrip.user.model.entity.User;
 import com.ssafy.enjoytrip.user.model.service.JwtService;
 import com.ssafy.enjoytrip.user.service.UserService;
@@ -31,35 +33,15 @@ public class UserController {
     private final JwtService jwtService;
 
     @NoAuth
-    @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> login(@RequestBody User requestUser) {
-        Map<String, Object> resultMap = new HashMap<>();
-        HttpStatus status = null;
-        try {
-            User loginUser = userService.login(requestUser.getUserId(), requestUser.getPassword());
-            if (loginUser != null) {
-                String accessToken = jwtService.generateAccessToken(requestUser.getUserId());
-                String refreshToken = jwtService.generateRefreshToken(requestUser.getUserId());
-                resultMap.put("access-token", accessToken);
-                resultMap.put("refresh-token", refreshToken);
-                resultMap.put("success", true);
-
-            } else {
-                resultMap.put("success", false);
-            }
-            status = HttpStatus.ACCEPTED;
-        } catch (Exception e) {
-            resultMap.put("success", false);
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-        return new ResponseEntity<>(resultMap, status);
+    @PostMapping
+    public ResponseEntity<Boolean> join(@RequestBody final UserAddRequest requestUser) {
+        return ResponseEntity.ok(userService.join(requestUser));
     }
 
     @NoAuth
-    @PostMapping
-    public ResponseEntity<Void> join(@RequestBody final UserAddRequest requestUser) {
-        userService.join(requestUser);
-        return ResponseEntity.ok().build();
+    @PostMapping("/login")
+    public ResponseEntity<TokenResponse> login(@RequestBody final UserLoginRequest request) {
+        return ResponseEntity.ok(userService.login(request));
     }
 
     @PutMapping

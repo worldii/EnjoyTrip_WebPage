@@ -20,12 +20,12 @@ public class UserAddRequest {
     private int authority;
     private String salt;
 
-    public User toEntity() {
+    public User toEntity(final String hashedPassword, final String salt) {
         return User.builder()
             .userId(userId)
             .name(name)
             .address(address)
-            .password(password)
+            .password(hashedPassword)
             .email(email)
             .authority(authority)
             .salt(salt)
