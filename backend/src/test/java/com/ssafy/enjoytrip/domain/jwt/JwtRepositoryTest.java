@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import com.ssafy.enjoytrip.user.model.dao.JwtRepository;
-import com.ssafy.enjoytrip.user.model.dto.RefreshTokenDto;
+import com.ssafy.enjoytrip.user.model.dto.RefreshToken;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 
 @SpringBootTest
-public class JwtRepositoryTest {
+class JwtRepositoryTest {
 
     @Autowired
     JwtRepository jwtRepository;
@@ -30,53 +30,55 @@ public class JwtRepositoryTest {
     void testSaveRefreshToken() {
         System.out.println("Optional.empty() = " + Optional.empty().get());
         //given
-        RefreshTokenDto refreshTokenDto = createRefreshTokenDto();
+        RefreshToken refreshToken = createRefreshTokenDto();
 
         //when
-        jwtRepository.save(refreshTokenDto);
+        jwtRepository.save(refreshToken);
 
         //then
-        assertNotNull(redisTemplate.opsForValue().get(refreshTokenDto.getUserId()));
-        assertEquals(refreshTokenDto.getRefreshToken(),
-            redisTemplate.opsForValue().get(refreshTokenDto.getUserId()));
+        assertNotNull(redisTemplate.opsForValue().get(refreshToken.getUserId()));
+        assertEquals(refreshToken.getRefreshToken(),
+            redisTemplate.opsForValue().get(refreshToken.getUserId()));
     }
 
     @Test
     void testFind() {
         //given
-        RefreshTokenDto refreshTokenDto = createRefreshTokenDto();
-        jwtRepository.save(refreshTokenDto);
+        RefreshToken refreshToken = createRefreshTokenDto();
+        jwtRepository.save(refreshToken);
 
         //when
-        RefreshTokenDto existTokenDto = jwtRepository.findByUserId(refreshTokenDto.getUserId());
+        RefreshToken existTokenDto = jwtRepository
+            .findByUserId(refreshToken.getUserId())
+            .orElse(null);
 
-        RefreshTokenDto notExistTokenDto = jwtRepository.findByUserId("");
+        RefreshToken notExistTokenDto = jwtRepository.findByUserId("").orElse(null);
 
         //then
-        assertEquals(refreshTokenDto.getRefreshToken(), existTokenDto.getRefreshToken());
-        assertEquals(refreshTokenDto.getUserId(), existTokenDto.getUserId());
+        assertEquals(refreshToken.getRefreshToken(), existTokenDto.getRefreshToken());
+        assertEquals(refreshToken.getUserId(), existTokenDto.getUserId());
         assertEquals(notExistTokenDto, null);
     }
 
     @Test
     void testDelete() {
         //given
-        RefreshTokenDto refreshTokenDto = createRefreshTokenDto();
-        jwtRepository.save(refreshTokenDto);
+        RefreshToken refreshToken = createRefreshTokenDto();
+        jwtRepository.save(refreshToken);
 
         //when
-        jwtRepository.delete(refreshTokenDto.getUserId());
+        jwtRepository.deleteRefreshToken(refreshToken.getUserId());
 
         //then
-        assertEquals(redisTemplate.opsForValue().get(refreshTokenDto.getUserId()), null);
+        assertEquals(redisTemplate.opsForValue().get(refreshToken.getUserId()), null);
     }
 
 
-    RefreshTokenDto createRefreshTokenDto() {
+    RefreshToken createRefreshTokenDto() {
         String refreshToken = "TestToken";
         String userId = "test";
 
-        RefreshTokenDto refreshTokenDto = RefreshTokenDto
+        RefreshToken refreshTokenDto = RefreshToken
             .builder()
             .refreshToken(refreshToken)
             .userId(userId)

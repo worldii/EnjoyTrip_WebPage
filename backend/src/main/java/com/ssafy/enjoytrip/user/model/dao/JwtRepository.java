@@ -1,14 +1,14 @@
 package com.ssafy.enjoytrip.user.model.dao;
 
-import com.ssafy.enjoytrip.user.model.dto.RefreshTokenDto;
+import com.ssafy.enjoytrip.user.model.dto.RefreshToken;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
-
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 @Repository
 public class JwtRepository {
@@ -22,27 +22,29 @@ public class JwtRepository {
         this.redisTemplate = redisTemplate;
     }
 
-    public void save(final RefreshTokenDto refreshTokenDto) {
+    public void save(final RefreshToken refreshToken) {
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         valueOperations.set(
-                refreshTokenDto.getUserId(),
-                refreshTokenDto.getRefreshToken(),
-                TIME_OUT_SECOND,
-                TimeUnit.SECONDS
-                );
+            refreshToken.getUserId(),
+            refreshToken.getRefreshToken(),
+            TIME_OUT_SECOND,
+            TimeUnit.SECONDS
+        );
     }
 
-    public RefreshTokenDto findByUserId(final String userId) {
-        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-        String refreshToken = valueOperations.get(userId);
-        if(Objects.isNull(refreshToken)){
-            return null;
+    public Optional<RefreshToken> findByUserId(final String userId) {
+        final ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+
+        final String refreshToken = valueOperations.get(userId);
+        if (Objects.isNull(refreshToken)) {
+            return Optional.empty();
         }
-        return new RefreshTokenDto(refreshToken,userId);
+
+        return Optional.of(new RefreshToken(refreshToken, userId));
     }
 
-    public void delete(final String userId){
-        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+    public void deleteRefreshToken(final String userId) {
+        final ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
 
         valueOperations.getAndDelete(userId);
     }

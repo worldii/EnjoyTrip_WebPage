@@ -62,10 +62,11 @@ public class UserController {
     @NoAuth
     @DeleteMapping("/{userId}")
     public ResponseEntity<?> leave(@PathVariable String userId) {
+        
         Map<String, Object> resultMap = new HashMap<>();
 
         int result = userService.leave(userId);
-        jwtService.deleteToken(userId);
+        jwtService.deleteRefreshToken(userId);
 
         if (result > 0) {
             resultMap.put("success", true);
@@ -105,7 +106,7 @@ public class UserController {
         HttpStatus status = HttpStatus.ACCEPTED;
 
         try {
-            jwtService.deleteToken(userId);
+            jwtService.deleteRefreshToken(userId);
             resultMap.put("success", true);
             status = HttpStatus.ACCEPTED;
         } catch (Exception e) {

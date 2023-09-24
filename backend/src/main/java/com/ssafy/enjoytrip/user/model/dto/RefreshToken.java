@@ -5,11 +5,11 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 
-
 @Getter
 @Builder
 @RequiredArgsConstructor
-public class RefreshTokenDto {
+public class RefreshToken {
+
     private final String refreshToken;
     private final String userId;
 }
