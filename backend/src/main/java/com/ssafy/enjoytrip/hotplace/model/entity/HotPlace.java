@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.hotplace.model;
+package com.ssafy.enjoytrip.hotplace.model.entity;
 
 import java.util.ArrayList;
 import java.util.List;

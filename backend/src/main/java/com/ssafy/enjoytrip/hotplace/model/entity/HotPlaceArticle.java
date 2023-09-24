@@ -1,6 +1,5 @@
-package com.ssafy.enjoytrip.hotplace.model;
+package com.ssafy.enjoytrip.hotplace.model.entity;
 
-import com.ssafy.enjoytrip.hotplace.model.HotPlace.HotPlaceTag;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;

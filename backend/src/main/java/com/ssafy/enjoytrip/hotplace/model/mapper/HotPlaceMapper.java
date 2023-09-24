@@ -1,8 +1,8 @@
 package com.ssafy.enjoytrip.hotplace.model.mapper;
 
-import com.ssafy.enjoytrip.hotplace.model.HotPlace;
-import com.ssafy.enjoytrip.hotplace.model.HotPlace.HotPlaceTag;
-import com.ssafy.enjoytrip.hotplace.model.HotPlaceArticle;
+import com.ssafy.enjoytrip.hotplace.model.entity.HotPlace;
+import com.ssafy.enjoytrip.hotplace.model.entity.HotPlaceArticle;
+import com.ssafy.enjoytrip.hotplace.model.entity.HotPlaceTag;
 import java.util.List;
 import java.util.Optional;
 import org.apache.ibatis.annotations.Mapper;

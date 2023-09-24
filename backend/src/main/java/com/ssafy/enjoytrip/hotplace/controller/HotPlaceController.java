@@ -1,11 +1,11 @@
 package com.ssafy.enjoytrip.hotplace.controller;
 
-import com.ssafy.enjoytrip.hotplace.model.HotPlace;
-import com.ssafy.enjoytrip.hotplace.model.HotPlace.HotPlaceTag;
-import com.ssafy.enjoytrip.hotplace.model.HotPlaceArticle;
 import com.ssafy.enjoytrip.hotplace.model.dto.HotPlaceArticleResponse;
 import com.ssafy.enjoytrip.hotplace.model.dto.HotPlaceResponse;
 import com.ssafy.enjoytrip.hotplace.model.dto.TagType;
+import com.ssafy.enjoytrip.hotplace.model.entity.HotPlace;
+import com.ssafy.enjoytrip.hotplace.model.entity.HotPlaceArticle;
+import com.ssafy.enjoytrip.hotplace.model.entity.HotPlaceTag;
 import com.ssafy.enjoytrip.hotplace.service.HotPlaceService;
 import com.ssafy.enjoytrip.media.service.S3Service;
 import com.ssafy.enjoytrip.user.model.dto.NoAuth;

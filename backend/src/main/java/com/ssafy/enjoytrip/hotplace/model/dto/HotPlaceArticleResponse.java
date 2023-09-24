@@ -1,7 +1,7 @@
 package com.ssafy.enjoytrip.hotplace.model.dto;
 
-import com.ssafy.enjoytrip.hotplace.model.HotPlace.HotPlaceTag;
-import com.ssafy.enjoytrip.hotplace.model.HotPlaceArticle;
+import com.ssafy.enjoytrip.hotplace.model.entity.HotPlaceArticle;
+import com.ssafy.enjoytrip.hotplace.model.entity.HotPlaceTag;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
