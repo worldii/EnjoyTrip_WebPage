@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.board.model.dto;
+package com.ssafy.enjoytrip.board.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +8,6 @@ import lombok.Getter;
 public enum BoardType {
     COMMUNITY("community"), NOTICE("notice"),
     ;
-    
+
     private String type;
 }

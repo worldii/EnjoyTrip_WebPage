@@ -1,6 +1,6 @@
-package com.ssafy.enjoytrip.board.model.dto;
+package com.ssafy.enjoytrip.board.model.entity;
 
-import com.ssafy.enjoytrip.media.FileInfo;
+import com.ssafy.enjoytrip.media.model.entity.FileInfo;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -27,11 +27,11 @@ public class Board {
     private List<FileInfo> imageFiles = new ArrayList<>();
     private List<Comment> comments = new ArrayList<>();
 
-    public void setFileInfos(List<FileInfo> fileInfos) {
+    public void setFileInfos(final List<FileInfo> fileInfos) {
         this.imageFiles = fileInfos;
     }
 
-    public void setComments(List<Comment> comments) {
+    public void setComments(final List<Comment> comments) {
         this.comments = comments;
     }
 }

@@ -1,6 +1,6 @@
 package com.ssafy.enjoytrip.media.service;
 
-import com.ssafy.enjoytrip.media.FileInfo;
+import com.ssafy.enjoytrip.media.model.entity.FileInfo;
 import com.ssafy.enjoytrip.media.model.mapper.FileMapper;
 import java.util.ArrayList;
 import java.util.List;

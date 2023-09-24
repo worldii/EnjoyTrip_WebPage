@@ -1,7 +1,7 @@
 package com.ssafy.enjoytrip.board.model.dto.response;
 
-import com.ssafy.enjoytrip.board.model.dto.Board;
-import com.ssafy.enjoytrip.board.model.dto.BoardType;
+import com.ssafy.enjoytrip.board.model.entity.Board;
+import com.ssafy.enjoytrip.board.model.entity.BoardType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,7 +21,7 @@ public class BoardResponse {
     private Long hit;
     private String currentUpdate;
 
-    public static BoardResponse from(Board board) {
+    public static BoardResponse from(final Board board) {
         return BoardResponse.builder()
             .boardId(board.getBoardId())
             .userId(board.getUserId())

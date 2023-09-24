@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.media;
+package com.ssafy.enjoytrip.media.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

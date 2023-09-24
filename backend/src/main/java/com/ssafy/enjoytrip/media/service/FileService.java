@@ -1,6 +1,6 @@
 package com.ssafy.enjoytrip.media.service;
 
-import com.ssafy.enjoytrip.media.FileInfo;
+import com.ssafy.enjoytrip.media.model.entity.FileInfo;
 import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 

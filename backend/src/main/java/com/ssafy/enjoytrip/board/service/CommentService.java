@@ -1,10 +1,10 @@
 package com.ssafy.enjoytrip.board.service;
 
 
-import com.ssafy.enjoytrip.board.model.dto.Comment;
 import com.ssafy.enjoytrip.board.model.dto.request.CommentModifyRequest;
 import com.ssafy.enjoytrip.board.model.dto.request.CommentSaveRequest;
 import com.ssafy.enjoytrip.board.model.dto.response.CommentResponse;
+import com.ssafy.enjoytrip.board.model.entity.Comment;
 import java.util.List;
 
 public interface CommentService {

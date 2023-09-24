@@ -1,9 +1,9 @@
 package com.ssafy.enjoytrip.board.service;
 
-import com.ssafy.enjoytrip.board.model.dto.Comment;
 import com.ssafy.enjoytrip.board.model.dto.request.CommentModifyRequest;
 import com.ssafy.enjoytrip.board.model.dto.request.CommentSaveRequest;
 import com.ssafy.enjoytrip.board.model.dto.response.CommentResponse;
+import com.ssafy.enjoytrip.board.model.entity.Comment;
 import com.ssafy.enjoytrip.board.model.mapper.BoardMapper;
 import com.ssafy.enjoytrip.board.model.mapper.CommentMapper;
 import com.ssafy.enjoytrip.global.error.BoardException;

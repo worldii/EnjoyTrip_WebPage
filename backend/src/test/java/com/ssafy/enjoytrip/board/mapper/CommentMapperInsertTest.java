@@ -1,6 +1,6 @@
 package com.ssafy.enjoytrip.board.mapper;
 
-import com.ssafy.enjoytrip.board.model.dto.Comment;
+import com.ssafy.enjoytrip.board.model.entity.Comment;
 import com.ssafy.enjoytrip.board.model.mapper.CommentMapper;
 import com.ssafy.enjoytrip.board.service.BoardService;
 import org.junit.jupiter.api.Assertions;

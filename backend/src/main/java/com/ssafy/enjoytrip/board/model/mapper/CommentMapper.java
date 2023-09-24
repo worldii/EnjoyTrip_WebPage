@@ -1,6 +1,6 @@
 package com.ssafy.enjoytrip.board.model.mapper;
 
-import com.ssafy.enjoytrip.board.model.dto.Comment;
+import com.ssafy.enjoytrip.board.model.entity.Comment;
 import java.util.List;
 import java.util.Optional;
 import org.apache.ibatis.annotations.Mapper;

@@ -1,6 +1,6 @@
 package com.ssafy.enjoytrip.board.model.dto.response;
 
-import com.ssafy.enjoytrip.board.model.dto.Comment;
+import com.ssafy.enjoytrip.board.model.entity.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

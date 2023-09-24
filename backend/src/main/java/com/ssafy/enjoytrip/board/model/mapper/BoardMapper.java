@@ -1,9 +1,9 @@
 package com.ssafy.enjoytrip.board.model.mapper;
 
 import com.github.pagehelper.Page;
-import com.ssafy.enjoytrip.board.model.dto.Board;
 import com.ssafy.enjoytrip.board.model.dto.request.SearchDto;
-import com.ssafy.enjoytrip.media.FileInfo;
+import com.ssafy.enjoytrip.board.model.entity.Board;
+import com.ssafy.enjoytrip.media.model.entity.FileInfo;
 import java.util.List;
 import java.util.Optional;
 import org.apache.ibatis.annotations.Mapper;

@@ -6,7 +6,7 @@ import com.ssafy.enjoytrip.board.model.dto.request.SearchDto;
 import com.ssafy.enjoytrip.board.model.dto.response.BoardResponse;
 import com.ssafy.enjoytrip.board.model.dto.response.PageResponse;
 import com.ssafy.enjoytrip.board.service.BoardService;
-import com.ssafy.enjoytrip.media.FileInfo;
+import com.ssafy.enjoytrip.media.model.entity.FileInfo;
 import com.ssafy.enjoytrip.media.service.FileService;
 import com.ssafy.enjoytrip.user.model.dto.NoAuth;
 import java.util.List;

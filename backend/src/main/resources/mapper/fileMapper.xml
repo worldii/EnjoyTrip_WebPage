@@ -11,12 +11,12 @@
     </foreach>
   </insert>
 
-  <resultMap type="com.ssafy.enjoytrip.media.FileInfo" id="fileInfo">
+  <resultMap type="com.ssafy.enjoytrip.media.model.entity.FileInfo" id="fileInfo">
     <id column="file_info_id" property="fileInfoId"/>
     <result column="file_url" property="fileUrl"/>
     <result column="board_id" property="boardId"/>
   </resultMap>
-  
+
   <select id="selectFile" resultMap="fileInfo">
     select *
     from file_info

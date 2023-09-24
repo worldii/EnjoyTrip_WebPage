@@ -1,6 +1,6 @@
 package com.ssafy.enjoytrip.board.model.typeHandler;
 
-import com.ssafy.enjoytrip.board.model.dto.BoardType;
+import com.ssafy.enjoytrip.board.model.entity.BoardType;
 import org.apache.ibatis.type.MappedTypes;
 import org.apache.ibatis.type.TypeHandler;
 
@@ -8,24 +8,28 @@ import org.apache.ibatis.type.TypeHandler;
 public class BoardTypeHandler implements TypeHandler<BoardType> {
 
     @Override
-    public void setParameter(java.sql.PreparedStatement ps, int i, BoardType parameter, org.apache.ibatis.type.JdbcType jdbcType) throws java.sql.SQLException {
+    public void setParameter(java.sql.PreparedStatement ps, int i, BoardType parameter,
+        org.apache.ibatis.type.JdbcType jdbcType) throws java.sql.SQLException {
         ps.setString(i, parameter.getType());
     }
 
     @Override
-    public BoardType getResult(java.sql.ResultSet rs, String columnName) throws java.sql.SQLException {
-       String typeKey = rs.getString(columnName);
-         return getBoardType(typeKey);
+    public BoardType getResult(java.sql.ResultSet rs, String columnName)
+        throws java.sql.SQLException {
+        String typeKey = rs.getString(columnName);
+        return getBoardType(typeKey);
     }
 
     @Override
-    public BoardType getResult(java.sql.ResultSet rs, int columnIndex) throws java.sql.SQLException {
+    public BoardType getResult(java.sql.ResultSet rs, int columnIndex)
+        throws java.sql.SQLException {
         String typeKey = rs.getString(columnIndex);
         return getBoardType(typeKey);
     }
 
     @Override
-    public BoardType getResult(java.sql.CallableStatement cs, int columnIndex) throws java.sql.SQLException {
+    public BoardType getResult(java.sql.CallableStatement cs, int columnIndex)
+        throws java.sql.SQLException {
         String typeKey = cs.getString(columnIndex);
         return getBoardType(typeKey);
     }

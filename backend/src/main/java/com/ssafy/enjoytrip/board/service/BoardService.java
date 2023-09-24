@@ -1,10 +1,10 @@
 package com.ssafy.enjoytrip.board.service;
 
-import com.ssafy.enjoytrip.board.model.dto.Board;
 import com.ssafy.enjoytrip.board.model.dto.request.BoardModifyRequest;
 import com.ssafy.enjoytrip.board.model.dto.request.PageInfoRequest;
 import com.ssafy.enjoytrip.board.model.dto.request.SearchDto;
 import com.ssafy.enjoytrip.board.model.dto.response.PageResponse;
+import com.ssafy.enjoytrip.board.model.entity.Board;
 import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
