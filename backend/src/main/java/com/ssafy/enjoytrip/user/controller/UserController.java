@@ -7,12 +7,12 @@ import com.ssafy.enjoytrip.user.model.dto.request.UserAddRequest;
 import com.ssafy.enjoytrip.user.model.dto.request.UserLoginRequest;
 import com.ssafy.enjoytrip.user.model.dto.request.UserModifyRequest;
 import com.ssafy.enjoytrip.user.model.dto.response.TokenResponse;
+import com.ssafy.enjoytrip.user.model.dto.response.UserResponse;
 import com.ssafy.enjoytrip.user.model.entity.User;
 import com.ssafy.enjoytrip.user.model.service.JwtService;
 import com.ssafy.enjoytrip.user.service.UserService;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -44,6 +44,12 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<TokenResponse> login(@RequestBody final UserLoginRequest request) {
         return ResponseEntity.ok(userService.login(request));
+    }
+
+
+    @GetMapping("/info/{userId}")
+    public ResponseEntity<UserResponse> getInfo(@PathVariable final String userId) {
+        return ResponseEntity.ok(userService.getInformation(userId));
     }
 
     @PutMapping
@@ -108,24 +114,6 @@ public class UserController {
         } catch (Exception e) {
             resultMap.put("success", false);
             status = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-
-        return new ResponseEntity<>(resultMap, status);
-    }
-
-    @GetMapping("/info/{userId}")
-    public ResponseEntity<?> getInfo(@PathVariable String userId) {
-        Map<String, Object> resultMap = new HashMap<>();
-
-        HttpStatus status = HttpStatus.ACCEPTED;
-
-        User user = userService.getInformation(userId);
-
-        if (Objects.nonNull(user)) {
-            resultMap.put("success", true);
-            resultMap.put("userInfo", user);
-        } else {
-            resultMap.put("success", false);
         }
 
         return new ResponseEntity<>(resultMap, status);

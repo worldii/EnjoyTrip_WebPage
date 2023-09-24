@@ -4,13 +4,13 @@ import com.ssafy.enjoytrip.user.model.dto.request.UserAddRequest;
 import com.ssafy.enjoytrip.user.model.dto.request.UserLoginRequest;
 import com.ssafy.enjoytrip.user.model.dto.request.UserModifyRequest;
 import com.ssafy.enjoytrip.user.model.dto.response.TokenResponse;
-import com.ssafy.enjoytrip.user.model.entity.User;
+import com.ssafy.enjoytrip.user.model.dto.response.UserResponse;
 
 public interface UserService {
 
     TokenResponse login(final UserLoginRequest request);
 
-    User getInformation(final String userId);
+    UserResponse getInformation(final String userId);
 
     boolean join(final UserAddRequest user);
 

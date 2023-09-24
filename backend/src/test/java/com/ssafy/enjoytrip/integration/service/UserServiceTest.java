@@ -8,7 +8,7 @@ import com.ssafy.enjoytrip.global.error.UserException;
 import com.ssafy.enjoytrip.user.model.dto.request.UserAddRequest;
 import com.ssafy.enjoytrip.user.model.dto.request.UserLoginRequest;
 import com.ssafy.enjoytrip.user.model.dto.request.UserModifyRequest;
-import com.ssafy.enjoytrip.user.model.entity.User;
+import com.ssafy.enjoytrip.user.model.dto.response.UserResponse;
 import com.ssafy.enjoytrip.user.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -177,7 +177,7 @@ class UserServiceTest {
         userService.join(userAddRequest);
 
         // when
-        User userInformation = userService.getInformation(userAddRequest.getUserId());
+        UserResponse userInformation = userService.getInformation(userAddRequest.getUserId());
 
         // then
         assertAll(
@@ -211,7 +211,7 @@ class UserServiceTest {
         userService.modify(userModifyRequest, userAddRequest.getUserId());
 
         // then
-        User userInfomation = userService.getInformation(userAddRequest.getUserId());
+        UserResponse userInfomation = userService.getInformation(userAddRequest.getUserId());
         assertAll(
             () -> assertThat(userInfomation.getName()).isEqualTo("jongha2"),
             () -> assertThat(userInfomation.getAddress()).isEqualTo("test2"),
