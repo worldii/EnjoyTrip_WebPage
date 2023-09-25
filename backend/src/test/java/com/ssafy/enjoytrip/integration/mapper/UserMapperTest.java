@@ -5,6 +5,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
 import com.ssafy.enjoytrip.user.model.entity.User;
 import com.ssafy.enjoytrip.user.model.mapper.UserMapper;
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,5 +65,19 @@ class UserMapperTest {
 
         // then
         assertThat(newUser.getAddress()).isEqualTo("test2");
+    }
+
+    @Test
+    @DisplayName("유저를 deleteByUserId로 삭제할 수 있다.")
+    void 유저_정상적으로_삭제() {
+        // given
+        String userId = "test";
+
+        // when
+        userMapper.deleteByUserId(userId);
+
+        // then
+        Optional<User> user = userMapper.selectByUserId(userId);
+        assertThat(user).isEmpty();
     }
 }
