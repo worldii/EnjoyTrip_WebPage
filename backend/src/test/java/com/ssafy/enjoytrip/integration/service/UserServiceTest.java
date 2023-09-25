@@ -247,4 +247,47 @@ class UserServiceTest {
             .isInstanceOf(UserException.class)
             .hasMessage("해당 유저가 없습니다.");
     }
+
+    @Test
+    @DisplayName("현재 로그인한 유저의 정보를 삭제할 수 있다")
+    void 유저_정보_삭제() {
+        // given
+        UserAddRequest userAddRequest = UserAddRequest.builder()
+            .userId("jongha")
+            .name("jongha")
+            .address("test")
+            .password("test")
+            .email("test")
+            .authority(1)
+            .build();
+        userService.join(userAddRequest);
+
+        // when
+        userService.delete(userAddRequest.getUserId(), userAddRequest.getUserId());
+
+        // then
+        assertThatCode(() -> userService.getInformation(userAddRequest.getUserId()))
+            .isInstanceOf(UserException.class)
+            .hasMessage("해당 유저가 없습니다.");
+    }
+
+    @Test
+    @DisplayName("현재 로그인한 유저가 아닌 다른 유저의 정보를 삭제할 수 없다")
+    void 유저_정보_삭제_할수_없다_현재_로그인한_유저가_아닌_경우() {
+        // given
+        UserAddRequest userAddRequest = UserAddRequest.builder()
+            .userId("jongha")
+            .name("jongha")
+            .address("test")
+            .password("test")
+            .email("test")
+            .authority(1)
+            .build();
+        userService.join(userAddRequest);
+
+        // when & then
+        assertThatCode(() -> userService.delete(userAddRequest.getUserId(), "test2"))
+            .isInstanceOf(UserException.class)
+            .hasMessage("로그인한 회원이 아닙니다.");
+    }
 }
