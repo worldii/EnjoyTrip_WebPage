@@ -7,11 +7,11 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface UserMapper {
 
-    Optional<User> selectByUserId(String userId);
+    Optional<User> selectByUserId(final String userId);
 
-    int updateByUser(User user);
+    int updateByUser(final User user);
 
-    int insertByUser(User user);
+    int insertByUser(final User user);
 
-    int deleteByUserId(String userId);
+    void deleteByUserId(final String userId);
 }

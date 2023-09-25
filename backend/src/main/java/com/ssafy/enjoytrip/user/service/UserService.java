@@ -16,5 +16,5 @@ public interface UserService {
 
     void modify(final UserModifyRequest request, final String userId);
 
-    int leave(String userId);
+    void delete(final String userId, final String loginUserId);
 }

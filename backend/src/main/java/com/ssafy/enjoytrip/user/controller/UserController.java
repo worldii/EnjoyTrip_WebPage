@@ -61,22 +61,13 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @NoAuth
     @DeleteMapping("/{userId}")
-    public ResponseEntity<?> leave(@PathVariable String userId) {
-
-        Map<String, Object> resultMap = new HashMap<>();
-
-        int result = userService.leave(userId);
-        jwtService.deleteRefreshToken(userId);
-
-        if (result > 0) {
-            resultMap.put("success", true);
-        } else {
-            resultMap.put("success", false);
-        }
-
-        return new ResponseEntity<>(resultMap, HttpStatus.ACCEPTED);
+    public ResponseEntity<Void> delete(
+        @PathVariable final String userId,
+        @LoginUser final String loginUser
+    ) {
+        userService.delete(userId, loginUser);
+        return ResponseEntity.noContent().build();
     }
 
 

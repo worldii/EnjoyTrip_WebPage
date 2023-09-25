@@ -1,6 +1,7 @@
 package com.ssafy.enjoytrip.acceptance;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -210,5 +211,63 @@ class UserAcceptanceTest extends AcceptanceTest {
 
         // then
         assertThat(response.statusCode()).isEqualTo(OK.value());
+    }
+
+
+    @Test
+    @DisplayName("유저가 정상적으로 회원 탈퇴한다")
+    void 유저_정상_회원_탈퇴() {
+        // given
+        UserAddRequest userAddRequest = UserAddRequest.builder()
+            .userId("jongha")
+            .name("jongha")
+            .address("test")
+            .password("test")
+            .email("test")
+            .authority(1)
+            .build();
+
+        RestAssured
+            .given()
+            .contentType(APPLICATION_JSON_VALUE)
+            .body(userAddRequest)
+            .log().all()
+            .when()
+            .post("/user")
+            .then()
+            .log().all()
+            .extract();
+
+        UserLoginRequest userLoginRequest = UserLoginRequest.builder()
+            .userId("jongha")
+            .password("test")
+            .build();
+
+        // when
+        String accessToken = RestAssured
+            .given()
+            .contentType(APPLICATION_JSON_VALUE)
+            .body(userLoginRequest)
+            .log().all()
+            .when()
+            .post("/user/login")
+            .then()
+            .log().all()
+            .extract()
+            .as(TokenResponse.class)
+            .getAccessToken();
+
+        ExtractableResponse<Response> response = RestAssured
+            .given()
+            .header("Authorization", accessToken)
+            .log().all()
+            .when()
+            .delete("/user/jongha")
+            .then()
+            .log().all()
+            .extract();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(NO_CONTENT.value());
     }
 }

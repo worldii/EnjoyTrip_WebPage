@@ -71,8 +71,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public int leave(String userId) {
-        return userMapper.deleteByUserId(userId);
+    public void delete(final String userId, final String loginUserId) {
+        if (!userId.equals(loginUserId)) {
+            throw new UserException("로그인한 회원이 아닙니다");
+        }
+
+        userMapper.selectByUserId(userId)
+            .orElseThrow(() -> new UserException("해당 유저가 없습니다."));
+
+        jwtService.deleteRefreshToken(userId);
+        userMapper.deleteByUserId(userId);
     }
 
 }
