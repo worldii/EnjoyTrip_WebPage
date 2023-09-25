@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void delete(final String userId, final String loginUserId) {
         if (!userId.equals(loginUserId)) {
-            throw new UserException("로그인한 회원이 아닙니다");
+            throw new UserException("로그인한 회원이 아닙니다.");
         }
 
         userMapper.selectByUserId(userId)
