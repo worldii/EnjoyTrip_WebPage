@@ -12,10 +12,8 @@ import java.util.Date;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional(readOnly = true)
 public class TokenService {
 
     private static final String USER_ACCESS_TOKEN_KEY = "userId";
@@ -33,7 +31,7 @@ public class TokenService {
         this.tokenRepository = tokenRepository;
     }
 
-    
+
     public AccessTokenResponse generateAccessToken(final String userId) {
         final RefreshToken refreshToken = tokenRepository.findRefreshTokenByUserId(userId)
             .orElseThrow(() -> new UserException("존재하지 않는 유저입니다."));
@@ -54,7 +52,6 @@ public class TokenService {
         return new AccessTokenResponse(accessToken);
     }
 
-    @Transactional
     public void registerBlackList(final String accessToken) {
         final Date expiration = Jwts.parser()
             .setSigningKey(secretKey.getBytes())
@@ -64,7 +61,7 @@ public class TokenService {
         tokenRepository.registerBlackList(accessToken, expiration.getTime());
     }
 
-    @Transactional
+
     public RefreshTokenResponse generateRefreshToken(final String userId) {
 
         final RefreshToken refreshToken = new RefreshToken(UUID.randomUUID().toString(), userId);
@@ -84,7 +81,6 @@ public class TokenService {
         }
     }
 
-    @Transactional
     public void deleteRefreshToken(final String userId) {
         tokenRepository.delete(userId);
     }

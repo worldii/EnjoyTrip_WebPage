@@ -13,6 +13,7 @@ import com.ssafy.enjoytrip.global.error.UserException;
 import com.ssafy.enjoytrip.user.model.dto.request.UserAddRequest;
 import com.ssafy.enjoytrip.user.model.dto.request.UserLoginRequest;
 import com.ssafy.enjoytrip.user.service.UserService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -20,11 +21,11 @@ import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.context.jdbc.Sql;
 
 @DisplayName("Token Service 통합 테스트")
 @SpringBootTest
-@Transactional
+@Sql({"/truncate.sql", "/user.sql"})
 class TokenServiceTest {
 
     @Autowired
@@ -35,6 +36,11 @@ class TokenServiceTest {
     private TokenRepository tokenRepository;
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
+
+    @BeforeEach
+    void setUp() {
+        redisTemplate.delete(redisTemplate.keys("*"));
+    }
 
     @Test
     @DisplayName("accessToken을 정상 저장한다.")

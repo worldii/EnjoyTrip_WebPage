@@ -17,12 +17,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.context.jdbc.Sql;
 
 
 @DisplayName("유저 서비스 통합 테스트")
 @SpringBootTest
-@Transactional
+@Sql({"/truncate.sql", "/user.sql"})
 class UserServiceTest {
 
     @Autowired

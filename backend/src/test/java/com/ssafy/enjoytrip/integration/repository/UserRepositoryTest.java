@@ -1,25 +1,24 @@
-package com.ssafy.enjoytrip.integration.mapper;
+package com.ssafy.enjoytrip.integration.repository;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
 import com.ssafy.enjoytrip.global.error.UserException;
+import com.ssafy.enjoytrip.user.model.dao.UserRepository;
 import com.ssafy.enjoytrip.user.model.entity.User;
-import com.ssafy.enjoytrip.user.model.mapper.UserMapper;
-import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.context.jdbc.Sql;
 
-@DisplayName("유저 매퍼 통합 테스트")
+@DisplayName("유저 레포지토리 통합 테스트")
 @SpringBootTest
-@Transactional
-class UserMapperTest {
+@Sql({"/truncate.sql", "/user.sql"})
+class UserRepositoryTest {
 
     @Autowired
-    private UserMapper userMapper;
+    private UserRepository userRepository;
 
     @Test
     @DisplayName("정상적으로 유저가 회원가입할 수 있다.")
@@ -36,7 +35,7 @@ class UserMapperTest {
             .build();
 
         //when & then
-        assertThatCode(() -> userMapper.insertByUser(user))
+        assertThatCode(() -> userRepository.insertByUser(user))
             .doesNotThrowAnyException();
     }
 
@@ -47,7 +46,7 @@ class UserMapperTest {
         String userId = "test";
 
         //when
-        User user = userMapper.selectByUserId(userId)
+        User user = userRepository.selectByUserId(userId)
             .orElseThrow(() -> new UserException("해당 유저가 없습니다."));
 
         //then
@@ -59,12 +58,12 @@ class UserMapperTest {
     @DisplayName("유저를 updateByUser 수정할 수 있다.")
     void 유저_정상적으로_수정() {
         // given
-        User oldUser = userMapper.selectByUserId("test").get();
+        User oldUser = userRepository.selectByUserId("test").get();
 
         // when
         oldUser.updateAddress("test2");
-        userMapper.updateByUser(oldUser);
-        User newUser = userMapper.selectByUserId("test").get();
+        userRepository.updateByUser(oldUser);
+        User newUser = userRepository.selectByUserId("test").get();
 
         // then
         assertThat(newUser.getAddress()).isEqualTo("test2");
@@ -77,10 +76,9 @@ class UserMapperTest {
         String userId = "test";
 
         // when
-        userMapper.deleteByUserId(userId);
+        userRepository.deleteByUserId(userId);
 
         // then
-        Optional<User> user = userMapper.selectByUserId(userId);
-        assertThat(user).isEmpty();
+        assertThat(userRepository.selectByUserId(userId)).isEmpty();
     }
 }
