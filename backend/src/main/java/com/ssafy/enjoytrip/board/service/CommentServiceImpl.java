@@ -1,15 +1,15 @@
 package com.ssafy.enjoytrip.board.service;
 
+import com.ssafy.enjoytrip.board.model.dao.BoardRepository;
+import com.ssafy.enjoytrip.board.model.dao.CommentRepository;
 import com.ssafy.enjoytrip.board.model.dto.request.CommentModifyRequest;
 import com.ssafy.enjoytrip.board.model.dto.request.CommentSaveRequest;
 import com.ssafy.enjoytrip.board.model.dto.response.CommentResponse;
 import com.ssafy.enjoytrip.board.model.entity.Comment;
-import com.ssafy.enjoytrip.board.model.mapper.BoardMapper;
-import com.ssafy.enjoytrip.board.model.mapper.CommentMapper;
 import com.ssafy.enjoytrip.global.error.BoardException;
 import com.ssafy.enjoytrip.global.error.CommentNotFoundException;
+import com.ssafy.enjoytrip.user.model.dao.UserRepository;
 import com.ssafy.enjoytrip.user.model.entity.User;
-import com.ssafy.enjoytrip.user.model.mapper.UserMapper;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -21,9 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class CommentServiceImpl implements CommentService {
 
-    private final CommentMapper commentMapper;
-    private final BoardMapper boardMapper;
-    private final UserMapper userMapper;
+    private final CommentRepository commentRepository;
+    private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
 
     @Override
     @Transactional
@@ -31,9 +31,9 @@ public class CommentServiceImpl implements CommentService {
         final CommentSaveRequest commentSaveRequest,
         final String userId, final Long boardId
     ) {
-        boardMapper.selectBoard(boardId)
+        boardRepository.selectBoard(boardId)
             .orElseThrow(() -> new BoardException("해당 boardId에 해당하는 board가 없습니다."));
-        final User user = userMapper.selectByUserId(userId)
+        final User user = userRepository.selectByUserId(userId)
             .orElseThrow(() -> new BoardException("해당 userId에 해당하는 user가 없습니다."));
 
         validateSameUser(user.getUserId(), userId);
@@ -44,7 +44,7 @@ public class CommentServiceImpl implements CommentService {
             .userId(userId)
             .build();
 
-        return commentMapper.insertComment(comment);
+        return commentRepository.insertComment(comment);
     }
 
     private void validateSameUser(final String commentUserId, final String userId) {
@@ -55,10 +55,10 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<CommentResponse> getCommentList(final Long boardId) {
-        boardMapper.selectBoard(boardId)
+        boardRepository.selectBoard(boardId)
             .orElseThrow(() -> new BoardException("해당 boardId에 해당하는 board가 없습니다."));
 
-        return commentMapper.selectAll(boardId)
+        return commentRepository.selectAll(boardId)
             .stream()
             .map(CommentResponse::from)
             .collect(Collectors.toList());
@@ -66,7 +66,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public Comment detail(final Long commentId) {
-        return commentMapper
+        return commentRepository
             .selectComment(commentId)
             .orElseThrow(() -> new CommentNotFoundException("해당 commentId에 해당하는 comment가 없습니다."));
     }
@@ -75,9 +75,9 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public void modify(final Long commentId, final CommentModifyRequest request) {
-        boardMapper.selectBoard(request.getBoardId())
+        boardRepository.selectBoard(request.getBoardId())
             .orElseThrow(() -> new BoardException("해당 boardId에 해당하는 board가 없습니다."));
-        final Comment comment = commentMapper
+        final Comment comment = commentRepository
             .selectComment(commentId)
             .orElseThrow(() -> new BoardException("해당 commentId에 해당하는 comment가 없습니다."));
 
@@ -90,12 +90,12 @@ public class CommentServiceImpl implements CommentService {
             .userId(request.getUserId())
             .build();
 
-        commentMapper.updateComment(newComment);
+        commentRepository.updateComment(newComment);
     }
 
     @Override
     @Transactional
     public void delete(final Long commentId) {
-        commentMapper.deleteComment(commentId);
+        commentRepository.deleteComment(commentId);
     }
 }

@@ -2,6 +2,8 @@ package com.ssafy.enjoytrip.board.service;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.ssafy.enjoytrip.board.model.dao.BoardRepository;
+import com.ssafy.enjoytrip.board.model.dao.CommentRepository;
 import com.ssafy.enjoytrip.board.model.dto.request.BoardModifyRequest;
 import com.ssafy.enjoytrip.board.model.dto.request.BoardSaveRequest;
 import com.ssafy.enjoytrip.board.model.dto.request.PageInfoRequest;
@@ -9,16 +11,14 @@ import com.ssafy.enjoytrip.board.model.dto.request.SearchDto;
 import com.ssafy.enjoytrip.board.model.dto.response.PageResponse;
 import com.ssafy.enjoytrip.board.model.entity.Board;
 import com.ssafy.enjoytrip.board.model.entity.Comment;
-import com.ssafy.enjoytrip.board.model.mapper.BoardMapper;
-import com.ssafy.enjoytrip.board.model.mapper.CommentMapper;
 import com.ssafy.enjoytrip.global.error.BoardException;
 import com.ssafy.enjoytrip.global.error.UserNotFoundException;
 import com.ssafy.enjoytrip.global.util.JsonUtil;
 import com.ssafy.enjoytrip.global.util.PageNavigationForPageHelper;
 import com.ssafy.enjoytrip.media.model.entity.FileInfo;
 import com.ssafy.enjoytrip.media.service.FileService;
+import com.ssafy.enjoytrip.user.model.dao.UserRepository;
 import com.ssafy.enjoytrip.user.model.entity.User;
-import com.ssafy.enjoytrip.user.model.mapper.UserMapper;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,15 +32,15 @@ import org.springframework.web.multipart.MultipartFile;
 @Transactional(readOnly = true)
 public class BoardServiceImpl implements BoardService {
 
-    private final BoardMapper boardMapper;
-    private final UserMapper userMapper;
-    private final CommentMapper commentMapper;
+    private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
     private final FileService fileService;
 
     @Override
     @Transactional
     public Long saveBoard(final String json, final List<MultipartFile> files, final String userId) {
-        userMapper.selectByUserId(userId)
+        userRepository.selectByUserId(userId)
             .orElseThrow(() -> new UserNotFoundException("해당 userId에 해당하는 user가 없습니다."));
 
         final BoardSaveRequest request = (BoardSaveRequest)
@@ -53,7 +53,7 @@ public class BoardServiceImpl implements BoardService {
             .userId(userId)
             .build();
 
-        final Long boardId = boardMapper.insertBoard(board);
+        final Long boardId = boardRepository.insertBoard(board);
         fileService.insertFile(boardId, files, "board/");
 
         return boardId;
@@ -67,7 +67,7 @@ public class BoardServiceImpl implements BoardService {
 
         PageHelper.startPage(pageInfoRequest.getPage(), pageInfoRequest.getPageSize());
         return new PageResponse(
-            new PageNavigationForPageHelper(boardMapper.selectAll(), path));
+            new PageNavigationForPageHelper(boardRepository.selectAll(), path));
     }
 
     @Override
@@ -89,20 +89,20 @@ public class BoardServiceImpl implements BoardService {
         }
         PageHelper.startPage(pageInfoRequest.getPage(), pageInfoRequest.getPageSize());
 
-        final Page<Board> boards = boardMapper.selectBoardListBySearchDto(searchDto);
+        final Page<Board> boards = boardRepository.selectBoardListBySearchDto(searchDto);
         return PageResponse.from(new PageNavigationForPageHelper(boards, path));
     }
 
 
     @Override
     public Board detail(final Long boardId) {
-        final Board board = boardMapper
+        final Board board = boardRepository
             .selectBoard(boardId)
             .orElseThrow(() -> new BoardException("해당 boardId에 해당하는 board가 없습니다."));
 
         // TODO : 한번에 조인해오기
         final List<FileInfo> fileInfos = fileService.selectFile(boardId);
-        final List<Comment> comments = commentMapper.selectAll(boardId);
+        final List<Comment> comments = commentRepository.selectAll(boardId);
         board.setFileInfos(fileInfos);
         board.setComments(comments);
 
@@ -116,10 +116,10 @@ public class BoardServiceImpl implements BoardService {
         final String userId,
         final BoardModifyRequest boardModifyRequest
     ) {
-        userMapper
+        userRepository
             .selectByUserId(userId)
             .orElseThrow(() -> new BoardException("해당 유저가 없습니다."));
-        final Board board = boardMapper
+        final Board board = boardRepository
             .selectBoard(boardId)
             .orElseThrow(() -> new BoardException("해당 boardId에 해당하는 board가 없습니다."));
 
@@ -132,7 +132,7 @@ public class BoardServiceImpl implements BoardService {
             .content(boardModifyRequest.getContent())
             .build();
 
-        boardMapper.updateBoard(modifyBoard);
+        boardRepository.updateBoard(modifyBoard);
     }
 
     private void validateSameMember(final String userId, final String boardUserId) {
@@ -144,23 +144,22 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional
     public void delete(final Long boardId, final String userId) {
-        final User user = userMapper.selectByUserId(userId)
+        final User user = userRepository.selectByUserId(userId)
             .orElseThrow(() -> new BoardException("해당 유저가 없습니다."));
-        final Board board = boardMapper.selectBoard(boardId)
+        final Board board = boardRepository.selectBoard(boardId)
             .orElseThrow(() -> new BoardException("해당 boardId에 해당하는 Board가 없습니다."));
 
         validateSameMember(user.getUserId(), board.getUserId());
 
         // TODO 사진들 다 삭제 + 댓글들 다 삭제
-        commentMapper.deleteAll(boardId);
-        boardMapper.deleteBoard(boardId);
+        commentRepository.deleteAll(boardId);
+        boardRepository.deleteBoard(boardId);
         fileService.deleteFile(boardId);
     }
 
     @Override
     @Transactional
     public void updateHit(final Long boardId) {
-        boardMapper.updateHit(boardId);
+        boardRepository.updateHit(boardId);
     }
-
 }
