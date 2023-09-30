@@ -4,24 +4,24 @@ package com.ssafy.enjoytrip.domain.jwt;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.ssafy.enjoytrip.user.model.service.JwtService;
+import com.ssafy.enjoytrip.global.auth.service.AuthService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 
 @SpringBootTest
-public class JwtServiceTest {
+public class AuthServiceTest {
 
     @Autowired
-    JwtService jwtService;
+    AuthService authService;
     @Autowired
     RedisTemplate<String, String> redisTemplate;
 
     @Test
     void testLoadBean() {
         //given - when - then
-        assertNotNull(jwtService);
+        assertNotNull(authService);
     }
 
     @Test
@@ -30,11 +30,11 @@ public class JwtServiceTest {
         String userId = "test";
 
         //when
-        String refreshToken = jwtService.generateRefreshToken(userId);
+        String refreshToken = authService.generateRefreshToken(userId);
 
         //then
         assertEquals(refreshToken, redisTemplate.opsForValue().get(userId));
-        assertEquals(jwtService.checkValidToken(refreshToken), true);
+        assertEquals(authService.checkValidToken(refreshToken), true);
     }
 
     @Test
@@ -43,10 +43,10 @@ public class JwtServiceTest {
         String userId = "test";
 
         //when
-        String refreshToken = jwtService.generateAccessToken(userId);
+        String refreshToken = authService.generateAccessToken(userId);
 
         //then
-        assertEquals(jwtService.checkValidToken(refreshToken), true);
+        assertEquals(authService.checkValidToken(refreshToken), true);
     }
 
     @Test
@@ -54,11 +54,11 @@ public class JwtServiceTest {
         //given
         String correctUserId = "junyoung";
         String wrongUserId = "jongha";
-        String refreshToken = jwtService.generateRefreshToken(correctUserId);
+        String refreshToken = authService.generateRefreshToken(correctUserId);
 
         //when
-        boolean canRefresh = jwtService.canRefresh(refreshToken, correctUserId);
-        boolean canNotRefresh = jwtService.canRefresh(refreshToken, wrongUserId);
+        boolean canRefresh = authService.canRefresh(refreshToken, correctUserId);
+        boolean canNotRefresh = authService.canRefresh(refreshToken, wrongUserId);
 
         //then
         assertEquals(canRefresh, true);

@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.user.model.interceptor;
+package com.ssafy.enjoytrip.global.infra;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Component;

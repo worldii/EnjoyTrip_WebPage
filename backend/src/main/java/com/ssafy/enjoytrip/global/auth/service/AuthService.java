@@ -1,7 +1,7 @@
-package com.ssafy.enjoytrip.user.model.service;
+package com.ssafy.enjoytrip.global.auth.service;
 
-import com.ssafy.enjoytrip.user.model.dao.JwtRepository;
-import com.ssafy.enjoytrip.user.model.dto.RefreshToken;
+import com.ssafy.enjoytrip.global.auth.dao.JwtRepository;
+import com.ssafy.enjoytrip.global.auth.model.entity.RefreshToken;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -11,14 +11,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class JwtService {
+public class AuthService {
 
     private final String salt;
     private final Long accessExpireMin;
     private final Long refreshExpireMin;
     private final JwtRepository jwtRepository;
 
-    public JwtService(
+    public AuthService(
         @Value("${jwt.salt}") final String salt,
         @Value("${jwt.access-token-expmin}") final Long accessExpireMin,
         @Value("${jwt.refresh-token-expmin}") final Long refreshExpireMin,
