@@ -7,12 +7,12 @@ import com.ssafy.enjoytrip.global.auth.model.dto.response.TokenResponse;
 import com.ssafy.enjoytrip.global.auth.service.TokenService;
 import com.ssafy.enjoytrip.global.error.UserException;
 import com.ssafy.enjoytrip.global.infra.PasswordEncoder;
+import com.ssafy.enjoytrip.user.model.dao.UserRepository;
 import com.ssafy.enjoytrip.user.model.dto.request.UserAddRequest;
 import com.ssafy.enjoytrip.user.model.dto.request.UserLoginRequest;
 import com.ssafy.enjoytrip.user.model.dto.request.UserModifyRequest;
 import com.ssafy.enjoytrip.user.model.dto.response.UserResponse;
 import com.ssafy.enjoytrip.user.model.entity.User;
-import com.ssafy.enjoytrip.user.model.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class UserServiceImpl implements UserService {
 
-    private final UserMapper userMapper;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
 
@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
         final String salt = passwordEncoder.generateSalt();
         final String hashedPassword = passwordEncoder.hashPassword(request.getPassword(), salt);
 
-        return userMapper.insertByUser(request.toEntity(hashedPassword, salt)) == 1;
+        return userRepository.insertByUser(request.toEntity(hashedPassword, salt)) == 1;
     }
 
     @Override
@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
         user.updateName(request.getName());
         user.updatePassword(request.getPassword());
 
-        userMapper.updateByUser(user);
+        userRepository.updateByUser(user);
     }
 
     @Override
@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
         User user = findUserByUserId(userId);
 
         tokenService.deleteRefreshToken(user.getUserId());
-        userMapper.deleteByUserId(user.getUserId());
+        userRepository.deleteByUserId(user.getUserId());
     }
 
     @Override
@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private User findUserByUserId(final String userId) {
-        return userMapper.selectByUserId(userId)
+        return userRepository.selectByUserId(userId)
             .orElseThrow(() -> new UserException("해당 유저가 없습니다."));
     }
 
