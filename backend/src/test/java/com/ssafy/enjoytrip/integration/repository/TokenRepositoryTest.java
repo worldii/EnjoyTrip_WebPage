@@ -56,9 +56,9 @@ class TokenRepositoryTest {
 
         //when
         RefreshToken existTokenDto = tokenRepository
-            .findByUserId(refreshToken.getUserId())
+            .findRefreshTokenByUserId(refreshToken.getUserId())
             .orElse(null);
-        RefreshToken notExistTokenDto = tokenRepository.findByUserId(wrongUserId)
+        RefreshToken notExistTokenDto = tokenRepository.findRefreshTokenByUserId(wrongUserId)
             .orElse(null);
 
         //then
@@ -83,6 +83,19 @@ class TokenRepositoryTest {
         assertEquals(null, redisTemplate.opsForValue().get(refreshToken.getUserId()));
     }
 
+    @Test
+    @DisplayName("액세스 토큰 블랙리스트 등록 테스트")
+    void 액세스_토큰_등록_테스트() {
+        // given
+        String accessToken = "test";
+        Long timeOutSecond = 100L;
+
+        // when
+        tokenRepository.registerBlackList(accessToken, timeOutSecond);
+
+        // then
+        assertEquals("logout", redisTemplate.opsForValue().get(accessToken));
+    }
 
     private RefreshToken createRefreshTokenDto() {
         String refreshToken = "TestToken";

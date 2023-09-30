@@ -4,6 +4,9 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.ssafy.enjoytrip.global.auth.model.dto.LogoutRequest;
+import com.ssafy.enjoytrip.global.auth.model.dto.TokenResponse;
+import com.ssafy.enjoytrip.global.auth.service.TokenService;
 import com.ssafy.enjoytrip.global.error.UserException;
 import com.ssafy.enjoytrip.user.model.dto.request.UserAddRequest;
 import com.ssafy.enjoytrip.user.model.dto.request.UserLoginRequest;
@@ -14,6 +17,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -24,6 +28,10 @@ class UserServiceTest {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private TokenService tokenService;
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
 
     @Test
     @DisplayName("정상적으로 유저가 회원가입할 수 있다.")
@@ -289,5 +297,40 @@ class UserServiceTest {
         assertThatCode(() -> userService.delete(userAddRequest.getUserId(), "test2"))
             .isInstanceOf(UserException.class)
             .hasMessage("로그인한 회원이 아닙니다.");
+    }
+
+
+    @Test
+    @DisplayName("유저를 로그아웃 한다")
+    void 유저_로그아웃() {
+        // given
+        UserAddRequest userAddRequest = UserAddRequest.builder()
+            .userId("jongha")
+            .name("jongha")
+            .address("test")
+            .password("test")
+            .email("test")
+            .authority(1)
+            .build();
+        userService.join(userAddRequest);
+
+        TokenResponse token = userService.login(UserLoginRequest.builder()
+            .userId(userAddRequest.getUserId())
+            .password(userAddRequest.getPassword())
+            .build()
+        );
+
+        LogoutRequest logoutRequest = LogoutRequest.builder()
+            .accessToken(token.getAccessToken())
+            .build();
+
+        // when
+        userService.logout(userAddRequest.getUserId(), logoutRequest);
+
+        // then
+        assertAll(
+            () -> assertThat(redisTemplate.opsForValue().get(userAddRequest.getUserId())).isNull(),
+            () -> assertThat(redisTemplate.opsForValue().get(token.getAccessToken())).isNotNull()
+        );
     }
 }

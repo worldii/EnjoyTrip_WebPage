@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
+@Transactional
 public class TokenRepository {
 
     private final Long timeOutSecond;
@@ -34,17 +36,17 @@ public class TokenRepository {
         );
     }
 
-    public void registerBlackList(final String refreshToken, final Long timeOutSecond) {
+    public void registerBlackList(final String accessToken, final Long timeOutSecond) {
         final ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
         valueOperations.set(
-            refreshToken,
+            accessToken,
             "logout",
             timeOutSecond,
             TimeUnit.SECONDS
         );
     }
 
-    public Optional<RefreshToken> findByUserId(final String userId) {
+    public Optional<RefreshToken> findRefreshTokenByUserId(final String userId) {
         final ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
 
         final String refreshToken = valueOperations.get(userId);
