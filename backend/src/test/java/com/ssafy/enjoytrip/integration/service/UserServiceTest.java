@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.ssafy.enjoytrip.global.auth.model.dto.LogoutRequest;
 import com.ssafy.enjoytrip.global.auth.model.dto.TokenResponse;
-import com.ssafy.enjoytrip.global.auth.service.TokenService;
 import com.ssafy.enjoytrip.global.error.UserException;
 import com.ssafy.enjoytrip.user.model.dto.request.UserAddRequest;
 import com.ssafy.enjoytrip.user.model.dto.request.UserLoginRequest;
@@ -28,8 +27,6 @@ class UserServiceTest {
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private TokenService tokenService;
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 

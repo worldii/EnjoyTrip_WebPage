@@ -30,8 +30,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public TokenResponse login(final UserLoginRequest request) {
-        final User user = userMapper.selectByUserId(request.getUserId())
-            .orElseThrow(() -> new UserException("해당 유저가 없습니다."));
+        final User user = findUserByUserId(request.getUserId());
 
         if (!passwordEncoder.isMatch(request.getPassword(), user.getPassword(), user.getSalt())) {
             throw new UserException("비밀번호가 일치하지 않습니다.");
@@ -56,16 +55,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse getInformation(final String userId) {
-        User user = userMapper.selectByUserId(userId)
-            .orElseThrow(() -> new UserException("해당 유저가 없습니다."));
+        User user = findUserByUserId(userId);
         return UserResponse.from(user);
     }
 
     @Override
     @Transactional
     public void modify(final UserModifyRequest request, final String userId) {
-        User user = userMapper.selectByUserId(userId)
-            .orElseThrow(() -> new UserException("해당 유저가 없습니다."));
+        User user = findUserByUserId(userId);
 
         user.updateEmail(request.getEmail());
         user.updateAddress(request.getAddress());
@@ -78,12 +75,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void delete(final String userId, final String loginUserId) {
-        if (!userId.equals(loginUserId)) {
-            throw new UserException("로그인한 회원이 아닙니다.");
-        }
+        validateEqualMember(userId, loginUserId);
 
-        User user = userMapper.selectByUserId(userId)
-            .orElseThrow(() -> new UserException("해당 유저가 없습니다."));
+        User user = findUserByUserId(userId);
 
         tokenService.deleteRefreshToken(user.getUserId());
         userMapper.deleteByUserId(user.getUserId());
@@ -92,12 +86,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public void logout(final String userId, final LogoutRequest request) {
         String requestUserId = tokenService.parseToken(request.getAccessToken());
-        if (!userId.equals(requestUserId)) {
-            throw new UserException("로그인한 회원이 아닙니다.");
-        }
+        validateEqualMember(userId, requestUserId);
         tokenService.deleteRefreshToken(userId);
         tokenService.registerBlackList(request.getAccessToken());
     }
 
+    private User findUserByUserId(final String userId) {
+        return userMapper.selectByUserId(userId)
+            .orElseThrow(() -> new UserException("해당 유저가 없습니다."));
+    }
+
+    private void validateEqualMember(final String userId, final String requestUserId) {
+        if (!userId.equals(requestUserId)) {
+            throw new UserException("로그인한 회원이 아닙니다.");
+        }
+    }
 }
 

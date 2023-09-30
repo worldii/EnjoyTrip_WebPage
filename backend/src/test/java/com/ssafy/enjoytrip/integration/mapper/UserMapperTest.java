@@ -3,6 +3,7 @@ package com.ssafy.enjoytrip.integration.mapper;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
+import com.ssafy.enjoytrip.global.error.UserException;
 import com.ssafy.enjoytrip.user.model.entity.User;
 import com.ssafy.enjoytrip.user.model.mapper.UserMapper;
 import java.util.Optional;
@@ -10,9 +11,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 @DisplayName("유저 매퍼 통합 테스트")
 @SpringBootTest
+@Transactional
 class UserMapperTest {
 
     @Autowired
@@ -45,7 +48,7 @@ class UserMapperTest {
 
         //when
         User user = userMapper.selectByUserId(userId)
-            .orElseThrow(() -> new IllegalArgumentException("해당 유저가 없습니다."));
+            .orElseThrow(() -> new UserException("해당 유저가 없습니다."));
 
         //then
         assertThatCode(() -> user.getUserId().equals(userId))
