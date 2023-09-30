@@ -29,6 +29,7 @@ public class UserServiceImpl implements UserService {
     private final TokenService tokenService;
 
     @Override
+    @Transactional
     public TokenResponse login(final UserLoginRequest request) {
         final User user = findUserByUserId(request.getUserId());
 
@@ -84,6 +85,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void logout(final String userId, final LogoutRequest request) {
         String requestUserId = tokenService.parseToken(request.getAccessToken());
         validateEqualMember(userId, requestUserId);

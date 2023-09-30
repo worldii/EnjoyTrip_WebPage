@@ -33,6 +33,7 @@ public class TokenService {
         this.tokenRepository = tokenRepository;
     }
 
+    
     public AccessTokenResponse generateAccessToken(final String userId) {
         final RefreshToken refreshToken = tokenRepository.findRefreshTokenByUserId(userId)
             .orElseThrow(() -> new UserException("존재하지 않는 유저입니다."));
@@ -63,6 +64,7 @@ public class TokenService {
         tokenRepository.registerBlackList(accessToken, expiration.getTime());
     }
 
+    @Transactional
     public RefreshTokenResponse generateRefreshToken(final String userId) {
 
         final RefreshToken refreshToken = new RefreshToken(UUID.randomUUID().toString(), userId);
