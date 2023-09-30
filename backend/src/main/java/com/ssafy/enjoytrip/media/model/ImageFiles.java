@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.media.model.entity;
+package com.ssafy.enjoytrip.media.model;
 
 import com.ssafy.enjoytrip.global.error.MediaException;
 import java.util.List;
@@ -20,10 +20,10 @@ public class ImageFiles {
             throw new MediaException("imageFiles은 null이 될 수 없습니다.");
         }
 
-        imageFiles.forEach(imageFile -> {
+        for (final MultipartFile imageFile : imageFiles) {
             if (imageFile == null) {
                 throw new MediaException("imageFile은 null이 될 수 없습니다.");
             }
-        });
+        }
     }
 }
