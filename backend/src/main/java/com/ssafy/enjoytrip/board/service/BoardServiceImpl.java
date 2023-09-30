@@ -16,6 +16,7 @@ import com.ssafy.enjoytrip.global.error.BoardException;
 import com.ssafy.enjoytrip.global.util.JsonUtil;
 import com.ssafy.enjoytrip.media.model.entity.FileInfo;
 import com.ssafy.enjoytrip.media.service.FileService;
+import com.ssafy.enjoytrip.media.service.MediaService;
 import com.ssafy.enjoytrip.user.dao.UserRepository;
 import com.ssafy.enjoytrip.user.model.entity.User;
 import java.util.List;
@@ -34,6 +35,7 @@ public class BoardServiceImpl implements BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
+    private final MediaService mediaService;
     private final FileService fileService;
 
     @Override
@@ -53,7 +55,8 @@ public class BoardServiceImpl implements BoardService {
             .build();
 
         final Long boardId = boardRepository.insertBoard(board);
-        fileService.insertFile(boardId, files, "board/");
+
+        mediaService.insertMedias(boardId, files, "board/");
 
         return boardId;
     }

@@ -8,8 +8,10 @@ import com.ssafy.enjoytrip.hotplace.model.entity.HotPlace;
 import com.ssafy.enjoytrip.hotplace.model.entity.HotPlaceArticle;
 import com.ssafy.enjoytrip.hotplace.model.entity.HotPlaceTag;
 import com.ssafy.enjoytrip.hotplace.service.HotPlaceService;
+import com.ssafy.enjoytrip.media.model.FileUrlResponse;
 import com.ssafy.enjoytrip.media.service.S3Service;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -71,8 +73,12 @@ public class HotPlaceController {
         @PathVariable final int articleId,
         @ModelAttribute final List<MultipartFile> files
     ) {
-        String url = s3Service.uploadMediaToS3(files.get(0), "hotplace/");
-        hotPlaceService.updateHotPlaceArticleImage(articleId, url);
+        final List<String> strings = s3Service.uploadMediasToS3(files, "hotplace/")
+            .stream()
+            .map(FileUrlResponse::getUrl)
+            .collect(Collectors.toList());
+
+        hotPlaceService.updateHotPlaceArticleImage(articleId, strings.get(0));
         return ResponseEntity.ok(true);
     }
 
