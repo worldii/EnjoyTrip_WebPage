@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.hotplace.controller;
 
+import com.ssafy.enjoytrip.global.auth.model.dto.NoAuth;
 import com.ssafy.enjoytrip.hotplace.model.dto.HotPlaceArticleResponse;
 import com.ssafy.enjoytrip.hotplace.model.dto.HotPlaceResponse;
 import com.ssafy.enjoytrip.hotplace.model.dto.TagType;
@@ -8,7 +9,6 @@ import com.ssafy.enjoytrip.hotplace.model.entity.HotPlaceArticle;
 import com.ssafy.enjoytrip.hotplace.model.entity.HotPlaceTag;
 import com.ssafy.enjoytrip.hotplace.service.HotPlaceService;
 import com.ssafy.enjoytrip.media.service.S3Service;
-import com.ssafy.enjoytrip.user.model.dto.NoAuth;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

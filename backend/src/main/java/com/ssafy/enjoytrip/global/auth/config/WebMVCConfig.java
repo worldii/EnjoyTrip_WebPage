@@ -1,7 +1,7 @@
-package com.ssafy.enjoytrip.global.config;
+package com.ssafy.enjoytrip.global.auth.config;
 
-import com.ssafy.enjoytrip.user.model.interceptor.JwtArgumentResolver;
-import com.ssafy.enjoytrip.user.model.interceptor.JwtInterceptor;
+import com.ssafy.enjoytrip.global.auth.interceptor.JwtArgumentResolver;
+import com.ssafy.enjoytrip.global.auth.interceptor.JwtInterceptor;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.annotation.MapperScan;

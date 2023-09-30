@@ -4,7 +4,7 @@ import com.ssafy.enjoytrip.board.model.dto.request.CommentModifyRequest;
 import com.ssafy.enjoytrip.board.model.dto.request.CommentSaveRequest;
 import com.ssafy.enjoytrip.board.model.dto.response.CommentResponse;
 import com.ssafy.enjoytrip.board.service.CommentService;
-import com.ssafy.enjoytrip.user.model.dto.NoAuth;
+import com.ssafy.enjoytrip.global.auth.model.dto.NoAuth;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
