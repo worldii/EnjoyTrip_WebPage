@@ -1,6 +1,6 @@
-package com.ssafy.enjoytrip.user.model.interceptor;
+package com.ssafy.enjoytrip.global.auth.interceptor;
 
-import com.ssafy.enjoytrip.user.model.dto.LoginUser;
+import com.ssafy.enjoytrip.global.auth.model.dto.LoginUser;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;

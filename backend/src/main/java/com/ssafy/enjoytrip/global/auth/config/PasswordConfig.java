@@ -1,7 +1,7 @@
-package com.ssafy.enjoytrip.user.config;
+package com.ssafy.enjoytrip.global.auth.config;
 
-import com.ssafy.enjoytrip.user.model.interceptor.BCryptPasswordEncoder;
-import com.ssafy.enjoytrip.user.model.interceptor.PasswordEncoder;
+import com.ssafy.enjoytrip.global.infra.BCryptPasswordEncoder;
+import com.ssafy.enjoytrip.global.infra.PasswordEncoder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

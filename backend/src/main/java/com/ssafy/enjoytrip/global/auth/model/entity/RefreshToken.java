@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.user.model.dto;
+package com.ssafy.enjoytrip.global.auth.model.entity;
 
 import lombok.Builder;
 import lombok.Getter;

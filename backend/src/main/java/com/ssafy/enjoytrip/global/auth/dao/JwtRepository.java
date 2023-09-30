@@ -1,10 +1,9 @@
-package com.ssafy.enjoytrip.user.model.dao;
+package com.ssafy.enjoytrip.global.auth.dao;
 
-import com.ssafy.enjoytrip.user.model.dto.RefreshToken;
+import com.ssafy.enjoytrip.global.auth.model.entity.RefreshToken;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -13,13 +12,15 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class JwtRepository {
 
-    @Value("${refreshtoken.timeout.second}")
-    private long TIME_OUT_SECOND;
+    private final Long timeOutSecond;
     private final RedisTemplate<String, String> redisTemplate;
 
-    @Autowired
-    public JwtRepository(RedisTemplate<String, String> redisTemplate) {
+    public JwtRepository(
+        final RedisTemplate<String, String> redisTemplate,
+        @Value("${refreshtoken.timeout.second}") final long TIME_OUT_SECOND
+    ) {
         this.redisTemplate = redisTemplate;
+        this.timeOutSecond = TIME_OUT_SECOND;
     }
 
     public void save(final RefreshToken refreshToken) {
@@ -27,7 +28,7 @@ public class JwtRepository {
         valueOperations.set(
             refreshToken.getUserId(),
             refreshToken.getRefreshToken(),
-            TIME_OUT_SECOND,
+            timeOutSecond,
             TimeUnit.SECONDS
         );
     }

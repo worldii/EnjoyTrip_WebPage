@@ -1,8 +1,8 @@
-package com.ssafy.enjoytrip.user.model.interceptor;
+package com.ssafy.enjoytrip.global.auth.interceptor;
 
+import com.ssafy.enjoytrip.global.auth.model.dto.NoAuth;
+import com.ssafy.enjoytrip.global.auth.service.AuthService;
 import com.ssafy.enjoytrip.global.error.JwtInvalidException;
-import com.ssafy.enjoytrip.user.model.dto.NoAuth;
-import com.ssafy.enjoytrip.user.model.service.JwtService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ public class JwtInterceptor implements HandlerInterceptor {
 
     private static final String HEADER = "Authorization";
 
-    private final JwtService jwtService;
+    private final AuthService authService;
 
     @Override
     public boolean preHandle(
@@ -37,14 +37,13 @@ public class JwtInterceptor implements HandlerInterceptor {
 
         if (!checkAnnotation(handler, NoAuth.class)) {
             validateToken(request.getHeader(HEADER));
-            request.setAttribute("userId", jwtService.parseToken(request.getHeader(HEADER)));
+            request.setAttribute("userId", authService.parseToken(request.getHeader(HEADER)));
         }
         return true;
-
     }
 
     private void validateToken(final String token) {
-        if (!jwtService.checkValidToken(token)) {
+        if (!authService.checkValidToken(token)) {
             throw new JwtInvalidException("로그인이 정상적으로 되지 않았습니다");
         }
     }
