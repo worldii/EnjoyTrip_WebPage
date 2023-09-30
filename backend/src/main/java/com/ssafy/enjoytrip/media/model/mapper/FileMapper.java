@@ -7,9 +7,9 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface FileMapper {
 
-    void insertFile(Long boardId, List<FileInfo> list);
+    void insertFile(final Long boardId, final List<FileInfo> imageFiles);
 
-    List<FileInfo> selectFile(Long boardId);
+    List<FileInfo> selectFile(final Long boardId);
 
-    void deleteFile(Long boardId);
+    void deleteFileByBoardId(final Long boardId);
 }

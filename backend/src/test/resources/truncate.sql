@@ -16,3 +16,8 @@ CREATE TABLE user (
                       salt VARCHAR(255)
 );
 
+CREATE TABLE file_info (
+                          file_info_id BIGINT PRIMARY KEY,
+                          file_url VARCHAR(255),
+                          board_id BIGINT
+);
