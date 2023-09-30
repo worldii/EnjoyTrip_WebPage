@@ -4,8 +4,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.ssafy.enjoytrip.global.auth.model.dto.LogoutRequest;
-import com.ssafy.enjoytrip.global.auth.model.dto.TokenResponse;
+import com.ssafy.enjoytrip.global.auth.model.dto.request.LogoutRequest;
+import com.ssafy.enjoytrip.global.auth.model.dto.response.TokenResponse;
 import com.ssafy.enjoytrip.global.error.UserException;
 import com.ssafy.enjoytrip.user.model.dto.request.UserAddRequest;
 import com.ssafy.enjoytrip.user.model.dto.request.UserLoginRequest;

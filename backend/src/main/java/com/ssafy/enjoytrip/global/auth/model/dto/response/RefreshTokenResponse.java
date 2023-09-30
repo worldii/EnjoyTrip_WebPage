@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.global.auth.model.dto;
+package com.ssafy.enjoytrip.global.auth.model.dto.response;
 
 import com.ssafy.enjoytrip.global.auth.model.entity.RefreshToken;
 import lombok.AllArgsConstructor;

@@ -1,9 +1,9 @@
 package com.ssafy.enjoytrip.user.service;
 
-import com.ssafy.enjoytrip.global.auth.model.dto.AccessTokenResponse;
-import com.ssafy.enjoytrip.global.auth.model.dto.LogoutRequest;
-import com.ssafy.enjoytrip.global.auth.model.dto.RefreshTokenResponse;
-import com.ssafy.enjoytrip.global.auth.model.dto.TokenResponse;
+import com.ssafy.enjoytrip.global.auth.model.dto.request.LogoutRequest;
+import com.ssafy.enjoytrip.global.auth.model.dto.response.AccessTokenResponse;
+import com.ssafy.enjoytrip.global.auth.model.dto.response.RefreshTokenResponse;
+import com.ssafy.enjoytrip.global.auth.model.dto.response.TokenResponse;
 import com.ssafy.enjoytrip.global.auth.service.TokenService;
 import com.ssafy.enjoytrip.global.error.UserException;
 import com.ssafy.enjoytrip.global.infra.PasswordEncoder;

@@ -1,8 +1,8 @@
 package com.ssafy.enjoytrip.global.auth.controller;
 
-import com.ssafy.enjoytrip.global.auth.model.dto.AccessTokenResponse;
 import com.ssafy.enjoytrip.global.auth.model.dto.LoginUser;
-import com.ssafy.enjoytrip.global.auth.model.dto.RefreshTokenResponse;
+import com.ssafy.enjoytrip.global.auth.model.dto.response.AccessTokenResponse;
+import com.ssafy.enjoytrip.global.auth.model.dto.response.RefreshTokenResponse;
 import com.ssafy.enjoytrip.global.auth.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,7 @@ public class AuthController {
     ) {
         return ResponseEntity.ok(tokenService.generateRefreshToken(userId));
     }
-    
+
     @PostMapping("/access-token")
     public ResponseEntity<AccessTokenResponse> generateAccessToken(
         @LoginUser final String userId

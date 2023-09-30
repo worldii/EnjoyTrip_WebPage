@@ -1,8 +1,8 @@
 package com.ssafy.enjoytrip.global.auth.service;
 
 import com.ssafy.enjoytrip.global.auth.dao.TokenRepository;
-import com.ssafy.enjoytrip.global.auth.model.dto.AccessTokenResponse;
-import com.ssafy.enjoytrip.global.auth.model.dto.RefreshTokenResponse;
+import com.ssafy.enjoytrip.global.auth.model.dto.response.AccessTokenResponse;
+import com.ssafy.enjoytrip.global.auth.model.dto.response.RefreshTokenResponse;
 import com.ssafy.enjoytrip.global.auth.model.entity.RefreshToken;
 import com.ssafy.enjoytrip.global.error.UserException;
 import io.jsonwebtoken.Claims;

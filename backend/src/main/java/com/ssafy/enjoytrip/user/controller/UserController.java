@@ -2,9 +2,9 @@ package com.ssafy.enjoytrip.user.controller;
 
 
 import com.ssafy.enjoytrip.global.auth.model.dto.LoginUser;
-import com.ssafy.enjoytrip.global.auth.model.dto.LogoutRequest;
 import com.ssafy.enjoytrip.global.auth.model.dto.NoAuth;
-import com.ssafy.enjoytrip.global.auth.model.dto.TokenResponse;
+import com.ssafy.enjoytrip.global.auth.model.dto.request.LogoutRequest;
+import com.ssafy.enjoytrip.global.auth.model.dto.response.TokenResponse;
 import com.ssafy.enjoytrip.user.model.dto.request.UserAddRequest;
 import com.ssafy.enjoytrip.user.model.dto.request.UserLoginRequest;
 import com.ssafy.enjoytrip.user.model.dto.request.UserModifyRequest;
