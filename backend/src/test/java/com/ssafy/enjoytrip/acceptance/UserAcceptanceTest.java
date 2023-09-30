@@ -5,6 +5,7 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+import com.ssafy.enjoytrip.global.auth.model.dto.request.LogoutRequest;
 import com.ssafy.enjoytrip.global.auth.model.dto.response.TokenResponse;
 import com.ssafy.enjoytrip.user.model.dto.request.UserAddRequest;
 import com.ssafy.enjoytrip.user.model.dto.request.UserLoginRequest;
@@ -269,5 +270,68 @@ class UserAcceptanceTest extends AcceptanceTest {
 
         // then
         assertThat(response.statusCode()).isEqualTo(NO_CONTENT.value());
+    }
+
+    @Test
+    @DisplayName("유저가 정상적으로 회원 로그아웃을 한다")
+    void 유저_정상_로그아웃() {
+        // given
+        UserAddRequest userAddRequest = UserAddRequest.builder()
+            .userId("jongha")
+            .name("jongha")
+            .address("test")
+            .password("test")
+            .email("test")
+            .authority(1)
+            .build();
+
+        RestAssured
+            .given()
+            .contentType(APPLICATION_JSON_VALUE)
+            .body(userAddRequest)
+            .log().all()
+            .when()
+            .post("/user")
+            .then()
+            .log().all()
+            .extract();
+
+        UserLoginRequest userLoginRequest = UserLoginRequest.builder()
+            .userId("jongha")
+            .password("test")
+            .build();
+
+        // when
+        String accessToken = RestAssured
+            .given()
+            .contentType(APPLICATION_JSON_VALUE)
+            .body(userLoginRequest)
+            .log().all()
+            .when()
+            .post("/user/login")
+            .then()
+            .log().all()
+            .extract()
+            .as(TokenResponse.class)
+            .getAccessToken();
+
+        LogoutRequest logoutRequest = LogoutRequest.builder()
+            .accessToken(accessToken)
+            .build();
+
+        ExtractableResponse<Response> response = RestAssured
+            .given()
+            .contentType(APPLICATION_JSON_VALUE)
+            .header("Authorization", accessToken)
+            .body(logoutRequest)
+            .log().all()
+            .when()
+            .post("/user/logout")
+            .then()
+            .log().all()
+            .extract();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(OK.value());
     }
 }

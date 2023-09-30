@@ -47,7 +47,7 @@ public class UserController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(
+    public ResponseEntity<Void> logout(
         @LoginUser final String loginUser,
         @RequestBody final LogoutRequest request
     ) {
