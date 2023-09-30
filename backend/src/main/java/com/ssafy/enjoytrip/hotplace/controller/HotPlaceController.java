@@ -1,6 +1,7 @@
 package com.ssafy.enjoytrip.hotplace.controller;
 
 import com.ssafy.enjoytrip.global.auth.model.dto.NoAuth;
+import com.ssafy.enjoytrip.global.infra.S3Service;
 import com.ssafy.enjoytrip.hotplace.model.dto.HotPlaceArticleResponse;
 import com.ssafy.enjoytrip.hotplace.model.dto.HotPlaceResponse;
 import com.ssafy.enjoytrip.hotplace.model.dto.TagType;
@@ -9,7 +10,6 @@ import com.ssafy.enjoytrip.hotplace.model.entity.HotPlaceArticle;
 import com.ssafy.enjoytrip.hotplace.model.entity.HotPlaceTag;
 import com.ssafy.enjoytrip.hotplace.service.HotPlaceService;
 import com.ssafy.enjoytrip.media.model.FileUrlResponse;
-import com.ssafy.enjoytrip.media.service.S3Service;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -73,7 +73,7 @@ public class HotPlaceController {
         @PathVariable final int articleId,
         @ModelAttribute final List<MultipartFile> files
     ) {
-        final List<String> strings = s3Service.uploadMediasToS3(files, "hotplace/")
+        final List<String> strings = s3Service.uploadMedias(files, "hotplace/")
             .stream()
             .map(FileUrlResponse::getUrl)
             .collect(Collectors.toList());

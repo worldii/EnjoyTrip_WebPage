@@ -25,33 +25,27 @@ ext {
 }
 
 dependencies {
-    testImplementation 'org.projectlombok:lombok:1.18.26'
     annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    compileOnly group: 'org.springframework.cloud', name: 'spring-cloud-aws', version: '2.2.1.RELEASE', ext: 'pom'
+    compileOnly 'org.projectlombok:lombok'
+
     implementation group: 'com.github.pagehelper', name: 'pagehelper-spring-boot-starter', version: '1.4.1'
     implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
     implementation group: 'org.mindrot', name: 'jbcrypt', version: '0.4'
-
-    // Aop
-    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-aop
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop'
-
-    // Redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-
-    // AWS S3
-    //compileOnly group: 'org.springframework.cloud', name: 'spring-cloud-aws', version: '2.2.1.RELEASE', ext: 'pom'
-
-    implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap:3.0.3'
-    //implementation 'org.springframework.cloud:spring-cloud-starter-aws-secrets-manager-config:2.2.6.RELEASE'
-
+    implementation 'com.amazonaws:aws-java-sdk-s3:1.11.1003'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.3.0'
-    compileOnly 'org.projectlombok:lombok'
-    annotationProcessor 'org.projectlombok:lombok'
+
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.mysql:mysql-connector-j'
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+    
+    testImplementation 'org.projectlombok:lombok:1.18.26'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.rest-assured:rest-assured:4.4.0'
 
