@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.global.util;
+package com.ssafy.enjoytrip.media.util;
 
 import lombok.extern.slf4j.Slf4j;
 

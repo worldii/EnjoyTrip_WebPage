@@ -1,10 +1,11 @@
 package com.ssafy.enjoytrip.board.service;
 
-import com.ssafy.enjoytrip.board.model.dao.BoardRepository;
-import com.ssafy.enjoytrip.board.model.dao.CommentRepository;
+import com.ssafy.enjoytrip.board.dao.BoardRepository;
+import com.ssafy.enjoytrip.board.dao.CommentRepository;
 import com.ssafy.enjoytrip.board.model.dto.request.CommentModifyRequest;
 import com.ssafy.enjoytrip.board.model.dto.request.CommentSaveRequest;
 import com.ssafy.enjoytrip.board.model.dto.response.CommentResponse;
+import com.ssafy.enjoytrip.board.model.entity.Board;
 import com.ssafy.enjoytrip.board.model.entity.Comment;
 import com.ssafy.enjoytrip.global.error.BoardException;
 import com.ssafy.enjoytrip.global.error.CommentNotFoundException;
@@ -31,7 +32,7 @@ public class CommentServiceImpl implements CommentService {
         final CommentSaveRequest commentSaveRequest,
         final String userId, final Long boardId
     ) {
-        boardRepository.selectBoard(boardId)
+        Board board = boardRepository.selectBoard(boardId)
             .orElseThrow(() -> new BoardException("해당 boardId에 해당하는 board가 없습니다."));
         final User user = userRepository.selectByUserId(userId)
             .orElseThrow(() -> new BoardException("해당 userId에 해당하는 user가 없습니다."));
@@ -40,7 +41,7 @@ public class CommentServiceImpl implements CommentService {
 
         final Comment comment = Comment.builder()
             .content(commentSaveRequest.getContent())
-            .boardId(boardId)
+            .boardId(board.getBoardId())
             .userId(userId)
             .build();
 
@@ -55,10 +56,10 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<CommentResponse> getCommentList(final Long boardId) {
-        boardRepository.selectBoard(boardId)
+        Board board = boardRepository.selectBoard(boardId)
             .orElseThrow(() -> new BoardException("해당 boardId에 해당하는 board가 없습니다."));
 
-        return commentRepository.selectAll(boardId)
+        return commentRepository.selectAll(board.getBoardId())
             .stream()
             .map(CommentResponse::from)
             .collect(Collectors.toList());
@@ -75,8 +76,9 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public void modify(final Long commentId, final CommentModifyRequest request) {
-        boardRepository.selectBoard(request.getBoardId())
+        Board board = boardRepository.selectBoard(request.getBoardId())
             .orElseThrow(() -> new BoardException("해당 boardId에 해당하는 board가 없습니다."));
+
         final Comment comment = commentRepository
             .selectComment(commentId)
             .orElseThrow(() -> new BoardException("해당 commentId에 해당하는 comment가 없습니다."));
@@ -86,7 +88,7 @@ public class CommentServiceImpl implements CommentService {
         final Comment newComment = Comment.builder()
             .commentId(commentId)
             .content(request.getContent())
-            .boardId(request.getBoardId())
+            .boardId(board.getBoardId())
             .userId(request.getUserId())
             .build();
 

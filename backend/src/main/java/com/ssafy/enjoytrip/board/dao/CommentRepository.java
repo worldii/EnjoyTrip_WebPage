@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.board.model.dao;
+package com.ssafy.enjoytrip.board.dao;
 
 import com.ssafy.enjoytrip.board.model.entity.Comment;
 import com.ssafy.enjoytrip.board.model.mapper.CommentMapper;

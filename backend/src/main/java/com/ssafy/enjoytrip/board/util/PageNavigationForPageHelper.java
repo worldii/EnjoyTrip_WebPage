@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.global.util;
+package com.ssafy.enjoytrip.board.util;
 
 import com.github.pagehelper.Page;
 import lombok.Data;
