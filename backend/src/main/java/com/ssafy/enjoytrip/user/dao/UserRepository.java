@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.user.model.dao;
+package com.ssafy.enjoytrip.user.dao;
 
 import com.ssafy.enjoytrip.user.model.entity.User;
 import com.ssafy.enjoytrip.user.model.mapper.UserMapper;
@@ -27,7 +27,7 @@ public class UserRepository {
     public int insertByUser(final User user) {
         return userMapper.insertByUser(user);
     }
-    
+
     @Transactional
     public void deleteByUserId(final String userId) {
         userMapper.deleteByUserId(userId);

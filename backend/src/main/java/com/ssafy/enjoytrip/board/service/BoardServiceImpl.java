@@ -16,7 +16,7 @@ import com.ssafy.enjoytrip.global.error.BoardException;
 import com.ssafy.enjoytrip.global.util.JsonUtil;
 import com.ssafy.enjoytrip.media.model.entity.FileInfo;
 import com.ssafy.enjoytrip.media.service.FileService;
-import com.ssafy.enjoytrip.user.model.dao.UserRepository;
+import com.ssafy.enjoytrip.user.dao.UserRepository;
 import com.ssafy.enjoytrip.user.model.entity.User;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

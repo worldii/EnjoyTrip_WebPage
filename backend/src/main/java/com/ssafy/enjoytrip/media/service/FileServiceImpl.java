@@ -54,6 +54,6 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public void deleteFile(Long boardId) {
-        fileMapper.deleteFile(boardId);
+        fileMapper.deleteFileByBoardId(boardId);
     }
 }

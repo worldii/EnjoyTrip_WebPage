@@ -9,7 +9,7 @@ import com.ssafy.enjoytrip.board.model.entity.Board;
 import com.ssafy.enjoytrip.board.model.entity.Comment;
 import com.ssafy.enjoytrip.global.error.BoardException;
 import com.ssafy.enjoytrip.global.error.CommentNotFoundException;
-import com.ssafy.enjoytrip.user.model.dao.UserRepository;
+import com.ssafy.enjoytrip.user.dao.UserRepository;
 import com.ssafy.enjoytrip.user.model.entity.User;
 import java.util.List;
 import java.util.stream.Collectors;

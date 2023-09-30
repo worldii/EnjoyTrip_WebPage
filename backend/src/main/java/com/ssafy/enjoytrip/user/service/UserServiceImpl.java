@@ -7,7 +7,7 @@ import com.ssafy.enjoytrip.global.auth.model.dto.response.TokenResponse;
 import com.ssafy.enjoytrip.global.auth.service.TokenService;
 import com.ssafy.enjoytrip.global.error.UserException;
 import com.ssafy.enjoytrip.global.infra.PasswordEncoder;
-import com.ssafy.enjoytrip.user.model.dao.UserRepository;
+import com.ssafy.enjoytrip.user.dao.UserRepository;
 import com.ssafy.enjoytrip.user.model.dto.request.UserAddRequest;
 import com.ssafy.enjoytrip.user.model.dto.request.UserLoginRequest;
 import com.ssafy.enjoytrip.user.model.dto.request.UserModifyRequest;
