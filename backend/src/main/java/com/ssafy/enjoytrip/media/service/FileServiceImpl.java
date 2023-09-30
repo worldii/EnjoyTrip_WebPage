@@ -1,59 +1,41 @@
 package com.ssafy.enjoytrip.media.service;
 
+import com.ssafy.enjoytrip.media.dao.FileRepository;
 import com.ssafy.enjoytrip.media.model.entity.FileInfo;
-import com.ssafy.enjoytrip.media.model.mapper.FileMapper;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class FileServiceImpl implements FileService {
 
-    private final FileMapper fileMapper;
-    private final S3Service s3Service;
+    private final FileRepository fileRepository;
 
     @Override
     @Transactional
     public void insertFile(
         final Long boardId,
-        final List<MultipartFile> imageFiles,
-        final String folder
+        final List<String> fileUrls
     ) {
+        final List<FileInfo> fileInfos = fileUrls.stream()
+            .map(fileUrl -> FileInfo.of(boardId, fileUrl))
+            .collect(Collectors.toList());
 
-        if (imageFiles == null) {
-            return;
-        }
-
-        final List<FileInfo> fileInfos = new ArrayList<>();
-
-        for (MultipartFile imageFile : imageFiles) {
-            try {
-                final FileInfo fileInfo = FileInfo.builder()
-                    .boardId(boardId)
-                    .fileUrl(s3Service.uploadMediaToS3(imageFile, folder))
-                    .build();
-                fileInfos.add(fileInfo);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        fileMapper.insertFile(boardId, fileInfos);
+        fileRepository.insertFile(boardId, fileInfos);
     }
 
     @Override
-    @Transactional(readOnly = true)
     public List<FileInfo> selectFile(final Long boardId) {
-        return fileMapper.selectFile(boardId);
+        return fileRepository.selectFileByBoardId(boardId);
     }
 
     @Override
-    public void deleteFile(Long boardId) {
-        fileMapper.deleteFileByBoardId(boardId);
+    @Transactional
+    public void deleteFile(final Long boardId) {
+        fileRepository.deleteFileByBoardId(boardId);
     }
 }

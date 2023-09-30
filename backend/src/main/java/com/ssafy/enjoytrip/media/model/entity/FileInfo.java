@@ -34,4 +34,12 @@ public class FileInfo {
             throw new IllegalArgumentException("boardId는 null이 될 수 없습니다.");
         }
     }
+
+    public static FileInfo of(final Long boardId, final String fileUrl) {
+        return FileInfo.builder()
+            .boardId(boardId)
+            .fileUrl(fileUrl)
+            .build();
+    }
+    
 }
