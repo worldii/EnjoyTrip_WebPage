@@ -12,7 +12,7 @@ import org.springframework.data.redis.repository.configuration.EnableRedisReposi
 @RequiredArgsConstructor
 @Configuration
 @EnableRedisRepositories
-public class RedisRepositoryConfig {
+public class RedisConfig {
 
     private final RedisProperties redisProperties;
 

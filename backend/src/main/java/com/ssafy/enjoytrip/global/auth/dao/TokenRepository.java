@@ -10,24 +10,35 @@ import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class JwtRepository {
+public class TokenRepository {
 
     private final Long timeOutSecond;
     private final RedisTemplate<String, String> redisTemplate;
 
-    public JwtRepository(
+    public TokenRepository(
         final RedisTemplate<String, String> redisTemplate,
-        @Value("${refreshtoken.timeout.second}") final long TIME_OUT_SECOND
+        @Value("${refreshtoken.timeout.second}") final Long TIME_OUT_SECOND
     ) {
         this.redisTemplate = redisTemplate;
         this.timeOutSecond = TIME_OUT_SECOND;
     }
 
     public void save(final RefreshToken refreshToken) {
-        ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+        final ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+
         valueOperations.set(
             refreshToken.getUserId(),
-            refreshToken.getRefreshToken(),
+            refreshToken.getTokenName(),
+            timeOutSecond,
+            TimeUnit.SECONDS
+        );
+    }
+
+    public void registerBlackList(final String refreshToken, final Long timeOutSecond) {
+        final ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
+        valueOperations.set(
+            refreshToken,
+            "logout",
             timeOutSecond,
             TimeUnit.SECONDS
         );
@@ -44,7 +55,7 @@ public class JwtRepository {
         return Optional.of(new RefreshToken(refreshToken, userId));
     }
 
-    public void deleteRefreshToken(final String userId) {
+    public void delete(final String userId) {
         final ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
 
         valueOperations.getAndDelete(userId);

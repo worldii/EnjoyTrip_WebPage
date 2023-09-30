@@ -1,8 +1,7 @@
 package com.ssafy.enjoytrip.global.auth.interceptor;
 
 import com.ssafy.enjoytrip.global.auth.model.dto.NoAuth;
-import com.ssafy.enjoytrip.global.auth.service.AuthService;
-import com.ssafy.enjoytrip.global.error.JwtInvalidException;
+import com.ssafy.enjoytrip.global.auth.service.TokenService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +15,10 @@ import org.springframework.web.servlet.HandlerInterceptor;
 @Slf4j
 public class JwtInterceptor implements HandlerInterceptor {
 
+    public static final String OPTIONS = "OPTIONS";
     private static final String HEADER = "Authorization";
 
-    private final AuthService authService;
+    private final TokenService tokenService;
 
     @Override
     public boolean preHandle(
@@ -27,7 +27,7 @@ public class JwtInterceptor implements HandlerInterceptor {
         final Object handler
     ) {
 
-        if ("OPTIONS".equals(request.getMethod())) {
+        if (OPTIONS.equals(request.getMethod())) {
             return true;
         }
 
@@ -35,21 +35,16 @@ public class JwtInterceptor implements HandlerInterceptor {
             return true;
         }
 
-        if (!checkAnnotation(handler, NoAuth.class)) {
-            validateToken(request.getHeader(HEADER));
-            request.setAttribute("userId", authService.parseToken(request.getHeader(HEADER)));
+        if (!checkNoAuthClass((HandlerMethod) handler)) {
+            final String token = request.getHeader(HEADER);
+            tokenService.validateAccessToken(token);
+            request.setAttribute("userId", tokenService.parseToken(token));
         }
         return true;
     }
-
-    private void validateToken(final String token) {
-        if (!authService.checkValidToken(token)) {
-            throw new JwtInvalidException("로그인이 정상적으로 되지 않았습니다");
-        }
-    }
-
-    private boolean checkAnnotation(final Object handler, final Class cls) {
-        final HandlerMethod handlerMethod = (HandlerMethod) handler;
-        return handlerMethod.getMethodAnnotation(cls) != null;
+    
+    private boolean checkNoAuthClass(final HandlerMethod handlerMethod) {
+        return handlerMethod.getMethodAnnotation(NoAuth.class) != null ||
+            handlerMethod.getBeanType().getAnnotation(NoAuth.class) != null;
     }
 }

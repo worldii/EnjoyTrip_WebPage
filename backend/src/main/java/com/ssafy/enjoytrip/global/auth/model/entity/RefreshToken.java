@@ -10,6 +10,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RefreshToken {
 
-    private final String refreshToken;
+    private final String tokenName;
     private final String userId;
 }
