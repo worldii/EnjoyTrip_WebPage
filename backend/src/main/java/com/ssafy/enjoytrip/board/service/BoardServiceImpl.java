@@ -12,7 +12,6 @@ import com.ssafy.enjoytrip.board.model.dto.response.PageResponse;
 import com.ssafy.enjoytrip.board.model.entity.Board;
 import com.ssafy.enjoytrip.board.model.entity.Comment;
 import com.ssafy.enjoytrip.global.error.BoardException;
-import com.ssafy.enjoytrip.global.error.UserNotFoundException;
 import com.ssafy.enjoytrip.global.util.JsonUtil;
 import com.ssafy.enjoytrip.global.util.PageNavigationForPageHelper;
 import com.ssafy.enjoytrip.media.model.entity.FileInfo;
@@ -40,8 +39,8 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional
     public Long saveBoard(final String json, final List<MultipartFile> files, final String userId) {
-        userRepository.selectByUserId(userId)
-            .orElseThrow(() -> new UserNotFoundException("해당 userId에 해당하는 user가 없습니다."));
+        final User user = userRepository.selectByUserId(userId)
+            .orElseThrow(() -> new BoardException("해당 userId에 해당하는 user가 없습니다."));
 
         final BoardSaveRequest request = (BoardSaveRequest)
             JsonUtil.readValue(json, BoardSaveRequest.class);
@@ -50,7 +49,7 @@ public class BoardServiceImpl implements BoardService {
             .boardType(request.getBoardType())
             .subject(request.getSubject())
             .content(request.getContent())
-            .userId(userId)
+            .userId(user.getUserId())
             .build();
 
         final Long boardId = boardRepository.insertBoard(board);
@@ -116,9 +115,10 @@ public class BoardServiceImpl implements BoardService {
         final String userId,
         final BoardModifyRequest boardModifyRequest
     ) {
-        userRepository
+        final User user = userRepository
             .selectByUserId(userId)
             .orElseThrow(() -> new BoardException("해당 유저가 없습니다."));
+
         final Board board = boardRepository
             .selectBoard(boardId)
             .orElseThrow(() -> new BoardException("해당 boardId에 해당하는 board가 없습니다."));
@@ -127,7 +127,7 @@ public class BoardServiceImpl implements BoardService {
 
         final Board modifyBoard = Board.builder()
             .boardId(boardId)
-            .userId(userId)
+            .userId(user.getUserId())
             .subject(boardModifyRequest.getSubject())
             .content(boardModifyRequest.getContent())
             .build();
@@ -137,7 +137,7 @@ public class BoardServiceImpl implements BoardService {
 
     private void validateSameMember(final String userId, final String boardUserId) {
         if (!userId.equals(boardUserId)) {
-            throw new UserNotFoundException("해당 유저가 아닙니다.");
+            throw new BoardException("해당 유저가 아닙니다.");
         }
     }
 
