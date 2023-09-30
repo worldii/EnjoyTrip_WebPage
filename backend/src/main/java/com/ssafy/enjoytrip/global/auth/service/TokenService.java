@@ -9,12 +9,13 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
-import java.util.Objects;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional(readOnly = true)
 public class TokenService {
 
     private static final String USER_ACCESS_TOKEN_KEY = "userId";
@@ -33,26 +34,33 @@ public class TokenService {
     }
 
     public AccessTokenResponse generateAccessToken(final String userId) {
-        final RefreshToken refreshToken = tokenRepository.findByUserId(userId)
+        final RefreshToken refreshToken = tokenRepository.findRefreshTokenByUserId(userId)
             .orElseThrow(() -> new UserException("존재하지 않는 유저입니다."));
-
-        if (!refreshToken.getUserId().equals(userId)) {
-            throw new UserException("유저가 일치하지 않습니다.");
-        }
 
         final Claims claims = Jwts.claims()
             .setSubject("accessToken")
             .setIssuedAt(new Date())
             .setExpiration(new Date(System.currentTimeMillis() + accessExpiredMinutes));
 
-        claims.put(USER_ACCESS_TOKEN_KEY, userId);
+        claims.put(USER_ACCESS_TOKEN_KEY, refreshToken.getUserId());
 
-        String accessToken = Jwts.builder()
+        final String accessToken = Jwts.builder()
             .setHeaderParam("typ", "JWT")
             .setClaims(claims)
             .signWith(SignatureAlgorithm.HS256, secretKey.getBytes())
             .compact();
+
         return new AccessTokenResponse(accessToken);
+    }
+
+    @Transactional
+    public void registerBlackList(final String accessToken) {
+        final Date expiration = Jwts.parser()
+            .setSigningKey(secretKey.getBytes())
+            .parseClaimsJws(accessToken)
+            .getBody().getExpiration();
+
+        tokenRepository.registerBlackList(accessToken, expiration.getTime());
     }
 
     public RefreshTokenResponse generateRefreshToken(final String userId) {
@@ -63,18 +71,9 @@ public class TokenService {
         return RefreshTokenResponse.from(refreshToken);
     }
 
-    public boolean checkRefresh(final String userId) {
-        final RefreshToken refreshTokenDto = tokenRepository
-            .findByUserId(userId)
-            .orElse(null);
-
-        return !Objects.isNull(refreshTokenDto);
-    }
-
-
     public void validateAccessToken(final String accessToken) {
         if (accessToken == null) {
-            throw new UserException("토큰이 존재하지 않습니다.");
+            throw new UserException("토큰이 유효하지 않습니다.");
         }
         try {
             Jwts.parser().setSigningKey(secretKey.getBytes()).parseClaimsJws(accessToken);
@@ -83,25 +82,17 @@ public class TokenService {
         }
     }
 
+    @Transactional
     public void deleteRefreshToken(final String userId) {
         tokenRepository.delete(userId);
     }
 
     public String parseToken(final String token) {
-        Claims body = Jwts.parser()
+        validateAccessToken(token);
+        return Jwts.parser()
             .setSigningKey(secretKey.getBytes())
             .parseClaimsJws(token)
-            .getBody();
-        return body
+            .getBody()
             .get(USER_ACCESS_TOKEN_KEY, String.class);
-    }
-
-    public void registerBlackList(final String accessToken) {
-        final Date expiration = Jwts.parser()
-            .setSigningKey(secretKey.getBytes())
-            .parseClaimsJws(accessToken)
-            .getBody().getExpiration();
-
-        tokenRepository.registerBlackList(accessToken, expiration.getTime());
     }
 }
