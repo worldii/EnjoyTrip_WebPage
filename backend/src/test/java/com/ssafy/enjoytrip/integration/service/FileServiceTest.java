@@ -1,7 +1,9 @@
 package com.ssafy.enjoytrip.integration.service;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
+import com.ssafy.enjoytrip.global.error.MediaException;
 import com.ssafy.enjoytrip.media.model.entity.FileInfo;
 import com.ssafy.enjoytrip.media.service.FileService;
 import java.util.List;
@@ -11,8 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.jdbc.Sql;
 
-@DisplayName("FileService 통합 테스트")
 @SpringBootTest
+@DisplayName("FileService 통합 테스트")
 @Sql({"/truncate.sql", "/fileInfo.sql"})
 class FileServiceTest {
 
@@ -50,6 +52,19 @@ class FileServiceTest {
         // then
         List<FileInfo> fileInfos = fileService.selectFile(boardId);
         assertThat(fileInfos.size()).isEqualTo(currentSize + 1);
+    }
+
+    @Test
+    @DisplayName("fileService는 boardId가 null일 경우 예외를 던진다.")
+    void fileServiceTestWithNullBoardId() {
+        // given
+        Long boardId = null;
+        List<String> fileUrls = List.of("test");
+
+        // when & then
+        assertThatCode(() -> fileService.insertFile(boardId, fileUrls))
+            .isInstanceOf(MediaException.class)
+            .hasMessage("boardId는 null이 될 수 없습니다.");
     }
 
     @Test

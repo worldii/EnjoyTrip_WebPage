@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.media.model.entity;
 
+import com.ssafy.enjoytrip.global.error.MediaException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -25,13 +26,13 @@ public class FileInfo {
 
     private void validateFileUrl(final String fileUrl) {
         if (fileUrl == null || fileUrl.isEmpty()) {
-            throw new IllegalArgumentException("file의 url은 null이거나 비어있을 수 없습니다.");
+            throw new MediaException("file의 url은 null이거나 비어있을 수 없습니다.");
         }
     }
 
     private void validateBoardId(final Long boardId) {
         if (boardId == null) {
-            throw new IllegalArgumentException("boardId는 null이 될 수 없습니다.");
+            throw new MediaException("boardId는 null이 될 수 없습니다.");
         }
     }
 
@@ -41,5 +42,5 @@ public class FileInfo {
             .fileUrl(fileUrl)
             .build();
     }
-    
+
 }
