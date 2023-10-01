@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.enjoytrip.board.model.mapper.BoardMapper">
+
   <resultMap type="com.ssafy.enjoytrip.board.model.entity.Board" id="board">
     <id column="board_id" property="boardId"/>
     <result column="user_id" property="userId"/>
@@ -25,8 +26,8 @@
       (#{item.boardId}, #{item.fileUrl})
     </foreach>
   </insert>
+  
   <insert id="insertBoard" parameterType="board" useGeneratedKeys="true" keyProperty="boardId">
-
     insert into board (user_id, subject, content, type)
     values (#{userId}, #{subject}, #{content}, #{boardType})
   </insert>

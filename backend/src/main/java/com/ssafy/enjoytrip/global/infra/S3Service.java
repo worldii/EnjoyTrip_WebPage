@@ -43,7 +43,7 @@ public class S3Service implements UploadService {
         final List<String> fileUrls = images.getImages().stream()
             .map(imageFile -> uploadMediaToS3(imageFile, folderName))
             .collect(Collectors.toList());
-        
+
         return fileUrls.stream()
             .map(FileUrlResponse::new)
             .collect(Collectors.toList());
@@ -73,7 +73,7 @@ public class S3Service implements UploadService {
         fileUrls.forEach(this::deleteMediaFromS3);
     }
 
-    // TODO : S3 delete 시키는 로직
+    // TODO : S3 delete 시키는 로직 추가하여야 함
     private void deleteMediaFromS3(final String fileUrl) {
         final String fileName = fileUrl.split("/")[3];
         amazonS3.deleteObject(bucket, fileName);

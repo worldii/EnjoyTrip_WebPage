@@ -6,6 +6,7 @@ import com.ssafy.enjoytrip.board.model.dto.request.SearchDto;
 import com.ssafy.enjoytrip.board.model.dto.response.BoardResponse;
 import com.ssafy.enjoytrip.board.model.dto.response.PageResponse;
 import com.ssafy.enjoytrip.board.service.BoardService;
+import com.ssafy.enjoytrip.global.auth.model.dto.LoginUser;
 import com.ssafy.enjoytrip.global.auth.model.dto.NoAuth;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -35,8 +36,9 @@ public class BoardController {
     public ResponseEntity<Long> save(
         @RequestParam @Valid final String json,
         final List<MultipartFile> files,
-        final String userId
+        final @LoginUser String userId
     ) {
+        
         return ResponseEntity.ok(boardService.saveBoard(json, files, userId));
     }
 
