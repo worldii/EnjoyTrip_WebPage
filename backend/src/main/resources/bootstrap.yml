@@ -1,9 +1,0 @@
-# Secret manager
-aws:
-  secretsmanager:
-    name: jonghajunyoung/dev
-    prefix: /enjoytrip
-cloud:
-  aws:
-    region:
-      static: ap-northeast-2
