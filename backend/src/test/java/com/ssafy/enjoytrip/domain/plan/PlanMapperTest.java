@@ -3,9 +3,9 @@ package com.ssafy.enjoytrip.domain.plan;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.ssafy.enjoytrip.plan.model.dto.Plan;
-import com.ssafy.enjoytrip.plan.model.dto.PlanBoardDto;
-import com.ssafy.enjoytrip.plan.model.mapper.PlanMapper;
+import com.ssafy.enjoytrip.core.plan.model.dto.Plan;
+import com.ssafy.enjoytrip.core.plan.model.dto.PlanBoardDto;
+import com.ssafy.enjoytrip.core.plan.model.mapper.PlanMapper;
 import java.sql.Date;
 import java.sql.Time;
 import java.text.SimpleDateFormat;

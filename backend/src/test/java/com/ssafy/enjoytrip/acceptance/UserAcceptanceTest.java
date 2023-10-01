@@ -5,11 +5,11 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+import com.ssafy.enjoytrip.core.user.model.dto.request.UserAddRequest;
+import com.ssafy.enjoytrip.core.user.model.dto.request.UserLoginRequest;
+import com.ssafy.enjoytrip.core.user.model.dto.request.UserModifyRequest;
 import com.ssafy.enjoytrip.global.auth.model.dto.request.LogoutRequest;
 import com.ssafy.enjoytrip.global.auth.model.dto.response.TokenResponse;
-import com.ssafy.enjoytrip.user.model.dto.request.UserAddRequest;
-import com.ssafy.enjoytrip.user.model.dto.request.UserLoginRequest;
-import com.ssafy.enjoytrip.user.model.dto.request.UserModifyRequest;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;

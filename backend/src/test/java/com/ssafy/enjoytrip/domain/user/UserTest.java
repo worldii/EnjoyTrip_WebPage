@@ -2,8 +2,8 @@ package com.ssafy.enjoytrip.domain.user;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
+import com.ssafy.enjoytrip.core.user.model.entity.User;
 import com.ssafy.enjoytrip.global.error.UserException;
-import com.ssafy.enjoytrip.user.model.entity.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

@@ -2,7 +2,7 @@ package com.ssafy.enjoytrip.domain.media;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
-import com.ssafy.enjoytrip.media.model.entity.FileInfo;
+import com.ssafy.enjoytrip.core.media.model.entity.FileInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

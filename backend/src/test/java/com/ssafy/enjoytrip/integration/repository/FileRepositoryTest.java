@@ -3,8 +3,8 @@ package com.ssafy.enjoytrip.integration.repository;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
-import com.ssafy.enjoytrip.media.dao.FileRepository;
-import com.ssafy.enjoytrip.media.model.entity.FileInfo;
+import com.ssafy.enjoytrip.core.media.dao.FileRepository;
+import com.ssafy.enjoytrip.core.media.model.entity.FileInfo;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

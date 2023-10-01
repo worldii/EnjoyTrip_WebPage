@@ -1,8 +1,8 @@
 package com.ssafy.enjoytrip.domain.board.mapper;
 
-import com.ssafy.enjoytrip.board.model.entity.Comment;
-import com.ssafy.enjoytrip.board.model.mapper.CommentMapper;
-import com.ssafy.enjoytrip.board.service.BoardService;
+import com.ssafy.enjoytrip.core.board.model.entity.Comment;
+import com.ssafy.enjoytrip.core.board.model.mapper.CommentMapper;
+import com.ssafy.enjoytrip.core.board.service.BoardService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

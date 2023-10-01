@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ssafy.enjoytrip.hotplace.model.mapper.HotPlaceMapper">
+<mapper namespace="com.ssafy.enjoytrip.core.hotplace.model.mapper.HotPlaceMapper">
 
-  <resultMap id="hotPlace" type="com.ssafy.enjoytrip.hotplace.model.entity.HotPlace">
+  <resultMap id="hotPlace" type="com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlace">
     <id column="hot_place_id" property="hotPlaceId"/>
     <result column="hot_place_name" property="hotPlaceName"/>
     <result column="road_address_name" property="roadAddressName"/>
@@ -14,7 +14,8 @@
     <result column="y" property="y"/>
   </resultMap>
 
-  <resultMap id="hotPlaceArticle" type="com.ssafy.enjoytrip.hotplace.model.entity.HotPlaceArticle">
+  <resultMap id="hotPlaceArticle"
+    type="com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceArticle">
     <id column="hot_place_article_id" property="hotPlaceArticleId"/>
     <result column="user_id" property="userId"/>
     <result column="hot_place_id" property="hotPlaceId"/>
@@ -23,7 +24,7 @@
     <result column="image_url" property="imageUrl"/>
   </resultMap>
 
-  <resultMap id="hotPlaceTag" type="com.ssafy.enjoytrip.hotplace.model.entity.HotPlaceTag">
+  <resultMap id="hotPlaceTag" type="com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceTag">
     <id column="tag_name" property="tagName"/>
     <result column="hot_place_id" property="hotPlaceId"/>
     <result column="count" property="count"/>

@@ -3,8 +3,8 @@ package com.ssafy.enjoytrip.integration.service;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
 import com.ssafy.enjoytrip.config.UploadConfig;
+import com.ssafy.enjoytrip.core.media.service.MediaService;
 import com.ssafy.enjoytrip.global.error.MediaException;
-import com.ssafy.enjoytrip.media.service.MediaService;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

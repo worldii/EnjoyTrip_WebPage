@@ -3,9 +3,9 @@ package com.ssafy.enjoytrip.integration.repository;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
+import com.ssafy.enjoytrip.core.user.dao.UserRepository;
+import com.ssafy.enjoytrip.core.user.model.entity.User;
 import com.ssafy.enjoytrip.global.error.UserException;
-import com.ssafy.enjoytrip.user.dao.UserRepository;
-import com.ssafy.enjoytrip.user.model.entity.User;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

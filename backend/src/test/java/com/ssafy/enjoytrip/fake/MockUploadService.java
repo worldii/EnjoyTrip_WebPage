@@ -1,9 +1,9 @@
 package com.ssafy.enjoytrip.fake;
 
-import com.ssafy.enjoytrip.media.model.FileUrlResponse;
-import com.ssafy.enjoytrip.media.model.ImageFiles;
-import com.ssafy.enjoytrip.media.service.UploadService;
-import com.ssafy.enjoytrip.media.util.FileUtil;
+import com.ssafy.enjoytrip.core.media.model.FileUrlResponse;
+import com.ssafy.enjoytrip.core.media.model.ImageFiles;
+import com.ssafy.enjoytrip.core.media.service.UploadService;
+import com.ssafy.enjoytrip.core.media.util.FileUtil;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.context.annotation.Profile;

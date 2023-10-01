@@ -3,7 +3,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 
-<mapper namespace="com.ssafy.enjoytrip.user.model.mapper.UserMapper">
+<mapper namespace="com.ssafy.enjoytrip.core.user.model.mapper.UserMapper">
   <resultMap id="user" type="user">
     <id property="userId" column="user_id"/>
     <result property="name" column="name"/>
