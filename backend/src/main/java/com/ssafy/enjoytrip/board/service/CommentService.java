@@ -13,9 +13,9 @@ public interface CommentService {
 
     Comment detail(final Long commentId);
 
-    void modify(final Long commentId, final CommentModifyRequest request);
+    void modify(final Long commentId, final String userId, final CommentModifyRequest request);
 
-    void delete(final Long commentId);
+    void delete(final Long commentId, final String userId);
 
     List<CommentResponse> getCommentList(final Long boardId);
 }

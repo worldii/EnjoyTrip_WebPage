@@ -21,3 +21,21 @@ CREATE TABLE file_info (
     file_url VARCHAR(255),
     board_id BIGINT
 );
+
+CREATE TABLE board (
+    board_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id VARCHAR(255) NOT NULL,
+    current_update TIMESTAMP default CURRENT_TIMESTAMP,
+    subject VARCHAR(255) NOT NULL,
+    content VARCHAR(255) NOT NULL,
+    hit INT DEFAULT 0,
+    type VARCHAR(255) default 'COMMUNITY'
+);
+
+create table Comment (
+    comment_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id VARCHAR(255) NOT NULL,
+    board_id BIGINT NOT NULL,
+    content VARCHAR(255) NOT NULL,
+    current_update TIMESTAMP default CURRENT_TIMESTAMP
+);
