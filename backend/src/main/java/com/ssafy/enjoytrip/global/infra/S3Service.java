@@ -73,9 +73,12 @@ public class S3Service implements UploadService {
         fileUrls.forEach(this::deleteMediaFromS3);
     }
 
-    // TODO : S3 delete 시키는 로직 추가하여야 함
     private void deleteMediaFromS3(final String fileUrl) {
-        final String fileName = fileUrl.split("/")[3];
-        amazonS3.deleteObject(bucket, fileName);
+        try {
+            final String fileName = fileUrl.split("/")[3];
+            amazonS3.deleteObject(bucket, fileName);
+        } catch (final Exception e) {
+            throw new MediaException("파일 삭제에 실패했습니다.");
+        }
     }
 }

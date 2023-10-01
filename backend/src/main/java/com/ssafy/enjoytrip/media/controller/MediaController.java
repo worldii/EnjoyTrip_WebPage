@@ -20,9 +20,7 @@ public class MediaController {
 
     @NoAuth
     @GetMapping("/{boardId}")
-    public ResponseEntity<List<FileInfoResponse>> getFileInfo(
-        @PathVariable final Long boardId
-    ) {
+    public ResponseEntity<List<FileInfoResponse>> getFileInfo(@PathVariable final Long boardId) {
         return ResponseEntity.ok(fileService.selectFile(boardId));
     }
 }
