@@ -1,15 +1,15 @@
-package com.ssafy.enjoytrip.global.infra;
+package com.ssafy.enjoytrip.infra;
 
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.ssafy.enjoytrip.core.media.model.FileUrlResponse;
+import com.ssafy.enjoytrip.core.media.model.ImageFiles;
+import com.ssafy.enjoytrip.core.media.service.UploadService;
+import com.ssafy.enjoytrip.core.media.util.FileUtil;
 import com.ssafy.enjoytrip.global.error.MediaException;
-import com.ssafy.enjoytrip.media.model.FileUrlResponse;
-import com.ssafy.enjoytrip.media.model.ImageFiles;
-import com.ssafy.enjoytrip.media.service.UploadService;
-import com.ssafy.enjoytrip.media.util.FileUtil;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;

@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.global.infra;
+package com.ssafy.enjoytrip.infra;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Component;
