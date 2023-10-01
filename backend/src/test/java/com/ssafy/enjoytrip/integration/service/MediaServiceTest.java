@@ -70,5 +70,4 @@ class MediaServiceTest {
             .isInstanceOf(MediaException.class)
             .hasMessage("imageFiles은 null이 될 수 없습니다.");
     }
-
 }

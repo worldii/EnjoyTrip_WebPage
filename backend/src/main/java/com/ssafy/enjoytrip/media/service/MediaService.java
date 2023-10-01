@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+// TODO : 추후에 이벤트 발행 방식으로 바꿀지 고민 중임.
 @Service
 @RequiredArgsConstructor
 public class MediaService {

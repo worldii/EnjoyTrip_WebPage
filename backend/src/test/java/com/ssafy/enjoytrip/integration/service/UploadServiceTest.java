@@ -40,7 +40,6 @@ class UploadServiceTest {
 
         // then
         assertThat(imagesFiles.size()).isEqualTo(fileUrls.size());
-        System.out.println(fileUrls.get(0).getUrl());
     }
 
     @Test
@@ -52,6 +51,7 @@ class UploadServiceTest {
 
         // when & then
         assertThatCode(() -> uploadService.uploadMedias(imagesFiles, folderName))
-            .isInstanceOf(MediaException.class).hasMessage("imageFiles은 null이 될 수 없습니다.");
+            .isInstanceOf(MediaException.class)
+            .hasMessage("imageFiles은 null이 될 수 없습니다.");
     }
 }
