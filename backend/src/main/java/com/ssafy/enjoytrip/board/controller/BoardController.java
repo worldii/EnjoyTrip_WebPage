@@ -7,8 +7,6 @@ import com.ssafy.enjoytrip.board.model.dto.response.BoardResponse;
 import com.ssafy.enjoytrip.board.model.dto.response.PageResponse;
 import com.ssafy.enjoytrip.board.service.BoardService;
 import com.ssafy.enjoytrip.global.auth.model.dto.NoAuth;
-import com.ssafy.enjoytrip.media.model.entity.FileInfo;
-import com.ssafy.enjoytrip.media.service.FileService;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -32,7 +30,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class BoardController {
 
     private final BoardService boardService;
-    private final FileService fileService;
 
     @PostMapping
     public ResponseEntity<Long> save(
@@ -112,11 +109,5 @@ public class BoardController {
     public ResponseEntity<Boolean> updateHit(@PathVariable final Long boardId) {
         boardService.updateHit(boardId);
         return ResponseEntity.ok().build();
-    }
-
-    @NoAuth
-    @GetMapping("/file/{boardId}")
-    public ResponseEntity<List<FileInfo>> getFileInfo(@PathVariable final Long boardId) {
-        return ResponseEntity.ok(fileService.selectFile(boardId));
     }
 }

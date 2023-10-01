@@ -4,6 +4,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
 import com.ssafy.enjoytrip.global.error.MediaException;
+import com.ssafy.enjoytrip.media.model.dto.FileInfoResponse;
 import com.ssafy.enjoytrip.media.model.entity.FileInfo;
 import com.ssafy.enjoytrip.media.service.FileService;
 import java.util.List;
@@ -28,7 +29,7 @@ class FileServiceTest {
         Long boardId = 1L;
 
         // when
-        List<FileInfo> fileInfos = fileService.selectFile(boardId);
+        List<FileInfoResponse> fileInfos = fileService.selectFile(boardId);
 
         // then
         assertThat(fileInfos).isNotNull();
@@ -50,7 +51,7 @@ class FileServiceTest {
         fileService.insertFile(boardId, List.of(fileInfo.getFileUrl()));
 
         // then
-        List<FileInfo> fileInfos = fileService.selectFile(boardId);
+        List<FileInfoResponse> fileInfos = fileService.selectFile(boardId);
         assertThat(fileInfos.size()).isEqualTo(currentSize + 1);
     }
 
@@ -78,7 +79,7 @@ class FileServiceTest {
         fileService.deleteFile(boardId);
 
         // then
-        List<FileInfo> fileInfos = fileService.selectFile(boardId);
+        List<FileInfoResponse> fileInfos = fileService.selectFile(boardId);
         assertThat(fileInfos.size()).isEqualTo(currentSize - 1);
     }
 }

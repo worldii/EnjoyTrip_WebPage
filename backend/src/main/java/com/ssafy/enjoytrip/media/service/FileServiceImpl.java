@@ -1,6 +1,7 @@
 package com.ssafy.enjoytrip.media.service;
 
 import com.ssafy.enjoytrip.media.dao.FileRepository;
+import com.ssafy.enjoytrip.media.model.dto.FileInfoResponse;
 import com.ssafy.enjoytrip.media.model.entity.FileInfo;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,8 +30,10 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public List<FileInfo> selectFile(final Long boardId) {
-        return fileRepository.selectFileByBoardId(boardId);
+    public List<FileInfoResponse> selectFile(final Long boardId) {
+        return fileRepository.selectFileByBoardId(boardId).stream()
+            .map(FileInfoResponse::from)
+            .collect(Collectors.toList());
     }
 
     @Override

@@ -14,12 +14,14 @@ import com.ssafy.enjoytrip.board.model.entity.Comment;
 import com.ssafy.enjoytrip.board.util.PageNavigationForPageHelper;
 import com.ssafy.enjoytrip.global.error.BoardException;
 import com.ssafy.enjoytrip.global.util.JsonUtil;
+import com.ssafy.enjoytrip.media.model.dto.FileInfoResponse;
 import com.ssafy.enjoytrip.media.model.entity.FileInfo;
 import com.ssafy.enjoytrip.media.service.FileService;
 import com.ssafy.enjoytrip.media.service.MediaService;
 import com.ssafy.enjoytrip.user.dao.UserRepository;
 import com.ssafy.enjoytrip.user.model.entity.User;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -103,7 +105,11 @@ public class BoardServiceImpl implements BoardService {
             .orElseThrow(() -> new BoardException("해당 boardId에 해당하는 board가 없습니다."));
 
         // TODO : 한번에 조인해오기
-        final List<FileInfo> fileInfos = fileService.selectFile(boardId);
+        List<FileInfoResponse> fileInfoResponses = fileService.selectFile(boardId);
+        List<FileInfo> fileInfos = fileInfoResponses.stream()
+            .map(FileInfoResponse::toEntity)
+            .collect(Collectors.toList());
+
         final List<Comment> comments = commentRepository.selectAll(boardId);
         board.setFileInfos(fileInfos);
         board.setComments(comments);

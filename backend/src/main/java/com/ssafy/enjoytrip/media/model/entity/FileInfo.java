@@ -1,13 +1,10 @@
 package com.ssafy.enjoytrip.media.model.entity;
 
 import com.ssafy.enjoytrip.global.error.MediaException;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 public class FileInfo {
@@ -17,9 +14,10 @@ public class FileInfo {
     private String fileUrl;
 
     @Builder
-    public FileInfo(final Long boardId, final String fileUrl) {
+    public FileInfo(final Long fileInfoId, final Long boardId, final String fileUrl) {
         validateBoardId(boardId);
         validateFileUrl(fileUrl);
+        this.fileInfoId = fileInfoId;
         this.boardId = boardId;
         this.fileUrl = fileUrl;
     }
