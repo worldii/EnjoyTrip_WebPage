@@ -1,14 +1,26 @@
 package com.ssafy.enjoytrip.board.model.dto.request;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Data
+@Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class PageInfoRequest {
-    int page;
-    int pageSize;
 
+    private int page = 1;
+    private int pageSize = 10;
+
+    public static PageInfoRequest from(final Integer currentPage) {
+        if (currentPage == null) {
+            return new PageInfoRequest();
+        }
+
+        return PageInfoRequest.builder()
+            .page(currentPage)
+            .build();
+    }
 }

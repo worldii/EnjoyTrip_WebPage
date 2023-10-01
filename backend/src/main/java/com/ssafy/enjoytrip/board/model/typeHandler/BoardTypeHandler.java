@@ -35,7 +35,6 @@ public class BoardTypeHandler implements TypeHandler<BoardType> {
     }
 
     private BoardType getBoardType(String type) {
-        System.out.println("type = " + type);
         return BoardType.valueOf(type.toUpperCase());
     }
 

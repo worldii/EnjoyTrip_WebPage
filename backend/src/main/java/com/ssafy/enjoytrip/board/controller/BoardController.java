@@ -8,8 +8,8 @@ import com.ssafy.enjoytrip.board.model.dto.response.PageResponse;
 import com.ssafy.enjoytrip.board.service.BoardService;
 import com.ssafy.enjoytrip.global.auth.model.dto.LoginUser;
 import com.ssafy.enjoytrip.global.auth.model.dto.NoAuth;
+import java.net.URI;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -38,47 +38,25 @@ public class BoardController {
         final List<MultipartFile> files,
         final @LoginUser String userId
     ) {
-        
-        return ResponseEntity.ok(boardService.saveBoard(json, files, userId));
-    }
+        final Long boardId = boardService.saveBoard(json, files, userId);
 
-    @NoAuth
-    @GetMapping
-    public ResponseEntity<PageResponse> getList(
-        final PageInfoRequest pageInfoRequest,
-        final HttpServletRequest request
-    ) {
-        return ResponseEntity.ok(
-            boardService.getBoardList(pageInfoRequest,
-                request.getContextPath() + "/board/list?page")
-        );
+        return ResponseEntity.created(URI.create("/board/" + boardId)).body(boardId);
     }
 
     @NoAuth
     @GetMapping("/list/{currentPage}")
-    public ResponseEntity<PageResponse> getListByPage(
-        final PageInfoRequest pageInfoRequest,
-        final HttpServletRequest request
-    ) {
-        final PageResponse listByPage = boardService.getListByPage(
-            pageInfoRequest,
-            request.getContextPath() + "/board/list?page"
-        );
+    public ResponseEntity<PageResponse> getListByPage(@PathVariable final Integer currentPage) {
 
-        return ResponseEntity.ok(listByPage);
+        return ResponseEntity.ok(boardService.getBoardList(PageInfoRequest.from(currentPage)));
     }
 
     @NoAuth
     @GetMapping("/list/search")
     public ResponseEntity<PageResponse> getListBySearchDto(
-        final PageInfoRequest pageInfoRequest,
-        @ModelAttribute final SearchDto searchDto,
-        final HttpServletRequest request
+        @RequestBody final PageInfoRequest pageInfoRequest,
+        @ModelAttribute final SearchDto searchDto
     ) {
-        final PageResponse boardResponse = boardService.getBoardListBySearchDto(
-            searchDto, pageInfoRequest, request.getContextPath() + "/board/list/search?page");
-
-        return ResponseEntity.ok(boardResponse);
+        return ResponseEntity.ok(boardService.getBoardListBySearchDto(searchDto, pageInfoRequest));
     }
 
     @NoAuth
@@ -90,19 +68,10 @@ public class BoardController {
     @PutMapping("/{boardId}")
     public ResponseEntity<Void> modifyBoard(
         @PathVariable final Long boardId,
-        @RequestBody @Valid final BoardModifyRequest boardModifyRequest,
-        @RequestParam final String userId
+        @LoginUser final String userId,
+        @RequestBody @Valid final BoardModifyRequest boardModifyRequest
     ) {
         boardService.modify(boardId, userId, boardModifyRequest);
-        return ResponseEntity.ok().build();
-    }
-
-    @DeleteMapping("/{boardId}")
-    public ResponseEntity<Void> deleteBoard(
-        @PathVariable final Long boardId,
-        @RequestParam final String userId
-    ) {
-        boardService.delete(boardId, userId);
         return ResponseEntity.ok().build();
     }
 
@@ -110,6 +79,15 @@ public class BoardController {
     @PostMapping("/hit/{boardId}")
     public ResponseEntity<Boolean> updateHit(@PathVariable final Long boardId) {
         boardService.updateHit(boardId);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{boardId}")
+    public ResponseEntity<Void> deleteBoard(
+        @PathVariable final Long boardId,
+        @LoginUser final String userId
+    ) {
+        boardService.delete(boardId, userId);
         return ResponseEntity.ok().build();
     }
 }
