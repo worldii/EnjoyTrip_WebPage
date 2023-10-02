@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.infra;
+package com.ssafy.enjoytrip.global.auth.service;
 
 public interface PasswordEncoder {
 

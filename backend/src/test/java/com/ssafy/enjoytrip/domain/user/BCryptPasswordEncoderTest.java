@@ -3,8 +3,8 @@ package com.ssafy.enjoytrip.domain.user;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import com.ssafy.enjoytrip.global.auth.service.PasswordEncoder;
 import com.ssafy.enjoytrip.infra.BCryptPasswordEncoder;
-import com.ssafy.enjoytrip.infra.PasswordEncoder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
