@@ -1,7 +1,6 @@
 package com.ssafy.enjoytrip.global.auth.controller;
 
 import com.ssafy.enjoytrip.global.auth.model.dto.LoginUser;
-import com.ssafy.enjoytrip.global.auth.model.dto.NoAuth;
 import com.ssafy.enjoytrip.global.auth.model.dto.response.AccessTokenResponse;
 import com.ssafy.enjoytrip.global.auth.model.dto.response.RefreshTokenResponse;
 import com.ssafy.enjoytrip.global.auth.service.TokenService;
@@ -26,7 +25,6 @@ public class AuthController {
     }
 
     // TODO : 로그인 유저 아니게 바꾸기.
-    @NoAuth
     @PostMapping("/access-token")
     public ResponseEntity<AccessTokenResponse> generateAccessToken(
         @LoginUser final String userId

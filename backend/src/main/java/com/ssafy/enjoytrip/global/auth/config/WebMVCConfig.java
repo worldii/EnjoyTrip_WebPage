@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @RequiredArgsConstructor
-@MapperScan(basePackages = "com.ssafy.enjoytrip.*.model.mapper")
+@MapperScan(basePackages = "com.ssafy.enjoytrip.*.*.model.mapper")
 public class WebMVCConfig implements WebMvcConfigurer {
 
     private final JwtInterceptor jwtInterceptor;

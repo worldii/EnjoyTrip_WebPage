@@ -9,7 +9,6 @@ import com.ssafy.enjoytrip.global.auth.model.dto.NoAuth;
 import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -64,6 +63,4 @@ public class CommentController {
 
         return ResponseEntity.noContent().build();
     }
-
-    SqlSessionTemplate sqlSession;
 }
