@@ -235,6 +235,30 @@ class CommentServiceTest {
         Long commentId = commentService.save(commentSaveRequest, userId, boardId);
 
         // when
+        String wrongUserId = "test2";
+        // then
+        assertThatCode(() -> commentService.delete(commentId, wrongUserId))
+            .isInstanceOf(BoardException.class)
+            .hasMessageContaining("유저 아이디가 다릅니다.");
+    }
+
+    @Test
+    @Sql(scripts = {
+        "/truncate.sql",
+        "/board.sql",
+        "/user.sql"
+    })
+    @DisplayName("유저가 존재하지 않을 경우 정상적으로 삭제되지 않는다.")
+    void deleteCommentWithNoExistUser() {
+        // given
+        Long boardId = 1L;
+        String userId = "test";
+        CommentSaveRequest commentSaveRequest = CommentSaveRequest.builder()
+            .content("test")
+            .build();
+        Long commentId = commentService.save(commentSaveRequest, userId, boardId);
+
+        // when
         String wrongUserId = "wrong";
         // then
         assertThatCode(() -> commentService.delete(commentId, wrongUserId))
