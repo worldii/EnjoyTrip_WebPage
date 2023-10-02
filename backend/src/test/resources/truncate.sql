@@ -25,7 +25,7 @@ CREATE TABLE file_info (
 CREATE TABLE board (
     board_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     user_id VARCHAR(255) NOT NULL,
-    current_update TIMESTAMP default CURRENT_TIMESTAMP,
+    current_update TIMESTAMP default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     subject VARCHAR(255) NOT NULL,
     content VARCHAR(255) NOT NULL,
     hit INT DEFAULT 0,
@@ -37,5 +37,5 @@ create table Comment (
     user_id VARCHAR(255) NOT NULL,
     board_id BIGINT NOT NULL,
     content VARCHAR(255) NOT NULL,
-    current_update TIMESTAMP default CURRENT_TIMESTAMP
+    current_update TIMESTAMP  default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
