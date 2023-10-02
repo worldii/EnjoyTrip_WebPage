@@ -3,7 +3,7 @@ package com.ssafy.enjoytrip.core.board.controller;
 import com.ssafy.enjoytrip.core.board.model.dto.request.BoardModifyRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.request.PageInfoRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.request.SearchDto;
-import com.ssafy.enjoytrip.core.board.model.dto.response.BoardResponse;
+import com.ssafy.enjoytrip.core.board.model.dto.response.BoardDetailResponse;
 import com.ssafy.enjoytrip.core.board.model.dto.response.PageResponse;
 import com.ssafy.enjoytrip.core.board.service.BoardService;
 import com.ssafy.enjoytrip.global.auth.model.dto.LoginUser;
@@ -61,8 +61,9 @@ public class BoardController {
 
     @NoAuth
     @GetMapping("/{boardId}")
-    public ResponseEntity<BoardResponse> getBoard(@PathVariable("boardId") final Long boardId) {
-        return ResponseEntity.ok(BoardResponse.from(boardService.detail(boardId)));
+    public ResponseEntity<BoardDetailResponse> getBoard(
+        @PathVariable("boardId") final Long boardId) {
+        return ResponseEntity.ok(boardService.detail(boardId));
     }
 
     @PutMapping("/{boardId}")

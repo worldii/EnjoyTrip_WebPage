@@ -21,16 +21,21 @@ public class MediaService {
         final List<MultipartFile> imageFiles,
         final String folderName
     ) {
-        final List<String> fileUrls = uploadService.uploadMedias(imageFiles, folderName)
-            .stream()
-            .map(FileUrlResponse::getUrl)
-            .collect(Collectors.toList());
-
+        final List<String> fileUrls = getFileUrls(imageFiles, folderName);
         try {
             fileService.insertFile(boardId, fileUrls);
         } catch (final Exception e) {
             uploadService.deleteMedias(fileUrls);
             throw new MediaException("파일 업로드에 실패했습니다.");
         }
+    }
+
+    private List<String> getFileUrls(final List<MultipartFile> imageFiles,
+        final String folderName
+    ) {
+        return uploadService.uploadMedias(imageFiles, folderName)
+            .stream()
+            .map(FileUrlResponse::getUrl)
+            .collect(Collectors.toList());
     }
 }

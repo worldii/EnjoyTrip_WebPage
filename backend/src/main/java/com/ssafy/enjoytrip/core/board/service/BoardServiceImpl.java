@@ -8,6 +8,7 @@ import com.ssafy.enjoytrip.core.board.model.dto.request.BoardModifyRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.request.BoardSaveRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.request.PageInfoRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.request.SearchDto;
+import com.ssafy.enjoytrip.core.board.model.dto.response.BoardDetailResponse;
 import com.ssafy.enjoytrip.core.board.model.dto.response.PageResponse;
 import com.ssafy.enjoytrip.core.board.model.entity.Board;
 import com.ssafy.enjoytrip.core.board.model.entity.Comment;
@@ -16,11 +17,11 @@ import com.ssafy.enjoytrip.core.media.model.dto.FileInfoResponse;
 import com.ssafy.enjoytrip.core.media.model.entity.FileInfo;
 import com.ssafy.enjoytrip.core.media.service.FileService;
 import com.ssafy.enjoytrip.core.media.service.MediaService;
+import com.ssafy.enjoytrip.core.media.service.UploadService;
 import com.ssafy.enjoytrip.core.user.dao.UserRepository;
 import com.ssafy.enjoytrip.core.user.model.entity.User;
 import com.ssafy.enjoytrip.global.error.BoardException;
 import com.ssafy.enjoytrip.global.util.JsonUtil;
-import com.ssafy.enjoytrip.infra.S3Service;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -40,12 +41,12 @@ public class BoardServiceImpl implements BoardService {
     private final CommentRepository commentRepository;
     private final MediaService mediaService;
     private final FileService fileService;
-    private final S3Service s3Service;
+    private final UploadService uploadService;
+    private final BoardDeleteService boardDeleteService;
 
     @Override
     public Long saveBoard(final String json, final List<MultipartFile> files, final String userId) {
-        final User user = userRepository.selectByUserId(userId)
-            .orElseThrow(() -> new BoardException("해당 userId에 해당하는 user가 없습니다."));
+        final User user = findUserByUserId(userId);
         final Long boardId = boardRepository.insertBoard(getBoard(json, user.getUserId()));
 
         return saveImages(files, user.getUserId(), boardId);
@@ -65,6 +66,7 @@ public class BoardServiceImpl implements BoardService {
             throw new BoardException("파일 저장에 실패하였습니다.");
         }
     }
+
 
     private Board getBoard(final String json, final String userId) {
         final BoardSaveRequest request = (BoardSaveRequest)
@@ -97,7 +99,7 @@ public class BoardServiceImpl implements BoardService {
 
 
     @Override
-    public Board detail(final Long boardId) {
+    public BoardDetailResponse detail(final Long boardId) {
         final Board board = boardRepository
             .selectBoard(boardId)
             .orElseThrow(() -> new BoardException("해당 boardId에 해당하는 board가 없습니다."));
@@ -107,12 +109,9 @@ public class BoardServiceImpl implements BoardService {
         List<FileInfo> fileInfos = fileInfoResponses.stream()
             .map(FileInfoResponse::toEntity)
             .collect(Collectors.toList());
-
         final List<Comment> comments = commentRepository.selectAll(boardId);
-        board.setFileInfos(fileInfos);
-        board.setComments(comments);
 
-        return board;
+        return BoardDetailResponse.of(board, comments, fileInfos);
     }
 
     @Override
@@ -122,13 +121,8 @@ public class BoardServiceImpl implements BoardService {
         final String userId,
         final BoardModifyRequest boardModifyRequest
     ) {
-        final User user = userRepository
-            .selectByUserId(userId)
-            .orElseThrow(() -> new BoardException("해당 유저가 없습니다."));
-
-        final Board board = boardRepository
-            .selectBoard(boardId)
-            .orElseThrow(() -> new BoardException("해당 boardId에 해당하는 board가 없습니다."));
+        final User user = findUserByUserId(userId);
+        final Board board = findBoardByBoardId(boardId);
 
         validateSameMember(userId, board.getUserId());
 
@@ -143,34 +137,47 @@ public class BoardServiceImpl implements BoardService {
         boardRepository.updateBoard(modifyBoard);
     }
 
-    private void validateSameMember(final String userId, final String boardUserId) {
-        if (!userId.equals(boardUserId)) {
-            throw new BoardException("해당 유저가 아닙니다.");
-        }
-    }
-
     @Override
     public void delete(final Long boardId, final String userId) {
-        final User user = userRepository.selectByUserId(userId)
-            .orElseThrow(() -> new BoardException("해당 유저가 없습니다."));
-        final Board board = boardRepository.selectBoard(boardId)
-            .orElseThrow(() -> new BoardException("해당 boardId에 해당하는 Board가 없습니다."));
+        final User user = findUserByUserId(userId);
+        final Board board = findBoardByBoardId(boardId);
+
         validateSameMember(user.getUserId(), board.getUserId());
 
-        //  TODO : S3 지우기 + transaction 분리
-        final List<String> fileInfos = fileService.selectFile(boardId).stream()
-            .map(FileInfoResponse::getFileUrl).collect(Collectors.toList());
+        boardDeleteService.deleteBoard(boardId);
 
-        s3Service.deleteMedias(fileInfos);
+        try {
+            final List<String> fileUrls = fileService.selectFile(boardId).stream()
+                .map(FileInfoResponse::getFileUrl)
+                .collect(Collectors.toList());
+            
+            uploadService.deleteMedias(fileUrls);
+        } catch (final Exception e) {
+            boardDeleteService.restoreBoard(boardId);
+            throw new BoardException("게시글 삭제에 실패하였습니다.");
+        }
 
-        fileService.deleteFile(boardId);
-        commentRepository.deleteAll(boardId);
-        boardRepository.deleteBoard(boardId);
     }
 
     @Override
     @Transactional
     public void updateHit(final Long boardId) {
         boardRepository.updateHit(boardId);
+    }
+
+    private void validateSameMember(final String userId, final String boardUserId) {
+        if (!userId.equals(boardUserId)) {
+            throw new BoardException("해당 유저가 아닙니다.");
+        }
+    }
+
+    private Board findBoardByBoardId(final Long boardId) {
+        return boardRepository.selectBoard(boardId)
+            .orElseThrow(() -> new BoardException("해당 boardId에 해당하는 Board가 없습니다."));
+    }
+
+    private User findUserByUserId(final String userId) {
+        return userRepository.selectByUserId(userId)
+            .orElseThrow(() -> new BoardException("해당 userId에 해당하는 user가 없습니다."));
     }
 }
