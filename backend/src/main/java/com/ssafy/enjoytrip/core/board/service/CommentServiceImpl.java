@@ -84,6 +84,14 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
+    public void deleteAll(Long boardId) {
+        final Board board = findByBoardId(boardId);
+
+        commentRepository.deleteAll(board.getBoardId());
+    }
+
+    @Override
+    @Transactional
     public void delete(final Long commentId, final String userId) {
         final Comment comment = findByCommentId(commentId);
         final User user = findByUserId(userId);

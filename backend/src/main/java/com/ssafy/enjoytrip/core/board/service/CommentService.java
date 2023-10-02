@@ -18,4 +18,6 @@ public interface CommentService {
     void delete(final Long commentId, final String userId);
 
     List<CommentResponse> getCommentList(final Long boardId);
+
+    void deleteAll(final Long boardId);
 }

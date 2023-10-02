@@ -105,4 +105,17 @@ class CommentRepositoryTest {
             .orElseThrow(RuntimeException::new);
         assertThat(newComment).extracting("content").isEqualTo(content);
     }
+
+    @Test
+    @DisplayName("comment를 모두 삭제한다.")
+    void deleteAllComment() {
+        // given
+        Long boardId = 1L;
+
+        // when
+        commentRepository.deleteAll(boardId);
+
+        // then
+        assertThat(commentRepository.selectAll(boardId).size()).isZero();
+    }
 }
