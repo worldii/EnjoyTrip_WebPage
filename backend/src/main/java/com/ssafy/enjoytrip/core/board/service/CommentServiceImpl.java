@@ -10,7 +10,6 @@ import com.ssafy.enjoytrip.core.board.model.entity.Comment;
 import com.ssafy.enjoytrip.core.user.dao.UserRepository;
 import com.ssafy.enjoytrip.core.user.model.entity.User;
 import com.ssafy.enjoytrip.global.error.BoardException;
-import com.ssafy.enjoytrip.global.error.CommentNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -49,8 +48,7 @@ public class CommentServiceImpl implements CommentService {
     public List<CommentResponse> getCommentList(final Long boardId) {
         final Board board = findByBoardId(boardId);
 
-        return commentRepository.selectAll(board.getBoardId())
-            .stream()
+        return commentRepository.selectAll(board.getBoardId()).stream()
             .map(CommentResponse::from)
             .collect(Collectors.toList());
     }
@@ -98,7 +96,7 @@ public class CommentServiceImpl implements CommentService {
     private Comment findByCommentId(final Long commentId) {
         return commentRepository
             .selectComment(commentId)
-            .orElseThrow(() -> new CommentNotFoundException("해당 commentId에 해당하는 comment가 없습니다."));
+            .orElseThrow(() -> new BoardException("해당 commentId에 해당하는 comment가 없습니다."));
     }
 
     private Board findByBoardId(final Long boardId) {
@@ -113,7 +111,7 @@ public class CommentServiceImpl implements CommentService {
 
     private void validateSameUser(final String commentUserId, final String userId) {
         if (!commentUserId.equals(userId)) {
-            throw new BoardException("유저 아이디가 다릅니다");
+            throw new BoardException("유저 아이디가 다릅니다.");
         }
     }
 }
