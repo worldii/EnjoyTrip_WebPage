@@ -39,10 +39,11 @@ public class BoardServiceImpl implements BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
+    private final BoardTransactionService boardTransactionService;
+
     private final MediaService mediaService;
     private final FileService fileService;
     private final UploadService uploadService;
-    private final BoardDeleteService boardDeleteService;
 
     @Override
     public Long saveBoard(final String json, final List<MultipartFile> files, final String userId) {
@@ -83,16 +84,19 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public PageResponse getBoardList(final PageInfoRequest pageInfoRequest) {
         PageHelper.startPage(pageInfoRequest.getPage(), pageInfoRequest.getPageSize());
+        
         return new PageResponse(
             new PageNavigationForPageHelper(boardRepository.selectAll(), "/board/list?page"));
     }
 
     @Override
     public PageResponse getBoardListBySearchDto(
-        final SearchDto searchDto, final PageInfoRequest pageInfoRequest) {
+        final SearchDto searchDto, final PageInfoRequest pageInfoRequest
+    ) {
 
         PageHelper.startPage(pageInfoRequest.getPage(), pageInfoRequest.getPageSize());
         final Page<Board> boards = boardRepository.selectBoardListBySearchDto(searchDto);
+
         return PageResponse.from(
             new PageNavigationForPageHelper(boards, "/board/list/search?page"));
     }
@@ -100,13 +104,9 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     public BoardDetailResponse detail(final Long boardId) {
-        final Board board = boardRepository
-            .selectBoard(boardId)
-            .orElseThrow(() -> new BoardException("해당 boardId에 해당하는 board가 없습니다."));
 
-        // TODO : 한번에 조인해오기
-        List<FileInfoResponse> fileInfoResponses = fileService.selectFile(boardId);
-        List<FileInfo> fileInfos = fileInfoResponses.stream()
+        final Board board = findBoardByBoardId(boardId);
+        final List<FileInfo> fileInfos = fileService.selectFile(boardId).stream()
             .map(FileInfoResponse::toEntity)
             .collect(Collectors.toList());
         final List<Comment> comments = commentRepository.selectAll(boardId);
@@ -133,8 +133,21 @@ public class BoardServiceImpl implements BoardService {
             .content(boardModifyRequest.getContent())
             .build();
 
-        // TODO : 이미지 업로드 까지 수정
-        boardRepository.updateBoard(modifyBoard);
+        boardTransactionService.updateBoard(modifyBoard);
+        modifyMedias(boardId);
+    }
+
+    private void modifyMedias(final Long boardId) {
+        try {
+            uploadService.deleteMedias(findFileUrls(boardId));
+            // TODO : 이미지 업로드 까지 수정
+            // mediaService.insertMedias(boardId, boardModifyRequest.getFiles(), "board/" + userId);
+        } catch (final Exception e) {
+
+            // ToDo : board 이전거로 되돌리기
+            boardTransactionService.restoreBoard(boardId);
+            throw new BoardException("게시글 수정에 실패하였습니다.");
+        }
     }
 
     @Override
@@ -144,25 +157,31 @@ public class BoardServiceImpl implements BoardService {
 
         validateSameMember(user.getUserId(), board.getUserId());
 
-        boardDeleteService.deleteBoard(boardId);
+        boardTransactionService.deleteBoard(boardId);
 
+        deleteMedias(boardId);
+    }
+
+    private void deleteMedias(final Long boardId) {
         try {
-            final List<String> fileUrls = fileService.selectFile(boardId).stream()
-                .map(FileInfoResponse::getFileUrl)
-                .collect(Collectors.toList());
-            
+            final List<String> fileUrls = findFileUrls(boardId);
             uploadService.deleteMedias(fileUrls);
         } catch (final Exception e) {
-            boardDeleteService.restoreBoard(boardId);
+            boardTransactionService.restoreBoard(boardId);
             throw new BoardException("게시글 삭제에 실패하였습니다.");
         }
-
     }
 
     @Override
     @Transactional
     public void updateHit(final Long boardId) {
         boardRepository.updateHit(boardId);
+    }
+
+    private List<String> findFileUrls(final Long boardId) {
+        return fileService.selectFile(boardId).stream()
+            .map(FileInfoResponse::getFileUrl)
+            .collect(Collectors.toList());
     }
 
     private void validateSameMember(final String userId, final String boardUserId) {

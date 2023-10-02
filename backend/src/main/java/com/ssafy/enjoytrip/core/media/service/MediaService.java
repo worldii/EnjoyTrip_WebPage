@@ -30,7 +30,8 @@ public class MediaService {
         }
     }
 
-    private List<String> getFileUrls(final List<MultipartFile> imageFiles,
+    private List<String> getFileUrls(
+        final List<MultipartFile> imageFiles,
         final String folderName
     ) {
         return uploadService.uploadMedias(imageFiles, folderName)
