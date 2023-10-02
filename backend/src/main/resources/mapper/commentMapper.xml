@@ -3,9 +3,9 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.enjoytrip.core.board.model.mapper.CommentMapper">
   <insert id="insertComment" parameterType="comment">
-    <!--        <selectKey resultType="int" keyProperty="commentId" order="AFTER">-->
-    <!--            SELECT LAST_INSERT_ID()-->
-    <!--        </selectKey>-->
+    <selectKey resultType="Long" keyProperty="commentId" order="AFTER">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
     insert into comment (user_id, board_id, content)
     values (#{userId}, #{boardId}, #{content})
   </insert>

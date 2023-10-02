@@ -36,12 +36,10 @@ public class CommentServiceImpl implements CommentService {
         final Board board = findByBoardId(boardId);
         final User user = findByUserId(userId);
 
-        validateSameUser(user.getUserId(), userId);
-
         final Comment comment = Comment.builder()
             .content(commentSaveRequest.getContent())
             .boardId(board.getBoardId())
-            .userId(userId)
+            .userId(user.getUserId())
             .build();
 
         return commentRepository.insertComment(comment);
