@@ -1,11 +1,9 @@
 package com.ssafy.enjoytrip.core.board.dao;
 
 import com.github.pagehelper.Page;
-import com.ssafy.enjoytrip.core.board.model.dto.request.SearchDto;
+import com.ssafy.enjoytrip.core.board.model.dto.request.SearchCondition;
 import com.ssafy.enjoytrip.core.board.model.entity.Board;
 import com.ssafy.enjoytrip.core.board.model.mapper.BoardMapper;
-import com.ssafy.enjoytrip.core.media.model.entity.FileInfo;
-import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -31,8 +29,8 @@ public class BoardRepository {
         return boardMapper.selectAll();
     }
 
-    public Page<Board> selectBoardListBySearchDto(final SearchDto searchDto) {
-        return boardMapper.selectBoardListBySearchDto(searchDto);
+    public Page<Board> selectBoardListBySearchDto(final SearchCondition searchCondition) {
+        return boardMapper.selectBoardListBySearchDto(searchCondition);
     }
 
     @Transactional
@@ -48,14 +46,5 @@ public class BoardRepository {
     @Transactional
     public void deleteBoard(final Long boardId) {
         boardMapper.deleteBoard(boardId);
-    }
-
-    public List<FileInfo> selectFile(final Long boardId) {
-        return boardMapper.selectFile(boardId);
-    }
-
-    @Transactional
-    public int insertFile(final Long boardId, final List<FileInfo> imageFiles) {
-        return boardMapper.insertFile(boardId, imageFiles);
     }
 }

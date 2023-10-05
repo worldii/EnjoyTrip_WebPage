@@ -7,7 +7,7 @@ import com.ssafy.enjoytrip.core.board.dao.CommentRepository;
 import com.ssafy.enjoytrip.core.board.model.dto.request.BoardModifyRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.request.BoardSaveRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.request.PageInfoRequest;
-import com.ssafy.enjoytrip.core.board.model.dto.request.SearchDto;
+import com.ssafy.enjoytrip.core.board.model.dto.request.SearchCondition;
 import com.ssafy.enjoytrip.core.board.model.dto.response.BoardDetailResponse;
 import com.ssafy.enjoytrip.core.board.model.dto.response.PageResponse;
 import com.ssafy.enjoytrip.core.board.model.entity.Board;
@@ -33,7 +33,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
@@ -61,13 +60,11 @@ public class BoardServiceImpl implements BoardService {
         try {
             mediaService.insertMedias(boardId, files, "board/" + userId);
             return boardId;
-
         } catch (final Exception e) {
             boardRepository.deleteBoard(boardId);
             throw new BoardException("파일 저장에 실패하였습니다.");
         }
     }
-
 
     private Board getBoard(final String json, final String userId) {
         final BoardSaveRequest request = (BoardSaveRequest)
@@ -82,20 +79,22 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PageResponse getBoardList(final PageInfoRequest pageInfoRequest) {
         PageHelper.startPage(pageInfoRequest.getPage(), pageInfoRequest.getPageSize());
-        
+
         return new PageResponse(
             new PageNavigationForPageHelper(boardRepository.selectAll(), "/board/list?page"));
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PageResponse getBoardListBySearchDto(
-        final SearchDto searchDto, final PageInfoRequest pageInfoRequest
+        final SearchCondition searchCondition, final PageInfoRequest pageInfoRequest
     ) {
 
         PageHelper.startPage(pageInfoRequest.getPage(), pageInfoRequest.getPageSize());
-        final Page<Board> boards = boardRepository.selectBoardListBySearchDto(searchDto);
+        final Page<Board> boards = boardRepository.selectBoardListBySearchDto(searchCondition);
 
         return PageResponse.from(
             new PageNavigationForPageHelper(boards, "/board/list/search?page"));
@@ -103,8 +102,8 @@ public class BoardServiceImpl implements BoardService {
 
 
     @Override
+    @Transactional(readOnly = true)
     public BoardDetailResponse detail(final Long boardId) {
-
         final Board board = findBoardByBoardId(boardId);
         final List<FileInfo> fileInfos = fileService.selectFile(boardId).stream()
             .map(FileInfoResponse::toEntity)
@@ -117,8 +116,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional
     public void modify(
-        final Long boardId,
-        final String userId,
+        final Long boardId, final String userId,
         final BoardModifyRequest boardModifyRequest
     ) {
         final User user = findUserByUserId(userId);
@@ -134,18 +132,48 @@ public class BoardServiceImpl implements BoardService {
             .build();
 
         boardTransactionService.updateBoard(modifyBoard);
-        modifyMedias(boardId);
+        modifyMedias(board);
     }
 
-    private void modifyMedias(final Long boardId) {
-        try {
-            uploadService.deleteMedias(findFileUrls(boardId));
-            // TODO : 이미지 업로드 까지 수정
-            // mediaService.insertMedias(boardId, boardModifyRequest.getFiles(), "board/" + userId);
-        } catch (final Exception e) {
+    public void modify(
+        final Long boardId, final String userId,
+        final BoardModifyRequest boardModifyRequest, final List<MultipartFile> files
+    ) {
+        final User user = findUserByUserId(userId);
+        final Board board = findBoardByBoardId(boardId);
 
-            // ToDo : board 이전거로 되돌리기
-            boardTransactionService.restoreBoard(boardId);
+        validateSameMember(userId, board.getUserId());
+
+        final Board modifyBoard = Board.builder()
+            .boardId(boardId)
+            .userId(user.getUserId())
+            .subject(boardModifyRequest.getSubject())
+            .content(boardModifyRequest.getContent())
+            .build();
+
+        boardTransactionService.updateBoard(modifyBoard);
+        modifyMedias(board, files);
+    }
+
+    private void modifyMedias(final Board board, final List<MultipartFile> files) {
+        try {
+            uploadService.deleteMedias(findFileUrls(board.getBoardId()));
+            mediaService.insertMedias(board.getBoardId(), files,
+                "board/" + board.getUserId());
+
+        } catch (final Exception e) {
+            boardTransactionService.updateBoard(board);
+            throw new BoardException("게시글 수정에 실패하였습니다.");
+        }
+    }
+
+    private void modifyMedias(final Board board) {
+        try {
+            uploadService.deleteMedias(findFileUrls(board.getBoardId()));
+            // TODO : 이미지 업로드 까지 수정
+            //\ mediaService.insertMedias(boardId, boardModifyRequest.getFiles(), "board/" + userId);
+        } catch (final Exception e) {
+            boardTransactionService.updateBoard(board);
             throw new BoardException("게시글 수정에 실패하였습니다.");
         }
     }
@@ -159,15 +187,15 @@ public class BoardServiceImpl implements BoardService {
 
         boardTransactionService.deleteBoard(boardId);
 
-        deleteMedias(boardId);
+        deleteMedias(board);
     }
 
-    private void deleteMedias(final Long boardId) {
+    private void deleteMedias(final Board board) {
         try {
-            final List<String> fileUrls = findFileUrls(boardId);
+            final List<String> fileUrls = findFileUrls(board.getBoardId());
             uploadService.deleteMedias(fileUrls);
         } catch (final Exception e) {
-            boardTransactionService.restoreBoard(boardId);
+            boardTransactionService.insertBoard(board);
             throw new BoardException("게시글 삭제에 실패하였습니다.");
         }
     }

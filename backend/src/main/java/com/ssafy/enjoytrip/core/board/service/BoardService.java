@@ -2,7 +2,7 @@ package com.ssafy.enjoytrip.core.board.service;
 
 import com.ssafy.enjoytrip.core.board.model.dto.request.BoardModifyRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.request.PageInfoRequest;
-import com.ssafy.enjoytrip.core.board.model.dto.request.SearchDto;
+import com.ssafy.enjoytrip.core.board.model.dto.request.SearchCondition;
 import com.ssafy.enjoytrip.core.board.model.dto.response.BoardDetailResponse;
 import com.ssafy.enjoytrip.core.board.model.dto.response.PageResponse;
 import java.util.List;
@@ -15,7 +15,7 @@ public interface BoardService {
     BoardDetailResponse detail(final Long boardId);
 
     PageResponse getBoardListBySearchDto(
-        final SearchDto searchDto, final PageInfoRequest pageInfoRequest);
+        final SearchCondition searchCondition, final PageInfoRequest pageInfoRequest);
 
     PageResponse getBoardList(final PageInfoRequest pageInfoRequest);
 
