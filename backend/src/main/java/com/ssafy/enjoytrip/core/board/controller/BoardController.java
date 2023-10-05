@@ -2,7 +2,7 @@ package com.ssafy.enjoytrip.core.board.controller;
 
 import com.ssafy.enjoytrip.core.board.model.dto.request.BoardModifyRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.request.PageInfoRequest;
-import com.ssafy.enjoytrip.core.board.model.dto.request.SearchDto;
+import com.ssafy.enjoytrip.core.board.model.dto.request.SearchCondition;
 import com.ssafy.enjoytrip.core.board.model.dto.response.BoardDetailResponse;
 import com.ssafy.enjoytrip.core.board.model.dto.response.PageResponse;
 import com.ssafy.enjoytrip.core.board.service.BoardService;
@@ -13,6 +13,7 @@ import java.util.List;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -34,9 +35,9 @@ public class BoardController {
 
     @PostMapping
     public ResponseEntity<Long> save(
-        @RequestParam @Valid final String json,
-        final List<MultipartFile> files,
-        final @LoginUser String userId
+        @RequestParam("json") final String json,
+        @RequestParam("files") @Nullable final List<MultipartFile> files,
+        @LoginUser final String userId
     ) {
         final Long boardId = boardService.saveBoard(json, files, userId);
 
@@ -54,9 +55,10 @@ public class BoardController {
     @GetMapping("/list/search")
     public ResponseEntity<PageResponse> getListBySearchDto(
         @RequestBody final PageInfoRequest pageInfoRequest,
-        @ModelAttribute final SearchDto searchDto
+        @ModelAttribute final SearchCondition searchCondition
     ) {
-        return ResponseEntity.ok(boardService.getBoardListBySearchDto(searchDto, pageInfoRequest));
+        return ResponseEntity.ok(
+            boardService.getBoardListBySearchDto(searchCondition, pageInfoRequest));
     }
 
     @NoAuth

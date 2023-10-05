@@ -24,14 +24,12 @@ public class BoardTransactionService {
     }
 
     @Transactional
-    public void restoreBoard(final Long boardId) {
-        // TODO :
-        return;
-    }
-
-
-    @Transactional
     public void updateBoard(final Board modifyBoard) {
         boardRepository.updateBoard(modifyBoard);
+    }
+
+    @Transactional
+    public void insertBoard(final Board board) {
+        boardRepository.insertBoard(board);
     }
 }

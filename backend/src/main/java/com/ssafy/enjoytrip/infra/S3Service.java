@@ -54,6 +54,7 @@ public class S3Service implements UploadService {
 
         final ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(file.getContentType());
+        metadata.setContentLength(file.getSize());
         try {
             amazonS3.putObject(
                 new PutObjectRequest(

@@ -49,17 +49,19 @@ public class BoardServiceImpl implements BoardService {
         final User user = findUserByUserId(userId);
         final Long boardId = boardRepository.insertBoard(getBoard(json, user.getUserId()));
 
-        return saveImages(files, user.getUserId(), boardId);
+        if (files != null) {
+            saveImages(files, user.getUserId(), boardId);
+        }
+        return boardId;
     }
 
-    private Long saveImages(
+    private void saveImages(
         final List<MultipartFile> files,
         final String userId,
         final Long boardId
     ) {
         try {
             mediaService.insertMedias(boardId, files, "board/" + userId);
-            return boardId;
         } catch (final Exception e) {
             boardRepository.deleteBoard(boardId);
             throw new BoardException("파일 저장에 실패하였습니다.");
@@ -171,7 +173,7 @@ public class BoardServiceImpl implements BoardService {
         try {
             uploadService.deleteMedias(findFileUrls(board.getBoardId()));
             // TODO : 이미지 업로드 까지 수정
-            //\ mediaService.insertMedias(boardId, boardModifyRequest.getFiles(), "board/" + userId);
+            // mediaService.insertMedias(boardId, boardModifyRequest.getFiles(), "board/" + userId);
         } catch (final Exception e) {
             boardTransactionService.updateBoard(board);
             throw new BoardException("게시글 수정에 실패하였습니다.");

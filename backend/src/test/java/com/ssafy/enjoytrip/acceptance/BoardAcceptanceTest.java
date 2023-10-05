@@ -1,9 +1,14 @@
 package com.ssafy.enjoytrip.acceptance;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ssafy.enjoytrip.config.UploadConfig;
 import com.ssafy.enjoytrip.core.board.model.dto.request.BoardSaveRequest;
 import com.ssafy.enjoytrip.core.board.model.entity.BoardType;
 import com.ssafy.enjoytrip.core.user.model.dto.request.UserAddRequest;
@@ -12,15 +17,24 @@ import com.ssafy.enjoytrip.global.auth.model.dto.response.TokenResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 @DisplayName("게시판 관련 기능")
+@Import(UploadConfig.class)
 class BoardAcceptanceTest extends AcceptanceTest {
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
     @DisplayName("게시판을 정상적으로 등록한다")
-    void insertBoardTest() {
+    void insertBoardTest() throws JsonProcessingException {
         // given
         UserAddRequest userAddRequest = UserAddRequest.builder()
             .userId("jongha")
@@ -35,6 +49,7 @@ class BoardAcceptanceTest extends AcceptanceTest {
             .given()
             .contentType(APPLICATION_JSON_VALUE)
             .log().all()
+            .body(userAddRequest)
             .when()
             .post("/user")
             .then()
@@ -45,6 +60,7 @@ class BoardAcceptanceTest extends AcceptanceTest {
             .userId("jongha")
             .password("test")
             .build();
+
         String accessToken = RestAssured
             .given()
             .contentType(APPLICATION_JSON_VALUE)
@@ -64,12 +80,19 @@ class BoardAcceptanceTest extends AcceptanceTest {
             .content("test")
             .subject("test")
             .build();
-
+        String json = objectMapper.writeValueAsString(boardSaveRequest);
+        List<MultipartFile> imagesFiles = List.of(
+            new MockMultipartFile("image1", "image1.jpg", "image/jpeg", "image1".getBytes()),
+            new MockMultipartFile("image2", "image2.jpg", "image/jpeg", "image2".getBytes()),
+            new MockMultipartFile("image3", "image3.jpg", "image/jpeg", "image3".getBytes())
+        );
+        
+        // TODO : FILE 테스트 ....
         ExtractableResponse<Response> response = RestAssured
             .given()
             .header("Authorization", accessToken)
-            .body(boardSaveRequest)
-            .contentType(APPLICATION_JSON_VALUE)
+            .multiPart("json", json)
+            .contentType(MULTIPART_FORM_DATA_VALUE)
             .log().all()
             .when()
             .post("/board")
@@ -78,7 +101,7 @@ class BoardAcceptanceTest extends AcceptanceTest {
             .extract();
 
         // then
-        assertThat(response.statusCode()).isEqualTo(OK.value());
+        assertThat(response.statusCode()).isEqualTo(CREATED.value());
     }
 
     @Test
