@@ -246,9 +246,10 @@ class UserServiceTest {
             .password("test2")
             .email("test2")
             .build();
+        String notExistUser = "notExistUser";
 
         // then
-        assertThatCode(() -> userService.modify(userModifyRequest, "test2"))
+        assertThatCode(() -> userService.modify(userModifyRequest, notExistUser))
             .isInstanceOf(UserException.class)
             .hasMessage("해당 유저가 없습니다.");
     }
