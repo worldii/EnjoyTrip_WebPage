@@ -47,12 +47,13 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public Long saveBoard(final String json, final List<MultipartFile> files, final String userId) {
         final User user = findUserByUserId(userId);
-        final Long boardId = boardRepository.insertBoard(getBoard(json, user.getUserId()));
+        final Board board = getBoard(json, user.getUserId());
+        boardRepository.insertBoard(board);
 
         if (files != null) {
-            saveImages(files, user.getUserId(), boardId);
+            saveImages(files, user.getUserId(), board.getBoardId());
         }
-        return boardId;
+        return board.getBoardId();
     }
 
     private void saveImages(
@@ -63,6 +64,7 @@ public class BoardServiceImpl implements BoardService {
         try {
             mediaService.insertMedias(boardId, files, "board/" + userId);
         } catch (final Exception e) {
+            e.printStackTrace();
             boardRepository.deleteBoard(boardId);
             throw new BoardException("파일 저장에 실패하였습니다.");
         }

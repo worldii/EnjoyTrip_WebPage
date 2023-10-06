@@ -30,6 +30,7 @@ dependencies {
 
     compileOnly group: 'org.springframework.cloud', name: 'spring-cloud-aws', version: '2.2.1.RELEASE', ext: 'pom'
     compileOnly 'org.projectlombok:lombok'
+    implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
 
     implementation group: 'com.github.pagehelper', name: 'pagehelper-spring-boot-starter', version: '1.4.1'
     implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
@@ -44,7 +45,7 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.mysql:mysql-connector-j'
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
-    
+
     testImplementation 'org.projectlombok:lombok:1.18.26'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.rest-assured:rest-assured:4.4.0'

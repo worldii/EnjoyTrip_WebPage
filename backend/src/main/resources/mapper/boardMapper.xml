@@ -19,15 +19,18 @@
     where board_id = #{boardId};
   </select>
 
-  <insert id="insertFile" parameterType="List">
-    INSERT INTO file_info (board_id, file_url)
-    VALUES
-    <foreach collection="imageFiles" item="item" separator=",">
-      (#{item.boardId}, #{item.fileUrl})
-    </foreach>
-  </insert>
+  <!--  <insert id="insertFile" parameterType="List">-->
+  <!--    INSERT INTO file_info (board_id, file_url)-->
+  <!--    VALUES-->
+  <!--    <foreach collection="imageFiles" item="item" separator=",">-->
+  <!--      (#{item.boardId}, #{item.fileUrl})-->
+  <!--    </foreach>-->
+  <!--  </insert>-->
 
   <insert id="insertBoard" parameterType="board" useGeneratedKeys="true" keyProperty="boardId">
+    <selectKey resultType="Long" keyProperty="boardId" order="AFTER">
+      SELECT LAST_INSERT_ID() AS boardId
+    </selectKey>
     insert into board (user_id, subject, content, type)
     values (#{userId}, #{subject}, #{content}, #{boardType})
   </insert>

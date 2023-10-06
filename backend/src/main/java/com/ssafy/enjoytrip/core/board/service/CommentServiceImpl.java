@@ -41,7 +41,8 @@ public class CommentServiceImpl implements CommentService {
             .userId(user.getUserId())
             .build();
 
-        return commentRepository.insertComment(comment);
+        commentRepository.insertComment(comment);
+        return comment.getCommentId();
     }
 
     @Override
