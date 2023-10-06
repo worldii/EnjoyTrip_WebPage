@@ -100,6 +100,7 @@ class BoardServiceTest {
 
 
     @Test
+    @Sql({"/truncate.sql", "/user.sql", "/board.sql"})
     @DisplayName("게시판 상세 조회 테스트")
     void selectBoardDetailTest() {
         // given

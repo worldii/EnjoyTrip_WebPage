@@ -115,8 +115,5 @@ class BoardAcceptanceTest extends AcceptanceTest {
         // then
         assertThat(response.statusCode()).isEqualTo(OK.value());
     }
-
-    private class TestUtil {
-
-    }
+    
 }
