@@ -1,12 +1,13 @@
 package com.ssafy.enjoytrip.core.plan.controller;
 
 
-import com.ssafy.enjoytrip.core.plan.model.dto.PlanBoardRequest;
+import com.ssafy.enjoytrip.core.plan.model.dto.PlanBoardDto;
+import com.ssafy.enjoytrip.core.plan.model.dto.request.PlanBoardRequest;
+import com.ssafy.enjoytrip.core.plan.model.dto.response.PlanBoardResponse;
 import com.ssafy.enjoytrip.core.plan.service.PlanService;
-import java.util.HashMap;
-import java.util.Map;
+import com.ssafy.enjoytrip.global.auth.model.dto.LoginUser;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,31 +24,23 @@ public class PlanController {
     private final PlanService planService;
 
     @PostMapping
-    ResponseEntity<?> save(@RequestBody PlanBoardRequest planBoardRequest) {
-        int result = planService.savePlanBoard(planBoardRequest);
-
-        Map<String, Object> resultMap = new HashMap<>();
-
-        if (result > 0) {
-            resultMap.put("success", true);
-        } else {
-            resultMap.put("success", false);
-        }
-
-        return new ResponseEntity<>(resultMap, HttpStatus.ACCEPTED);
+    ResponseEntity<Integer> save(final @RequestBody PlanBoardRequest planBoardRequest) {
+        return ResponseEntity.ok(planService.savePlanBoard(planBoardRequest));
     }
 
-    @GetMapping("/list/{userId}")
-    ResponseEntity<?> list(@PathVariable String userId) {
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("list", planService.list(userId));
-        return new ResponseEntity<>(resultMap, HttpStatus.ACCEPTED);
+    @GetMapping
+    ResponseEntity<List<PlanBoardDto>> getPlanListByUser(
+        @LoginUser final String userId
+    ) {
+        return ResponseEntity.ok(planService.list(userId));
     }
 
-    @GetMapping("/detail/{planBoardId}")
-    ResponseEntity<?> detail(@PathVariable String planBoardId) {
-        Map<String, Object> resultMap = new HashMap<>();
-        resultMap.put("planBoard", planService.search(Integer.parseInt(planBoardId)));
-        return new ResponseEntity<>(resultMap, HttpStatus.ACCEPTED);
+    @GetMapping("/{planBoardId}")
+    ResponseEntity<PlanBoardResponse> detail(
+        @PathVariable final Long planBoardId,
+        @LoginUser final String userId
+    ) {
+        PlanBoardResponse search = planService.detail(planBoardId, userId);
+        return ResponseEntity.ok(search);
     }
 }

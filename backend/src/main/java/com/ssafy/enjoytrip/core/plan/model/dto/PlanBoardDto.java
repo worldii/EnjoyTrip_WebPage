@@ -12,7 +12,7 @@ import lombok.ToString;
 @Builder
 public class PlanBoardDto {
 
-    private int planBoardId;
+    private Long planBoardId;
     private String userId;
     private String title;
     private Date startDate;

@@ -4,17 +4,19 @@ import java.sql.Date;
 import java.sql.Time;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
-@ToString
-@AllArgsConstructor
 @Builder
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Setter
 public class Plan {
 
-    private int planId;
-    private int planBoardId;
+    private Long planId;
+    private Long planBoardId;
     private String place;
     private String content;
     private int order;
@@ -22,4 +24,5 @@ public class Plan {
     private Date date;
     private Time startTime;
     private Time endTime;
+
 }

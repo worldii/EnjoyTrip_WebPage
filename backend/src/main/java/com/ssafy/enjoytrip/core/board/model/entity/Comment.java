@@ -13,7 +13,7 @@ public class Comment {
     private Long boardId;
     private String userId;
     private String content;
-    // TODO: 설정해줘야 함
+    // Update 될때마다 업데이트
     private String currentUpdate;
 
     @Builder

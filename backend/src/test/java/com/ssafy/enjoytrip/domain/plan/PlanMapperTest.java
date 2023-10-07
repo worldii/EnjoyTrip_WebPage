@@ -37,7 +37,7 @@ class PlanMapperTest {
     @Test
     void testSelectPlanBoardByPlanBoardId() {
         // given
-        int planBoardId = 1;
+        Long planBoardId = 1L;
 
         // when
         PlanBoardDto planBoard = planMapper.selectPlanBoardByPlanBoardId(planBoardId);
@@ -58,7 +58,7 @@ class PlanMapperTest {
 
         // then
         System.out.println(planBoardDtoList);
-        assertEquals(planBoardDtoList.size(), 1);
+        assertEquals(1, planBoardDtoList.size());
         assertEquals(planBoardDtoList.get(0).getUserId(), userId);
     }
 
@@ -75,21 +75,20 @@ class PlanMapperTest {
         PlanBoardDto selectPlanBoardDto = planMapper.selectPlanBoardByPlanBoardId(
             insertPlanBoardDto.getPlanBoardId());
 
-        assertEquals(result, 1);
+        assertEquals(1, result);
         assertEquals(insertPlanBoardDto.getPlanBoardId(), selectPlanBoardDto.getPlanBoardId());
     }
 
     @Test
     void selectPlanByPlanBoardId() {
         // given
-        int planBoardId = 1;
+        Long planBoardId = 1L;
 
         // when
         List<Plan> planList = planMapper.selectPlanByPlanBoardId(planBoardId);
 
         // then
-        System.out.println("planList = " + planList);
-        assertEquals(planList.size(), 4);
+        assertEquals(4, planList.size());
         for (int i = 0; i < planList.size(); i++) {
             assertEquals(planList.get(i).getPlanBoardId(), planBoardId);
         }
@@ -99,7 +98,7 @@ class PlanMapperTest {
     @Transactional
     void testInsertPlanDto() {
         // given
-        int planBoardId = 2;
+        Long planBoardId = 2L;
         int insertSize = 3;
         int beforeSize = planMapper.selectPlanByPlanBoardId(planBoardId).size();
         List<Plan> insertPlanList = makePlanDtoList(insertSize, planBoardId);
@@ -117,7 +116,7 @@ class PlanMapperTest {
     }
 
 
-    List<Plan> makePlanDtoList(int size, int planBoardId) {
+    List<Plan> makePlanDtoList(int size, Long planBoardId) {
         List<Plan> planDtoList = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             planDtoList.add(makePlanDto(i, planBoardId));
@@ -125,7 +124,7 @@ class PlanMapperTest {
         return planDtoList;
     }
 
-    Plan makePlanDto(int order, int planBoardId) {
+    Plan makePlanDto(int order, Long planBoardId) {
         return Plan.builder()
             .planBoardId(planBoardId)
             .place("test")

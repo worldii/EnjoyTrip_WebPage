@@ -1,19 +1,21 @@
-package com.ssafy.enjoytrip.core.plan.model.dto;
+package com.ssafy.enjoytrip.core.plan.model.dto.response;
 
+import com.ssafy.enjoytrip.core.plan.model.dto.Plan;
 import java.util.List;
 import java.util.Map;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.ToString;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Data
-@ToString
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
+@Getter
 public class PlanBoardResponse {
 
-    private int planBoardId;
+    private Long planBoardId;
     private String userId;
     private String title;
     private String startDate;

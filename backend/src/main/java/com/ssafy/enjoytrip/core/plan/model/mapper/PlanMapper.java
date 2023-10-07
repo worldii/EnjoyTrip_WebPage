@@ -14,7 +14,7 @@ public interface PlanMapper {
 
     List<PlanBoardDto> selectPlanBoardByUserId(String userId);
 
-    List<Plan> selectPlanByPlanBoardId(int planBoardId);
+    List<Plan> selectPlanByPlanBoardId(Long planBoardId);
 
-    PlanBoardDto selectPlanBoardByPlanBoardId(int planBoardId);
+    PlanBoardDto selectPlanBoardByPlanBoardId(Long planBoardId);
 }
