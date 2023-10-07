@@ -2,11 +2,13 @@ package com.ssafy.enjoytrip.acceptance;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.enjoytrip.config.UploadConfig;
+import com.ssafy.enjoytrip.core.board.model.dto.request.BoardModifyRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.request.BoardSaveRequest;
 import com.ssafy.enjoytrip.core.board.model.entity.BoardType;
 import com.ssafy.enjoytrip.core.user.model.dto.request.UserAddRequest;
@@ -115,5 +117,162 @@ class BoardAcceptanceTest extends AcceptanceTest {
         // then
         assertThat(response.statusCode()).isEqualTo(OK.value());
     }
-    
+
+    @Test
+    @DisplayName("게시판을 정상적으로 수정한다")
+    void updateBoardTest() throws IOException {
+        // given
+        UserAddRequest userAddRequest = UserAddRequest.builder()
+            .userId("jongha")
+            .name("jongha")
+            .address("test")
+            .password("test")
+            .email("test")
+            .authority(1)
+            .build();
+
+        RestAssured
+            .given()
+            .contentType(APPLICATION_JSON_VALUE)
+            .log().all()
+            .body(userAddRequest)
+            .when()
+            .post("/user")
+            .then()
+            .log().all()
+            .extract();
+
+        UserLoginRequest userLoginRequest = UserLoginRequest.builder()
+            .userId("jongha")
+            .password("test")
+            .build();
+
+        String accessToken = RestAssured
+            .given()
+            .contentType(APPLICATION_JSON_VALUE)
+            .body(userLoginRequest)
+            .log().all()
+            .when()
+            .post("/user/login")
+            .then()
+            .log().all()
+            .extract()
+            .as(TokenResponse.class)
+            .getAccessToken();
+        BoardSaveRequest boardSaveRequest = BoardSaveRequest.builder()
+            .boardType(BoardType.NOTICE)
+            .content("test")
+            .subject("test")
+            .build();
+        String boardSaveJson = objectMapper.writeValueAsString(boardSaveRequest);
+
+        Long boardId = RestAssured
+            .given()
+            .header("Authorization", accessToken)
+            .multiPart("json", boardSaveJson, APPLICATION_JSON_VALUE)
+            .log().all()
+            .when()
+            .post("/board")
+            .then()
+            .log().all()
+            .extract().body().as(Long.class);
+
+        BoardModifyRequest boardModifyRequest = BoardModifyRequest.builder()
+            .boardType(BoardType.NOTICE)
+            .content("test")
+            .subject("test")
+            .build();
+        String boardModifyJson = objectMapper.writeValueAsString(boardModifyRequest);
+        MockMultipartFile file = new MockMultipartFile("data", "test.png",
+            MediaType.IMAGE_PNG_VALUE, "test".getBytes());
+        ExtractableResponse<Response> response = RestAssured
+            .given()
+            .header("Authorization", accessToken)
+            .multiPart("json", boardModifyJson, APPLICATION_JSON_VALUE)
+            .multiPart("files", "data", file.getBytes())
+            .log().all()
+            .when()
+            .put("/board/" + boardId)
+            .then()
+            .log().all()
+            .extract();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(OK.value());
+    }
+
+    @Test
+    @DisplayName("게시판을 정상적으로 삭제한다")
+    void deleteBoardTest() throws IOException {
+        // given
+        UserAddRequest userAddRequest = UserAddRequest.builder()
+            .userId("jongha")
+            .name("jongha")
+            .address("test")
+            .password("test")
+            .email("test")
+            .authority(1)
+            .build();
+
+        RestAssured
+            .given()
+            .contentType(APPLICATION_JSON_VALUE)
+            .log().all()
+            .body(userAddRequest)
+            .when()
+            .post("/user")
+            .then()
+            .log().all()
+            .extract();
+
+        UserLoginRequest userLoginRequest = UserLoginRequest.builder()
+            .userId("jongha")
+            .password("test")
+            .build();
+
+        String accessToken = RestAssured
+            .given()
+            .contentType(APPLICATION_JSON_VALUE)
+            .body(userLoginRequest)
+            .log().all()
+            .when()
+            .post("/user/login")
+            .then()
+            .log().all()
+            .extract()
+            .as(TokenResponse.class)
+            .getAccessToken();
+        BoardSaveRequest boardSaveRequest = BoardSaveRequest.builder()
+            .boardType(BoardType.NOTICE)
+            .content("test")
+            .subject("test")
+            .build();
+        String boardSaveJson = objectMapper.writeValueAsString(boardSaveRequest);
+
+        Long boardId = RestAssured
+            .given()
+            .header("Authorization", accessToken)
+            .multiPart("json", boardSaveJson, APPLICATION_JSON_VALUE)
+            .log().all()
+            .when()
+            .post("/board")
+            .then()
+            .log().all()
+            .extract().body().as(Long.class);
+
+        // when
+        ExtractableResponse<Response> response = RestAssured
+            .given()
+            .header("Authorization", accessToken)
+            .log().all()
+            .when()
+            .delete("/board/" + boardId)
+            .then()
+            .log().all()
+            .extract();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(NO_CONTENT.value());
+    }
+
 }

@@ -64,7 +64,6 @@ public class BoardServiceImpl implements BoardService {
         try {
             mediaService.insertMedias(boardId, files, "board/" + userId);
         } catch (final Exception e) {
-            e.printStackTrace();
             boardRepository.deleteBoard(boardId);
             throw new BoardException("파일 저장에 실패하였습니다.");
         }
@@ -96,7 +95,6 @@ public class BoardServiceImpl implements BoardService {
     public PageResponse getBoardListBySearchDto(
         final SearchCondition searchCondition, final PageInfoRequest pageInfoRequest
     ) {
-
         PageHelper.startPage(pageInfoRequest.getPage(), pageInfoRequest.getPageSize());
         final Page<Board> boards = boardRepository.selectBoardListBySearchDto(searchCondition);
 
@@ -121,8 +119,11 @@ public class BoardServiceImpl implements BoardService {
     @Transactional
     public void modify(
         final Long boardId, final String userId,
-        final BoardModifyRequest boardModifyRequest
+        final String json, final List<MultipartFile> files
     ) {
+        final BoardModifyRequest boardModifyRequest =
+            (BoardModifyRequest) JsonUtil.readValue(json, BoardModifyRequest.class);
+
         final User user = findUserByUserId(userId);
         final Board board = findBoardByBoardId(boardId);
 
@@ -136,46 +137,16 @@ public class BoardServiceImpl implements BoardService {
             .build();
 
         boardTransactionService.updateBoard(modifyBoard);
-        modifyMedias(board);
-    }
-
-    public void modify(
-        final Long boardId, final String userId,
-        final BoardModifyRequest boardModifyRequest, final List<MultipartFile> files
-    ) {
-        final User user = findUserByUserId(userId);
-        final Board board = findBoardByBoardId(boardId);
-
-        validateSameMember(userId, board.getUserId());
-
-        final Board modifyBoard = Board.builder()
-            .boardId(boardId)
-            .userId(user.getUserId())
-            .subject(boardModifyRequest.getSubject())
-            .content(boardModifyRequest.getContent())
-            .build();
-
-        boardTransactionService.updateBoard(modifyBoard);
-        modifyMedias(board, files);
+        if (files != null) {
+            modifyMedias(board, files);
+        }
     }
 
     private void modifyMedias(final Board board, final List<MultipartFile> files) {
         try {
             uploadService.deleteMedias(findFileUrls(board.getBoardId()));
-            mediaService.insertMedias(board.getBoardId(), files,
-                "board/" + board.getUserId());
+            mediaService.insertMedias(board.getBoardId(), files, "board/" + board.getUserId());
 
-        } catch (final Exception e) {
-            boardTransactionService.updateBoard(board);
-            throw new BoardException("게시글 수정에 실패하였습니다.");
-        }
-    }
-
-    private void modifyMedias(final Board board) {
-        try {
-            uploadService.deleteMedias(findFileUrls(board.getBoardId()));
-            // TODO : 이미지 업로드 까지 수정
-            // mediaService.insertMedias(boardId, boardModifyRequest.getFiles(), "board/" + userId);
         } catch (final Exception e) {
             boardTransactionService.updateBoard(board);
             throw new BoardException("게시글 수정에 실패하였습니다.");
@@ -190,7 +161,6 @@ public class BoardServiceImpl implements BoardService {
         validateSameMember(user.getUserId(), board.getUserId());
 
         boardTransactionService.deleteBoard(boardId);
-
         deleteMedias(board);
     }
 

@@ -1,6 +1,5 @@
 package com.ssafy.enjoytrip.core.board.service;
 
-import com.ssafy.enjoytrip.core.board.model.dto.request.BoardModifyRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.request.PageInfoRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.request.SearchCondition;
 import com.ssafy.enjoytrip.core.board.model.dto.response.BoardDetailResponse;
@@ -19,7 +18,12 @@ public interface BoardService {
 
     PageResponse getBoardList(final PageInfoRequest pageInfoRequest);
 
-    void modify(final Long boardId, final String userId, final BoardModifyRequest request);
+    void modify(
+        final Long boardId,
+        final String userId,
+        final String request,
+        final List<MultipartFile> files
+    );
 
     void updateHit(final Long boardId);
 

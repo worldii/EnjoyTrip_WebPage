@@ -1,6 +1,5 @@
 package com.ssafy.enjoytrip.core.board.controller;
 
-import com.ssafy.enjoytrip.core.board.model.dto.request.BoardModifyRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.request.PageInfoRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.request.SearchCondition;
 import com.ssafy.enjoytrip.core.board.model.dto.response.BoardDetailResponse;
@@ -10,7 +9,6 @@ import com.ssafy.enjoytrip.global.auth.model.dto.LoginUser;
 import com.ssafy.enjoytrip.global.auth.model.dto.NoAuth;
 import java.net.URI;
 import java.util.List;
-import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
@@ -72,9 +70,10 @@ public class BoardController {
     public ResponseEntity<Void> modifyBoard(
         @PathVariable final Long boardId,
         @LoginUser final String userId,
-        @RequestBody @Valid final BoardModifyRequest boardModifyRequest
+        @RequestParam("json") final String boardModifyRequest,
+        @RequestParam("files") @Nullable final List<MultipartFile> files
     ) {
-        boardService.modify(boardId, userId, boardModifyRequest);
+        boardService.modify(boardId, userId, boardModifyRequest, files);
         return ResponseEntity.ok().build();
     }
 
