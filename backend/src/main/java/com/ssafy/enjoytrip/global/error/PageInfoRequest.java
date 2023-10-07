@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.core.board.model.dto.request;
+package com.ssafy.enjoytrip.global.error;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

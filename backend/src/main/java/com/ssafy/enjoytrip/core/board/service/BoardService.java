@@ -1,9 +1,9 @@
 package com.ssafy.enjoytrip.core.board.service;
 
-import com.ssafy.enjoytrip.core.board.model.dto.request.PageInfoRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.request.SearchCondition;
 import com.ssafy.enjoytrip.core.board.model.dto.response.BoardDetailResponse;
-import com.ssafy.enjoytrip.core.board.model.dto.response.PageResponse;
+import com.ssafy.enjoytrip.global.dto.PageResponse;
+import com.ssafy.enjoytrip.global.error.PageInfoRequest;
 import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 

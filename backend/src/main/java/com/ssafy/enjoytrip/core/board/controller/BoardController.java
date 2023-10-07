@@ -1,12 +1,12 @@
 package com.ssafy.enjoytrip.core.board.controller;
 
-import com.ssafy.enjoytrip.core.board.model.dto.request.PageInfoRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.request.SearchCondition;
 import com.ssafy.enjoytrip.core.board.model.dto.response.BoardDetailResponse;
-import com.ssafy.enjoytrip.core.board.model.dto.response.PageResponse;
 import com.ssafy.enjoytrip.core.board.service.BoardService;
 import com.ssafy.enjoytrip.global.auth.model.dto.LoginUser;
 import com.ssafy.enjoytrip.global.auth.model.dto.NoAuth;
+import com.ssafy.enjoytrip.global.dto.PageResponse;
+import com.ssafy.enjoytrip.global.error.PageInfoRequest;
 import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
