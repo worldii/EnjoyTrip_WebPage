@@ -1,11 +1,14 @@
 package com.ssafy.enjoytrip.core.hotplace.service;
 
-import com.ssafy.enjoytrip.core.hotplace.model.dto.HotPlaceArticleResponse;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.ssafy.enjoytrip.core.hotplace.model.dao.HotPlaceRepository;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.HotPlaceResponse;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlace;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceArticle;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceTag;
-import com.ssafy.enjoytrip.core.hotplace.model.mapper.HotPlaceMapper;
+import com.ssafy.enjoytrip.global.error.HotPlaceException;
+import com.ssafy.enjoytrip.global.error.PageInfoRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -16,67 +19,55 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class HotPlaceServiceImpl implements HotPlaceService {
 
-    private final HotPlaceMapper hotPlaceMapper;
+    private final HotPlaceRepository hotPlaceRepository;
 
     @Override
-    public List<HotPlaceResponse> selectAllHotPlace() {
-        final List<HotPlace> hotPlaces = hotPlaceMapper.selectAllHotPlace();
+    public List<HotPlaceResponse> selectAllHotPlace(
+        final PageInfoRequest pageInfoRequest, final String keyword) {
+        PageHelper.startPage(pageInfoRequest.getPage(), pageInfoRequest.getPageSize());
+        final Page<HotPlace> hotPlaces = hotPlaceRepository.selectAllHotPlace(keyword);
+
         return hotPlaces.stream()
             .map(HotPlaceResponse::from)
             .collect(Collectors.toList());
     }
 
     @Override
-    public List<HotPlaceArticleResponse> selectAllHotPlaceArticle(final String hotPlaceId) {
-        List<HotPlaceArticle> hotPlaceArticles = hotPlaceMapper.selectAllHotPlaceArticle(
-            hotPlaceId);
-        return hotPlaceArticles.stream()
-            .map(HotPlaceArticleResponse::from)
-            .collect(Collectors.toList());
-    }
-
-    @Override
     public HotPlace selectHotPlaceByHotPlaceId(final String hotPlaceId) {
-        return hotPlaceMapper.selectHotPlaceByHotPlaceId(hotPlaceId)
-            .orElseThrow(() -> new RuntimeException("존재하지 않는 핫플레이스입니다."));
+        return hotPlaceRepository.selectAllByHotPlaceId(hotPlaceId)
+            .orElseThrow(() -> new HotPlaceException("존재하지 않는 핫플레이스입니다."));
     }
 
-    @Override
-    public HotPlaceArticle selectHotPlaceArticleByArticleId(final int hotPlaceArticleId) {
-        return hotPlaceMapper
-            .selectHotPlaceArticleByArticleId(hotPlaceArticleId)
-            .orElseThrow(() -> new RuntimeException("존재하지 않는 핫플레이스입니다."));
-    }
 
     @Override
     public int updateHotPlaceArticleImage(final int hotPlaceArticleId, final String imageUrl) {
-        return hotPlaceMapper.updateHotPlaceArticleImage(hotPlaceArticleId, imageUrl);
+        return hotPlaceRepository.updateHotPlaceArticleImage(hotPlaceArticleId, imageUrl);
     }
 
     @Override
     public int increaseHitHotPlaceCount(final String hotPlaceId) {
-        return hotPlaceMapper.increaseHitHotPlaceCount(hotPlaceId);
+        return hotPlaceRepository.increaseHitHotPlaceCount(hotPlaceId);
     }
 
     @Override
     public int decreaseHitHotPlaceCount(final String hotPlaceId) {
-        return hotPlaceMapper.decreaseHitHotPlaceCount(hotPlaceId);
+        return hotPlaceRepository.decreaseHitHotPlaceCount(hotPlaceId);
     }
 
     @Override
     public int insertHotPlace(final HotPlace hotPlace) {
-        return hotPlaceMapper.insertHotPlace(hotPlace);
+        return hotPlaceRepository.insertHotPlace(hotPlace);
     }
 
     @Override
-    public int insertHotPlaceArticle(final HotPlaceArticle hotPlaceArticle) {
-        hotPlaceMapper.insertHotPlaceArticle(hotPlaceArticle);
+    public Long insertHotPlaceArticle(final HotPlaceArticle hotPlaceArticle) {
+        hotPlaceRepository.insertHotPlaceArticle(hotPlaceArticle);
         return hotPlaceArticle.getHotPlaceArticleId();
     }
 
     @Override
     public int updateHotPlaceTag(final String hotPlaceId, final String tagName) {
-        return hotPlaceMapper.updateHotPlaceTag(hotPlaceId, tagName);
+        return hotPlaceRepository.updateHotPlaceTag(hotPlaceId, tagName);
     }
 
     @Override
@@ -86,7 +77,7 @@ public class HotPlaceServiceImpl implements HotPlaceService {
 
     @Override
     public int insertHotPlaceTag(final String hotPlaceId, final String tagName) {
-        return hotPlaceMapper.insertHotPlaceTag(hotPlaceId, tagName);
+        return hotPlaceRepository.insertHotPlaceTag(hotPlaceId, tagName);
     }
 
     @Override
@@ -96,12 +87,6 @@ public class HotPlaceServiceImpl implements HotPlaceService {
 
     @Override
     public List<HotPlaceTag> selectHotPlaceTagList(final String hotPlaceId) {
-        return hotPlaceMapper.selectHotPlaceTagList(hotPlaceId);
+        return hotPlaceRepository.selectHotPlaceTagList(hotPlaceId);
     }
-
-    @Override
-    public List<HotPlace> selectHotPlaceByKeyword(final String keyword) {
-        return hotPlaceMapper.selectHotPlaceByKeyword(keyword);
-    }
-
 }

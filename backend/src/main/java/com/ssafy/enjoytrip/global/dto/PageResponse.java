@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.core.board.model.dto.response;
+package com.ssafy.enjoytrip.global.dto;
 
 import com.ssafy.enjoytrip.core.board.util.PageNavigationForPageHelper;
 import lombok.AllArgsConstructor;

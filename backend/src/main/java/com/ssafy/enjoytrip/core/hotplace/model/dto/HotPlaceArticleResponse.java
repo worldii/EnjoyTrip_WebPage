@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class HotPlaceArticleResponse {
 
-    private int hotPlaceArticleId;
+    private Long hotPlaceArticleId;
     private String hotPlaceId;
     private String hotPlaceName;
     private String userId;

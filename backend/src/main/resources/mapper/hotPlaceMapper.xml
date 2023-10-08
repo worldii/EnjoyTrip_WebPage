@@ -30,24 +30,46 @@
     <result column="count" property="count"/>
   </resultMap>
 
+
+  <resultMap id="combinedResultMap" type="HotPlace">
+    <!-- hot_place 테이블의 컬럼 매핑 -->
+    <result column="hot_place_id" property="hotPlaceId"/>
+    <result column="hot_place_name" property="hotPlaceName"/>
+    <result column="x" property="x"/>
+    <result column="y" property="y"/>
+    <result column="vote" property="vote"/>
+    <result column="place_url" property="placeUrl"/>
+    <result column="road_address_name" property="roadAddressName"/>
+    <result column="address_name" property="addressName"/>
+    <collection property="hotPlaceArticles" ofType="HotPlaceArticle">
+      <result column="hot_place_article_id" property="hotPlaceArticleId"/>
+      <result column="hot_place_id" property="hotPlaceId"/>
+      <result column="hot_place_name" property="hotPlaceName"/>
+      <result column="user_id" property="userId"/>
+      <result column="content" property="content"/>
+      <result column="create_at" property="createAt"/>
+      <result column="image_url" property="imageUrl"/>
+    </collection>
+  </resultMap>
+
   <select id="selectAllHotPlace" resultMap="hotPlace">
     select *
     from hot_place
+    <where>
+      <if test="keyword != null and keyword != ''">
+        and hot_place_name like concat('%', #{keyword}, '%')
+      </if>
+    </where>
     order by vote desc
   </select>
 
-  <select id="selectAllHotPlaceArticle" resultMap="hotPlaceArticle">
-    select *
-    from hot_place_article
-    where hot_place_id = #{hotPlaceId}
+  <select id="selectAllByHotPlaceId" resultMap="combinedResultMap">
+    select hp.*,
+           hpa.*
+    from hot_place hp
+           left join hot_place_article hpa on hp.hot_place_id = hpa.hot_place_id
+    where hp.hot_place_id = #{hotPlaceId}
   </select>
-
-  <select id="selectHotPlaceByHotPlaceId" resultMap="hotPlace">
-    select *
-    from hot_place
-    where hot_place_id = #{hotPlaceId}
-  </select>
-
 
   <select id="selectHotPlaceArticleByArticleId" resultMap="hotPlaceArticle">
     select *
@@ -103,11 +125,5 @@
     from hot_place_tag
     where hot_place_id = #{hotPlaceId}
     order by count desc limit 5
-  </select>
-
-  <select id="selectHotPlaceByKeyword" resultMap="hotPlace">
-    select *
-    from hot_place
-    where hot_place_name like concat('%', #{keyword}, '%')
   </select>
 </mapper>

@@ -1,25 +1,19 @@
 package com.ssafy.enjoytrip.core.hotplace.service;
 
-import com.ssafy.enjoytrip.core.hotplace.model.dto.HotPlaceArticleResponse;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.HotPlaceResponse;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlace;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceArticle;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceTag;
+import com.ssafy.enjoytrip.global.error.PageInfoRequest;
 import java.util.List;
 
 public interface HotPlaceService {
 
-    List<HotPlaceResponse> selectAllHotPlace();
-
-    List<HotPlace> selectHotPlaceByKeyword(final String keyword);
-
-    List<HotPlaceArticleResponse> selectAllHotPlaceArticle(final String hotPlaceId);
-
     HotPlace selectHotPlaceByHotPlaceId(final String hotPlaceId);
 
-    HotPlaceArticle selectHotPlaceArticleByArticleId(final int hotPlaceId);
-
-
+    List<HotPlaceResponse> selectAllHotPlace(
+        final PageInfoRequest pageInfoRequest, final String keyword);
+    
     int updateHotPlaceArticleImage(final int hotPlaceArticleId, final String imageUrl);
 
     int increaseHitHotPlaceCount(String hotPlaceId);
@@ -28,7 +22,7 @@ public interface HotPlaceService {
 
     int insertHotPlace(HotPlace hotPlace);
 
-    int insertHotPlaceArticle(HotPlaceArticle hotPlaceArticle);
+    Long insertHotPlaceArticle(HotPlaceArticle hotPlaceArticle);
 
     int updateHotPlaceTag(String hotPlaceId, String tagId);
 

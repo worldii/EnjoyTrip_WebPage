@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.hotplace.model.mapper;
 
+import com.github.pagehelper.Page;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlace;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceArticle;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceTag;
@@ -10,11 +11,9 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface HotPlaceMapper {
 
-    List<HotPlace> selectAllHotPlace();
+    Page<HotPlace> selectAllHotPlace(final String keyword);
 
-    List<HotPlaceArticle> selectAllHotPlaceArticle(final String hotPlaceId);
-
-    Optional<HotPlace> selectHotPlaceByHotPlaceId(final String hotPlaceId);
+    Optional<HotPlace> selectAllByHotPlaceId(final String hotPlaceId);
 
     Optional<HotPlaceArticle> selectHotPlaceArticleByArticleId(final int articleId);
 
@@ -35,4 +34,5 @@ public interface HotPlaceMapper {
     List<HotPlaceTag> selectHotPlaceTagList(final String hotPlaceId);
 
     List<HotPlace> selectHotPlaceByKeyword(final String keyword);
+
 }

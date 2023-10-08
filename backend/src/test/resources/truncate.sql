@@ -5,6 +5,9 @@ DROP TABLE IF EXISTS plan cascade;
 DROP TABLE IF EXISTS plan_board cascade;
 DROP TABLE IF EXISTS board cascade;
 DROP TABLE IF EXISTS `USER` cascade;
+DROP TABLE IF EXISTS hot_place_tag cascade;
+DROP TABLE IF EXISTS hot_place_article cascade;
+DROP TABLE IF EXISTS hot_place cascade;
 
 CREATE TABLE user (
                       user_id VARCHAR(255) PRIMARY KEY,
@@ -38,4 +41,31 @@ create table Comment (
     board_id BIGINT NOT NULL,
     content VARCHAR(255) NOT NULL,
     current_update TIMESTAMP  default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+create table hot_place (
+    hot_place_id VARCHAR(255) PRIMARY KEY,
+    hot_place_name VARCHAR(255) NOT NULL,
+    x VARCHAR(255) NOT NULL,
+    y VARCHAR(255) NOT NULL,
+    vote BIGINT DEFAULT 0,
+    place_url VARCHAR(255),
+    road_address_name VARCHAR(255),
+    address_name VARCHAR(255)
+);
+
+create table hot_place_article (
+    hot_place_article_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id VARCHAR(255) NOT NULL,
+    hot_place_id VARCHAR(255) NOT NULL,
+    current_update TIMESTAMP default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    subject VARCHAR(255) NOT NULL,
+    content VARCHAR(255) NOT NULL,
+    hit INT DEFAULT 0
+);
+
+create table hot_place_tag (
+    hot_place_tag_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    hot_place_id VARCHAR(255) NOT NULL,
+    tag VARCHAR(255) NOT NULL
 );

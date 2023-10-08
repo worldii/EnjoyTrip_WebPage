@@ -1,6 +1,5 @@
 package com.ssafy.enjoytrip.core.hotplace.controller;
 
-import com.ssafy.enjoytrip.core.hotplace.model.dto.HotPlaceArticleResponse;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.HotPlaceResponse;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.TagType;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlace;
@@ -9,6 +8,7 @@ import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceTag;
 import com.ssafy.enjoytrip.core.hotplace.service.HotPlaceService;
 import com.ssafy.enjoytrip.core.media.model.FileUrlResponse;
 import com.ssafy.enjoytrip.global.auth.model.dto.NoAuth;
+import com.ssafy.enjoytrip.global.error.PageInfoRequest;
 import com.ssafy.enjoytrip.infra.S3Service;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -36,21 +36,11 @@ public class HotPlaceController {
 
     @NoAuth
     @GetMapping
-    public ResponseEntity<List<HotPlaceResponse>> getHotPlaceList() {
-        return ResponseEntity.ok(hotPlaceService.selectAllHotPlace());
-    }
-
-    @NoAuth
-    @GetMapping("/search")
-    public ResponseEntity<List<HotPlace>> getHotPlaceList(@RequestParam final String keyword) {
-        return ResponseEntity.ok(hotPlaceService.selectHotPlaceByKeyword(keyword));
-    }
-
-    @NoAuth
-    @GetMapping("/articleAll/{hotPlaceId}")
-    public ResponseEntity<List<HotPlaceArticleResponse>> getHotPlaceArticleList(
-        @PathVariable final String hotPlaceId) {
-        return ResponseEntity.ok(hotPlaceService.selectAllHotPlaceArticle(hotPlaceId));
+    public ResponseEntity<List<HotPlaceResponse>> getHotPlaceList(
+        @ModelAttribute final PageInfoRequest pageInfoRequest,
+        @RequestParam final String keyword
+    ) {
+        return ResponseEntity.ok(hotPlaceService.selectAllHotPlace(pageInfoRequest, keyword));
     }
 
     @NoAuth
@@ -59,14 +49,6 @@ public class HotPlaceController {
         return ResponseEntity.ok(hotPlaceService.selectHotPlaceByHotPlaceId(hotPlaceId));
     }
 
-    @NoAuth
-    @GetMapping("/article/{hotPlaceArticleId}")
-    public ResponseEntity<HotPlaceArticle> getHotPlaceArticleList(
-        @PathVariable final int hotPlaceArticleId
-    ) {
-        return ResponseEntity.ok(
-            hotPlaceService.selectHotPlaceArticleByArticleId(hotPlaceArticleId));
-    }
 
     @PostMapping("/article/{articleId}/flleUpload")
     public ResponseEntity<Boolean> uploadImagetoArticle(
@@ -106,7 +88,7 @@ public class HotPlaceController {
     }
 
     @PostMapping("/article")
-    public ResponseEntity<Integer> addHotPlaceArticle(
+    public ResponseEntity<Long> addHotPlaceArticle(
         @RequestBody HotPlaceArticle hotPlaceArticle) {
         return ResponseEntity.ok(hotPlaceService.insertHotPlaceArticle(hotPlaceArticle));
     }

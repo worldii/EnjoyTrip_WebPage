@@ -2,12 +2,10 @@ package com.ssafy.enjoytrip.core.plan.model.dto;
 
 
 import java.sql.Date;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @Getter
 @NoArgsConstructor
 public class PlanBoard {
