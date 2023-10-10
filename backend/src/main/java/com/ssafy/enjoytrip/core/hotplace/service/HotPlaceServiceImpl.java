@@ -65,9 +65,9 @@ public class HotPlaceServiceImpl implements HotPlaceService {
             .userId(user.getUserId())
             .build();
 
-        final List<Long> tagIds = getTagIdsByTagName(hotPlaceId, request.getTagName());
+        // final List<Long> tagIds = getTagIdsByTagName(hotPlaceId, request.getTagName());
         hotPlaceArticleRepository.insertHotPlaceArticle(hotPlaceArticle);
-        hotPlaceTagRepository.insertHotPlaceTagList(hotPlaceId, tagIds);
+        // hotPlaceTagRepository.insertHotPlaceTagList(hotPlaceId, tagIds);
         return hotPlaceArticle.getHotPlaceArticleId();
     }
 
@@ -138,7 +138,7 @@ public class HotPlaceServiceImpl implements HotPlaceService {
     }
 
     private HotPlace findHotPlaceByHotPlaceId(String hotPlaceId) {
-        return hotPlaceRepository.selectAllByHotPlaceId(hotPlaceId)
+        return hotPlaceRepository.selectHotPlaceByHotPlaceId(hotPlaceId)
             .orElseThrow(() -> new HotPlaceException("존재하지 않는 핫플레이스입니다."));
     }
 

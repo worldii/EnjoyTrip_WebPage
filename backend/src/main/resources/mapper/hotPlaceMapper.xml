@@ -61,6 +61,11 @@
     </where>
     order by vote desc
   </select>
+  <select id="selectHotPlaceByHotPlaceId" resultType="hotPlace">
+    select *
+    from hot_place
+    where hot_place_id = #{hotPlaceId}
+  </select>
 
   <select id="selectAllByHotPlaceId" resultMap="combinedResultMap">
     select hp.*,

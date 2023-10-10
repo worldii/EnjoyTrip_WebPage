@@ -46,14 +46,15 @@ public class HotPlaceController {
     }
 
     @PostMapping("/{hotPlaceId}")
-    public ResponseEntity<Long> intsertHotPlaceArticle(
+    public ResponseEntity<Long> insertHotPlaceArticle(
         @PathVariable final String hotPlaceId,
         @RequestBody final HotPlaceArticleSaveRequest request,
         @LoginUser final String userId
     ) {
         final Long articleId = hotPlaceService.insertHotPlaceArticle(hotPlaceId, request, userId);
 
-        return ResponseEntity.created(URI.create("/hotplace/" + hotPlaceId)).body(articleId);
+        return ResponseEntity.created(URI.create("/hotplace/" + hotPlaceId + articleId))
+            .body(articleId);
     }
 
     @NoAuth

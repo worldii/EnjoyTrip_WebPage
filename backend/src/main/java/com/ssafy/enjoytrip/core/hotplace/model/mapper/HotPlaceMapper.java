@@ -15,6 +15,8 @@ public interface HotPlaceMapper {
 
     Optional<HotPlace> selectAllByHotPlaceId(final String hotPlaceId);
 
+    Optional<HotPlace> selectHotPlaceByHotPlaceId(final String hotPlaceId);
+
     Optional<HotPlaceArticle> selectHotPlaceArticleByArticleId(final Long articleId);
 
     void updateHotPlace(HotPlace hotPlace);

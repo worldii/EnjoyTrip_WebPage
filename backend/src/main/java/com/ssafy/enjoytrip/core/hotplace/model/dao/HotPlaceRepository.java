@@ -29,6 +29,10 @@ public class HotPlaceRepository {
         return hotPlaceMapper.selectAllByHotPlaceId(hotPlaceId);
     }
 
+    @Transactional(readOnly = true)
+    public Optional<HotPlace> selectHotPlaceByHotPlaceId(final String hotPlaceId) {
+        return hotPlaceMapper.selectHotPlaceByHotPlaceId(hotPlaceId);
+    }
 
     @Transactional
     public void updateHotPlace(HotPlace hotPlace) {
