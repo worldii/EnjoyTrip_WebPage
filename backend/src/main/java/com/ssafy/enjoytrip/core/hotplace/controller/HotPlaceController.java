@@ -1,15 +1,17 @@
 package com.ssafy.enjoytrip.core.hotplace.controller;
 
-import com.ssafy.enjoytrip.core.hotplace.model.dto.HotPlaceResponse;
-import com.ssafy.enjoytrip.core.hotplace.model.dto.TagType;
-import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlace;
-import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceArticle;
-import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceTag;
+import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceArticleSaveRequest;
+import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceSaveRequest;
+import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceVoteRequest;
+import com.ssafy.enjoytrip.core.hotplace.model.dto.response.HotPlaceArticleResponse;
+import com.ssafy.enjoytrip.core.hotplace.model.dto.response.HotPlaceResponse;
 import com.ssafy.enjoytrip.core.hotplace.service.HotPlaceService;
 import com.ssafy.enjoytrip.core.media.model.FileUrlResponse;
+import com.ssafy.enjoytrip.global.auth.model.dto.LoginUser;
 import com.ssafy.enjoytrip.global.auth.model.dto.NoAuth;
 import com.ssafy.enjoytrip.global.error.PageInfoRequest;
 import com.ssafy.enjoytrip.infra.S3Service;
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +36,26 @@ public class HotPlaceController {
     private final HotPlaceService hotPlaceService;
     private final S3Service s3Service;
 
+    @PostMapping
+    public ResponseEntity<String> insertHotPlace(
+        @RequestBody final HotPlaceSaveRequest request
+    ) {
+        final String hotPlaceId = hotPlaceService.insertHotPlace(request);
+
+        return ResponseEntity.created(URI.create("/hotplace" + hotPlaceId)).body(hotPlaceId);
+    }
+
+    @PostMapping("/{hotPlaceId}")
+    public ResponseEntity<Long> intsertHotPlaceArticle(
+        @PathVariable final String hotPlaceId,
+        @RequestBody final HotPlaceArticleSaveRequest request,
+        @LoginUser final String userId
+    ) {
+        final Long articleId = hotPlaceService.insertHotPlaceArticle(hotPlaceId, request, userId);
+
+        return ResponseEntity.created(URI.create("/hotplace/" + hotPlaceId)).body(articleId);
+    }
+
     @NoAuth
     @GetMapping
     public ResponseEntity<List<HotPlaceResponse>> getHotPlaceList(
@@ -45,10 +67,31 @@ public class HotPlaceController {
 
     @NoAuth
     @GetMapping("/{hotPlaceId}")
-    public ResponseEntity<HotPlace> getHotPlaceDetail(@PathVariable final String hotPlaceId) {
+    public ResponseEntity<HotPlaceResponse> getHotPlaceDetail(
+        @PathVariable final String hotPlaceId
+    ) {
         return ResponseEntity.ok(hotPlaceService.selectHotPlaceByHotPlaceId(hotPlaceId));
     }
 
+    @NoAuth
+    @GetMapping("/{hotPlaceId}/{articleId}")
+    public ResponseEntity<HotPlaceArticleResponse> getHotPlaceArticleDetail(
+        @PathVariable final String hotPlaceId,
+        @PathVariable final Long articleId
+    ) {
+        return ResponseEntity.ok(
+            hotPlaceService.selectHotPlaceArticleByArticleId(hotPlaceId, articleId));
+    }
+
+
+    @PutMapping("/{hotPlaceId}")
+    public ResponseEntity<Void> voteHotPlace(
+        @PathVariable final String hotPlaceId,
+        @RequestBody final HotPlaceVoteRequest hotPlaceVoteRequest
+    ) {
+        hotPlaceService.updateVoteCount(hotPlaceId, hotPlaceVoteRequest);
+        return ResponseEntity.ok().build();
+    }
 
     @PostMapping("/article/{articleId}/flleUpload")
     public ResponseEntity<Boolean> uploadImagetoArticle(
@@ -64,53 +107,10 @@ public class HotPlaceController {
         return ResponseEntity.ok(true);
     }
 
-    @PostMapping("/{hotPlaceId}/vote")
-    public ResponseEntity<Boolean> voteHotPlace(@PathVariable final String hotPlaceId) {
-        hotPlaceService.increaseHitHotPlaceCount(hotPlaceId);
-        return ResponseEntity.ok(true);
-    }
-
-    @PostMapping("/{hotPlaceId}/unvote")
-    public ResponseEntity<Boolean> unvoteHotPlace(@PathVariable final String hotPlaceId) {
-        hotPlaceService.decreaseHitHotPlaceCount(hotPlaceId);
-        return ResponseEntity.ok(true);
-    }
-
-    @PostMapping
-    public ResponseEntity<Integer> addHotPlace(@RequestBody final HotPlace hotPlace) {
-        int pk = hotPlaceService.insertHotPlace(hotPlace);
-        // tagtype 의 모든 종류를 1로 초기화
-        // tagType 의 tagName 을 List<String> tagList 로 만듦
-        for (TagType tagType : TagType.values()) {
-            hotPlaceService.insertHotPlaceTag(hotPlace.getHotPlaceId(), tagType.getTagName());
-        }
-        return ResponseEntity.ok(pk);
-    }
-
-    @PostMapping("/article")
-    public ResponseEntity<Long> addHotPlaceArticle(
-        @RequestBody HotPlaceArticle hotPlaceArticle) {
-        return ResponseEntity.ok(hotPlaceService.insertHotPlaceArticle(hotPlaceArticle));
-    }
-
-    @PostMapping("/{hotPlaceId}/tag")
-    public ResponseEntity<Boolean> addHotPlaceTag(@PathVariable String hotPlaceId,
-        @RequestBody List<String> tagList) {
-        hotPlaceService.insertHotPlaceTagList(hotPlaceId, tagList);
-        return ResponseEntity.ok(true);
-    }
-
     @PutMapping("/{hotPlaceId}/tag")
     public ResponseEntity<Boolean> updateHotPlaceTag(@PathVariable String hotPlaceId,
         @RequestBody List<String> tagList) {
         hotPlaceService.updateHotPlaceTagList(hotPlaceId, tagList);
         return ResponseEntity.ok(true);
-    }
-
-    @NoAuth
-    @GetMapping("/{hotPlaceId}/tag")
-    public ResponseEntity<List<HotPlaceTag>> getHotPlaceTagList(@PathVariable String hotPlaceId) {
-        List<HotPlaceTag> hotPlaceTags = hotPlaceService.selectHotPlaceTagList(hotPlaceId);
-        return ResponseEntity.ok(hotPlaceTags);
     }
 }
