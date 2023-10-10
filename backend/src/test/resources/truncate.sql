@@ -61,7 +61,7 @@ create table hot_place_article (
     current_update TIMESTAMP default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     subject VARCHAR(255) NOT NULL,
     content VARCHAR(255) NOT NULL,
-    hit INT DEFAULT 0
+    hit BIGINT DEFAULT 0
 );
 
 create table hot_place_tag (
