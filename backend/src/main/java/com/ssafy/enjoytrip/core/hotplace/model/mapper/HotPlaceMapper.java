@@ -3,36 +3,27 @@ package com.ssafy.enjoytrip.core.hotplace.model.mapper;
 import com.github.pagehelper.Page;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlace;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceArticle;
-import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceTag;
-import java.util.List;
 import java.util.Optional;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface HotPlaceMapper {
 
-    Page<HotPlace> selectAllHotPlace(final String keyword);
-
-    Optional<HotPlace> selectAllByHotPlaceId(final String hotPlaceId);
-
-    Optional<HotPlaceArticle> selectHotPlaceArticleByArticleId(final int articleId);
-
     int insertHotPlace(final HotPlace hotPlace);
 
     int insertHotPlaceArticle(final HotPlaceArticle hotPlaceArticle);
 
+    Page<HotPlace> selectAllHotPlace(final String keyword);
+
+    Optional<HotPlace> selectAllByHotPlaceId(final String hotPlaceId);
+
+    Optional<HotPlaceArticle> selectHotPlaceArticleByArticleId(final Long articleId);
+
+    void updateHotPlace(HotPlace hotPlace);
+
     int updateHotPlaceArticleImage(final int hotPlaceArticleId, String imageUrl);
-
-    int increaseHitHotPlaceCount(final String hotPlaceId);
-
-    int decreaseHitHotPlaceCount(final String hotPlaceId);
 
     int updateHotPlaceTag(final String hotPlaceId, final String tagName);
 
     int insertHotPlaceTag(final String hotPlaceId, final String tagName);
-
-    List<HotPlaceTag> selectHotPlaceTagList(final String hotPlaceId);
-
-    List<HotPlace> selectHotPlaceByKeyword(final String keyword);
-
 }
