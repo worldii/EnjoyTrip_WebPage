@@ -59,9 +59,10 @@ create table hot_place_article (
     user_id VARCHAR(255) NOT NULL,
     hot_place_id VARCHAR(255) NOT NULL,
     current_update TIMESTAMP default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    subject VARCHAR(255) NOT NULL,
+    hot_place_name VARCHAR(255) NOT NULL,
     content VARCHAR(255) NOT NULL,
     hit BIGINT DEFAULT 0
+    image_url VARCHAR(255),
 );
 
 create table hot_place_tag (
