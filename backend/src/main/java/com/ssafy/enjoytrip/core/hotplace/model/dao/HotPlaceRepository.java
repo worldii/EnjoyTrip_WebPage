@@ -2,7 +2,6 @@ package com.ssafy.enjoytrip.core.hotplace.model.dao;
 
 import com.github.pagehelper.Page;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlace;
-import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceArticle;
 import com.ssafy.enjoytrip.core.hotplace.model.mapper.HotPlaceMapper;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -20,11 +19,6 @@ public class HotPlaceRepository {
         return hotPlaceMapper.insertHotPlace(hotPlace);
     }
 
-    @Transactional
-    public int insertHotPlaceArticle(final HotPlaceArticle hotPlaceArticle) {
-        return hotPlaceMapper.insertHotPlaceArticle(hotPlaceArticle);
-    }
-
     @Transactional(readOnly = true)
     public Page<HotPlace> selectAllHotPlace(final String keyword) {
         return hotPlaceMapper.selectAllHotPlace(keyword);
@@ -35,12 +29,6 @@ public class HotPlaceRepository {
         return hotPlaceMapper.selectAllByHotPlaceId(hotPlaceId);
     }
 
-    @Transactional(readOnly = true)
-    public Optional<HotPlaceArticle> selectHotPlaceArticleByArticleId(
-        final Long hotPlaceArticleId
-    ) {
-        return hotPlaceMapper.selectHotPlaceArticleByArticleId(hotPlaceArticleId);
-    }
 
     @Transactional
     public void updateHotPlace(HotPlace hotPlace) {
@@ -62,5 +50,11 @@ public class HotPlaceRepository {
     @Transactional
     public int insertHotPlaceTag(final String hotPlaceId, final String tagName) {
         return hotPlaceMapper.insertHotPlaceTag(hotPlaceId, tagName);
+    }
+
+
+    @Transactional(readOnly = true)
+    public Long selectHotPlaceTagIdByTagName(final String tagName) {
+        return hotPlaceMapper.selectHotPlaceTagIdByTagName(tagName);
     }
 }

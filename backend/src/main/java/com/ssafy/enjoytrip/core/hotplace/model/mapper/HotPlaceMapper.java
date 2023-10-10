@@ -11,8 +11,6 @@ public interface HotPlaceMapper {
 
     int insertHotPlace(final HotPlace hotPlace);
 
-    int insertHotPlaceArticle(final HotPlaceArticle hotPlaceArticle);
-
     Page<HotPlace> selectAllHotPlace(final String keyword);
 
     Optional<HotPlace> selectAllByHotPlaceId(final String hotPlaceId);
@@ -26,4 +24,6 @@ public interface HotPlaceMapper {
     int updateHotPlaceTag(final String hotPlaceId, final String tagName);
 
     int insertHotPlaceTag(final String hotPlaceId, final String tagName);
+
+    Long selectHotPlaceTagIdByTagName(final String tagName);
 }

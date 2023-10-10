@@ -6,7 +6,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 import com.github.pagehelper.Page;
 import com.ssafy.enjoytrip.core.hotplace.model.dao.HotPlaceRepository;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlace;
-import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceArticle;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -69,21 +68,6 @@ class HotPlaceRepositoryTest {
         assertThat(hotPlaces).isNotNull();
     }
 
-
-    @Test
-    @DisplayName("HotPlaceArticle를 조회한다.")
-    @Sql({"/truncate.sql", "/hotPlaceArticle.sql"})
-    void selectHotPlaceArticleByArticleId() {
-        // given
-        Long hotPlaceArticleId = 1L;
-
-        // when
-        Optional<HotPlaceArticle> hotPlace = hotPlaceRepository.selectHotPlaceArticleByArticleId(
-            hotPlaceArticleId);
-
-        // then
-        assertThat(hotPlace).isNotNull();
-    }
 
     @Test
     @DisplayName("HotPlace Vote Count 를 업데이트 한다.")

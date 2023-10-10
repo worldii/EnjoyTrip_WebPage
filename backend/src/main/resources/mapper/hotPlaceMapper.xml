@@ -55,6 +55,18 @@
     </collection>
   </resultMap>
 
+
+  <insert id="insertHotPlace" parameterType="hotPlace">
+    <selectKey resultType="String" keyProperty="hotPlaceId" order="AFTER">
+      SELECT LAST_INSERT_ID() AS hotPlaceId
+    </selectKey>
+    insert into hot_place (hot_place_id, hot_place_name, road_address_name, address_name, place_url,
+    x, y)
+    values (#{hotPlaceId}, #{hotPlaceName}, #{roadAddressName}, #{addressName}, #{placeUrl}, #{x},
+    #{y})
+  </insert>
+
+
   <select id="selectAllHotPlace" resultMap="hotPlace">
     select *
     from hot_place
@@ -76,10 +88,11 @@
     where hp.hot_place_id = #{hotPlaceId}
   </select>
 
-  <select id="selectHotPlaceArticleByArticleId" resultMap="hotPlaceArticle">
-    select *
-    from hot_place_article
-    where hot_place_article_id = #{hotPlaceArticleId}
+
+  <select id="selectHotPlaceTagIdByTagName">
+    select hot_place_id
+    from hot_place_tag
+    where tag_name = #{tagName}
   </select>
 
   <update id="updateHotPlace">
@@ -100,30 +113,6 @@
     where hot_place_article_id = #{hotPlaceArticleId}
   </update>
 
-  <update id="increaseHitHotPlaceCount">
-    update hot_place
-    set vote = vote + 1
-    where hot_place_id = #{hotPlaceId}
-  </update>
-
-  <update id="decreaseHitHotPlaceCount">
-    update hot_place
-    set vote = vote - 1
-    where hot_place_id = #{hotPlaceId}
-  </update>
-
-  <insert id="insertHotPlace" parameterType="hotPlace">
-    insert into hot_place (hot_place_id, hot_place_name, road_address_name, address_name, place_url,
-                           x, y)
-    values (#{hotPlaceId}, #{hotPlaceName}, #{roadAddressName}, #{addressName}, #{placeUrl}, #{x},
-            #{y})
-  </insert>
-
-  <insert id="insertHotPlaceArticle" parameterType="hotPlaceArticle" useGeneratedKeys="true"
-    keyProperty="hotPlaceArticleId">
-    insert into hot_place_article (user_id, hot_place_id, content, image_url, hot_place_name)
-    values (#{userId}, #{hotPlaceId}, #{content}, #{imageUrl}, #{hotPlaceName})
-  </insert>
 
   <update id="updateHotPlaceTag">
     update hot_place_tag
