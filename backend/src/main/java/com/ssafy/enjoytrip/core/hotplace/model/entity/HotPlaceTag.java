@@ -1,15 +1,28 @@
 package com.ssafy.enjoytrip.core.hotplace.model.entity;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 public class HotPlaceTag {
 
+    private Long hotPlaceTagId;
     private String tagName;
     private String hotPlaceId;
-    private int count;
+    private Long count = 0L;
+
+    @Builder
+    public HotPlaceTag(
+        final Long hotPlaceTagId,
+        final String tagName,
+        final String hotPlaceId,
+        final Long count
+    ) {
+        this.hotPlaceTagId = hotPlaceTagId;
+        this.tagName = tagName;
+        this.hotPlaceId = hotPlaceId;
+        this.count = count;
+    }
 }

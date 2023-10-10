@@ -61,12 +61,13 @@ create table hot_place_article (
     current_update TIMESTAMP default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     hot_place_name VARCHAR(255) NOT NULL,
     content VARCHAR(255) NOT NULL,
-    hit BIGINT DEFAULT 0
-    image_url VARCHAR(255),
+    hit BIGINT DEFAULT 0,
+    image_url VARCHAR(255)
 );
 
 create table hot_place_tag (
     hot_place_tag_id BIGINT AUTO_INCREMENT PRIMARY KEY,
     hot_place_id VARCHAR(255) NOT NULL,
-    tag VARCHAR(255) NOT NULL
+    tag_name VARCHAR(255) NOT NULL,
+    count BIGINT DEFAULT 0
 );
