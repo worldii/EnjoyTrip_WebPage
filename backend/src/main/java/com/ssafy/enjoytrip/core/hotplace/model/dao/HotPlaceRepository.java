@@ -34,27 +34,4 @@ public class HotPlaceRepository {
     public void updateHotPlace(HotPlace hotPlace) {
         hotPlaceMapper.updateHotPlace(hotPlace);
     }
-
-
-    @Transactional
-    public int updateHotPlaceArticleImage(final int hotPlaceArticleId, String imageUrl) {
-        return hotPlaceMapper.updateHotPlaceArticleImage(hotPlaceArticleId, imageUrl);
-    }
-
-
-    @Transactional
-    public int updateHotPlaceTag(final String hotPlaceId, final String tagName) {
-        return hotPlaceMapper.updateHotPlaceTag(hotPlaceId, tagName);
-    }
-
-    @Transactional
-    public int insertHotPlaceTag(final String hotPlaceId, final String tagName) {
-        return hotPlaceMapper.insertHotPlaceTag(hotPlaceId, tagName);
-    }
-
-
-    @Transactional(readOnly = true)
-    public Long selectHotPlaceTagIdByTagName(final String tagName) {
-        return hotPlaceMapper.selectHotPlaceTagIdByTagName(tagName);
-    }
 }

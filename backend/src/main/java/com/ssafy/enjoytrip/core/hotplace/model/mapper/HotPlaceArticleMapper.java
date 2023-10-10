@@ -10,4 +10,6 @@ public interface HotPlaceArticleMapper {
     Long insertHotPlaceArticle(final HotPlaceArticle hotPlaceArticle);
 
     Optional<HotPlaceArticle> selectHotPlaceArticleByArticleId(Long hotPlaceArticleId);
+
+    int updateHotPlaceArticleImage(int hotPlaceArticleId, String imageUrl);
 }

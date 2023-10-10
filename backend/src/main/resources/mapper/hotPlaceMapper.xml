@@ -14,22 +14,6 @@
     <result column="y" property="y"/>
   </resultMap>
 
-  <resultMap id="hotPlaceArticle"
-    type="com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceArticle">
-    <id column="hot_place_article_id" property="hotPlaceArticleId"/>
-    <result column="user_id" property="userId"/>
-    <result column="hot_place_id" property="hotPlaceId"/>
-    <result column="content" property="content"/>
-    <result column="createAt" property="createAt"/>
-    <result column="image_url" property="imageUrl"/>
-  </resultMap>
-
-  <resultMap id="hotPlaceTag" type="com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceTag">
-    <id column="tag_name" property="tagName"/>
-    <result column="hot_place_id" property="hotPlaceId"/>
-    <result column="count" property="count"/>
-  </resultMap>
-
   <resultMap id="combinedResultMap" type="HotPlace">
     <result column="hot_place_id" property="hotPlaceId"/>
     <result column="hot_place_name" property="hotPlaceName"/>
@@ -88,13 +72,6 @@
     where hp.hot_place_id = #{hotPlaceId}
   </select>
 
-
-  <select id="selectHotPlaceTagIdByTagName">
-    select hot_place_id
-    from hot_place_tag
-    where tag_name = #{tagName}
-  </select>
-
   <update id="updateHotPlace">
     update hot_place
     set hot_place_name    = #{hotPlaceName},
@@ -106,30 +83,4 @@
         vote              = #{vote}
     where hot_place_id = #{hotPlaceId}
   </update>
-
-  <update id="updateHotPlaceArticleImage">
-    update hot_place_article
-    set image_url = #{imageUrl}
-    where hot_place_article_id = #{hotPlaceArticleId}
-  </update>
-
-
-  <update id="updateHotPlaceTag">
-    update hot_place_tag
-    set count = count + 1
-    where hot_place_id = #{hotPlaceId}
-      and tag_name = #{tagName}
-  </update>
-
-  <insert id="insertHotPlaceTag">
-    insert into hot_place_tag (hot_place_id, tag_name, count)
-    values (#{hotPlaceId}, #{tagName}, 1)
-  </insert>
-
-  <select id="selectHotPlaceTagList" resultMap="hotPlaceTag">
-    select *
-    from hot_place_tag
-    where hot_place_id = #{hotPlaceId}
-    order by count desc limit 5
-  </select>
 </mapper>

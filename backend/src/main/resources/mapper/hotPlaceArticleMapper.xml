@@ -32,6 +32,4 @@
     set image_url = #{imageUrl}
     where hot_place_article_id = #{hotPlaceArticleId}
   </update>
-
-
 </mapper>

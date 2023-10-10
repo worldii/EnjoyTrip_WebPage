@@ -24,4 +24,9 @@ public class HotPlaceArticleRepository {
     ) {
         return hotPlaceArticleMapper.selectHotPlaceArticleByArticleId(hotPlaceArticleId);
     }
+
+    @Transactional
+    public int updateHotPlaceArticleImage(final int hotPlaceArticleId, String imageUrl) {
+        return hotPlaceArticleMapper.updateHotPlaceArticleImage(hotPlaceArticleId, imageUrl);
+    }
 }
