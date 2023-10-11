@@ -2,16 +2,21 @@ package com.ssafy.enjoytrip.acceptance;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceArticleSaveRequest;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceSaveRequest;
+import com.ssafy.enjoytrip.core.hotplace.model.dto.response.HotPlaceResponse;
 import com.ssafy.enjoytrip.core.user.model.dto.request.UserAddRequest;
 import com.ssafy.enjoytrip.core.user.model.dto.request.UserLoginRequest;
 import com.ssafy.enjoytrip.global.auth.model.dto.response.TokenResponse;
+import com.ssafy.enjoytrip.global.error.PageInfoRequest;
 import io.restassured.RestAssured;
+import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.test.context.jdbc.Sql;
@@ -88,7 +93,7 @@ class HotPlaceAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
-    @DisplayName("HotPlace를 생성한다.")
+    @DisplayName("HotPlace Article을  생성한다.")
     @Sql({"/truncate.sql"})
     void selectHotPlace() {
         // given
@@ -174,4 +179,39 @@ class HotPlaceAcceptanceTest extends AcceptanceTest {
         // then
         assertThat(response.statusCode()).isEqualTo(CREATED.value());
     }
+
+    @Test
+    @DisplayName("HotPlace 목록을 조회한다")
+    @Sql({"/truncate.sql", "/hotplace.sql"})
+    void getHotPlaceListTest() {
+        // given
+        PageInfoRequest pageInfoRequest = PageInfoRequest.builder()
+            .page(1)
+            .pageSize(1)
+            .build();
+        String keyword = "Example";
+
+        // when
+        ExtractableResponse<Response> response = RestAssured
+            .given()
+            .param("page", pageInfoRequest.getPage())
+            .param("pageSize", pageInfoRequest.getPageSize())
+            .param("keyword", keyword)
+            .contentType(APPLICATION_JSON_VALUE)
+            .log().all()
+            .when()
+            .get("/hotplace")
+            .then()
+            .log().all()
+            .extract();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(OK.value());
+        assertThat(response.body().as(
+            new TypeRef<List<HotPlaceResponse>>() {
+            }).size())
+            .isEqualTo(2);
+    }
+    
+
 }

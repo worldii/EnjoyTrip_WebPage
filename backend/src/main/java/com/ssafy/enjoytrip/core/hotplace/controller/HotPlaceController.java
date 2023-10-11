@@ -4,16 +4,14 @@ import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceArticleSaveRe
 import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceSaveRequest;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceVoteRequest;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.response.HotPlaceArticleResponse;
+import com.ssafy.enjoytrip.core.hotplace.model.dto.response.HotPlaceDetailResponse;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.response.HotPlaceResponse;
 import com.ssafy.enjoytrip.core.hotplace.service.HotPlaceService;
-import com.ssafy.enjoytrip.core.media.model.FileUrlResponse;
 import com.ssafy.enjoytrip.global.auth.model.dto.LoginUser;
 import com.ssafy.enjoytrip.global.auth.model.dto.NoAuth;
 import com.ssafy.enjoytrip.global.error.PageInfoRequest;
-import com.ssafy.enjoytrip.infra.S3Service;
 import java.net.URI;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 
 @RestController
@@ -34,7 +31,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class HotPlaceController {
 
     private final HotPlaceService hotPlaceService;
-    private final S3Service s3Service;
 
     @PostMapping
     public ResponseEntity<String> insertHotPlace(
@@ -68,10 +64,10 @@ public class HotPlaceController {
 
     @NoAuth
     @GetMapping("/{hotPlaceId}")
-    public ResponseEntity<HotPlaceResponse> getHotPlaceDetail(
+    public ResponseEntity<HotPlaceDetailResponse> getHotPlaceDetail(
         @PathVariable final String hotPlaceId
     ) {
-        return ResponseEntity.ok(hotPlaceService.selectHotPlaceByHotPlaceId(hotPlaceId));
+        return ResponseEntity.ok(hotPlaceService.selectAllByHotPlaceId(hotPlaceId));
     }
 
     @NoAuth
@@ -84,7 +80,6 @@ public class HotPlaceController {
             hotPlaceService.selectHotPlaceArticleByArticleId(hotPlaceId, articleId));
     }
 
-
     @PutMapping("/{hotPlaceId}")
     public ResponseEntity<Void> voteHotPlace(
         @PathVariable final String hotPlaceId,
@@ -92,26 +87,5 @@ public class HotPlaceController {
     ) {
         hotPlaceService.updateVoteCount(hotPlaceId, hotPlaceVoteRequest);
         return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/article/{articleId}/flleUpload")
-    public ResponseEntity<Boolean> uploadImagetoArticle(
-        @PathVariable final int articleId,
-        @ModelAttribute final List<MultipartFile> files
-    ) {
-        final List<String> strings = s3Service.uploadMedias(files, "hotplace/")
-            .stream()
-            .map(FileUrlResponse::getUrl)
-            .collect(Collectors.toList());
-
-        hotPlaceService.updateHotPlaceArticleImage(articleId, strings.get(0));
-        return ResponseEntity.ok(true);
-    }
-
-    @PutMapping("/{hotPlaceId}/tag")
-    public ResponseEntity<Boolean> updateHotPlaceTag(@PathVariable String hotPlaceId,
-        @RequestBody List<String> tagList) {
-        hotPlaceService.updateHotPlaceTagList(hotPlaceId, tagList);
-        return ResponseEntity.ok(true);
     }
 }

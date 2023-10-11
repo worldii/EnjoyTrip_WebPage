@@ -1,3 +1,3 @@
 insert into hot_place_article
-(hot_place_article_id, user_id, hot_place_id, current_update, subject, content)
+(hot_place_article_id, user_id, hot_place_id, current_update, content, hot_place_name)
 values (1, 'test', '1', '2019-01-01 00:00:00', 'test', 'test');
