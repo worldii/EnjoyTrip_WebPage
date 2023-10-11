@@ -2,16 +2,14 @@ package com.ssafy.enjoytrip.core.hotplace.model.entity;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 @Getter
 public class HotPlaceTag {
 
-    private Long hotPlaceTagId;
-    private String tagName;
-    private String hotPlaceId;
-    private Long count = 1L;
+    private final Long hotPlaceTagId;
+    private final String tagName;
+    private final String hotPlaceId;
+    private final Long count;
 
     @Builder
     public HotPlaceTag(
@@ -29,11 +27,17 @@ public class HotPlaceTag {
     public static HotPlaceTag of(final String name, final String hotPlaceId) {
         return HotPlaceTag.builder()
             .tagName(name)
+            .count(0L)
             .hotPlaceId(hotPlaceId)
             .build();
     }
 
-    public void increaseTagCount() {
-        this.count++;
+    public HotPlaceTag increaseTagCount() {
+        return new HotPlaceTag(
+            this.hotPlaceTagId,
+            this.tagName,
+            this.hotPlaceId,
+            this.count + 1
+        );
     }
 }

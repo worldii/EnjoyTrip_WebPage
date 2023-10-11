@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
+@Getter
 public class HotPlaceTags {
 
     private final Map<String, HotPlaceTag> hotPlaceTagMap;
-
-    public HotPlaceTags(final Map<String, HotPlaceTag> hotPlaceTagMap) {
-        this.hotPlaceTagMap = hotPlaceTagMap;
-    }
 
     public HotPlaceTags(
         final List<HotPlaceTag> tagList,
@@ -19,17 +19,18 @@ public class HotPlaceTags {
         final List<String> tagName
     ) {
         this.hotPlaceTagMap = new HashMap<>();
-        tagList.forEach(tag -> hotPlaceTagMap.put(tag.getTagName(), tag));
+        for (final HotPlaceTag tag : tagList) {
+            hotPlaceTagMap.put(tag.getTagName(), tag);
+        }
         increaseTagCount(hotPlaceId, tagName);
     }
 
     private void increaseTagCount(final String hotPlaceId, final List<String> tagName) {
-        for (String name : tagName) {
-            if (hotPlaceTagMap.containsKey(name)) {
-                hotPlaceTagMap.get(name).increaseTagCount();
-            } else {
-                hotPlaceTagMap.put(name, HotPlaceTag.of(name, hotPlaceId));
-            }
+        for (final String name : tagName) {
+            final HotPlaceTag newHotPlaceTag = hotPlaceTagMap
+                .getOrDefault(name, HotPlaceTag.of(name, hotPlaceId)).increaseTagCount();
+
+            hotPlaceTagMap.put(name, newHotPlaceTag);
         }
     }
 
