@@ -7,6 +7,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceArticleSaveRequest;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceSaveRequest;
+import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceVoteRequest;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.response.HotPlaceArticleResponse;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.response.HotPlaceDetailResponse;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.response.HotPlaceResponse;
@@ -323,10 +324,15 @@ class HotPlaceAcceptanceTest extends AcceptanceTest {
             .getAccessToken();
 
         // when
+        HotPlaceVoteRequest hotPlaceVoteRequest = HotPlaceVoteRequest.builder()
+            .voteCount(voteCount + 1)
+            .build();
+
         ExtractableResponse<Response> response = RestAssured
             .given()
             .contentType(APPLICATION_JSON_VALUE)
             .header("Authorization", accessToken)
+            .body(hotPlaceVoteRequest)
             .log().all()
             .when()
             .put("/hotplace/{hotPlaceId}/vote", hotPlaceId)
@@ -336,9 +342,17 @@ class HotPlaceAcceptanceTest extends AcceptanceTest {
 
         // then
         assertThat(response.statusCode()).isEqualTo(OK.value());
-        assertThat(response.body().as(HotPlaceDetailResponse.class))
-            .extracting("vote")
-            .isEqualTo(voteCount + 1);
+
+        Long newVoteCount = RestAssured
+            .given()
+            .contentType(APPLICATION_JSON_VALUE)
+            .log().all()
+            .when()
+            .get("/hotplace/{hotPlaceId}", hotPlaceId)
+            .then()
+            .log().all()
+            .extract().body().as(HotPlaceDetailResponse.class).getVote();
+        assertThat(newVoteCount).isEqualTo(voteCount + 1);
     }
 }
 
