@@ -1,7 +1,7 @@
 package com.ssafy.enjoytrip.core.board.model.mapper;
 
 import com.github.pagehelper.Page;
-import com.ssafy.enjoytrip.core.board.model.dto.request.SearchCondition;
+import com.ssafy.enjoytrip.core.board.model.dto.request.BoardSearchRequest;
 import com.ssafy.enjoytrip.core.board.model.entity.Board;
 import java.util.Optional;
 import org.apache.ibatis.annotations.Mapper;
@@ -15,7 +15,7 @@ public interface BoardMapper {
 
     Page<Board> selectAll();
 
-    Page<Board> selectBoardListBySearchDto(final SearchCondition searchCondition);
+    Page<Board> selectBoardListBySearchDto(final BoardSearchRequest boardSearchRequest);
 
     void updateBoard(final Board board);
 

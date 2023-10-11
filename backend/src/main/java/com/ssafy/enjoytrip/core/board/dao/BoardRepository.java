@@ -1,7 +1,7 @@
 package com.ssafy.enjoytrip.core.board.dao;
 
 import com.github.pagehelper.Page;
-import com.ssafy.enjoytrip.core.board.model.dto.request.SearchCondition;
+import com.ssafy.enjoytrip.core.board.model.dto.request.BoardSearchRequest;
 import com.ssafy.enjoytrip.core.board.model.entity.Board;
 import com.ssafy.enjoytrip.core.board.model.mapper.BoardMapper;
 import java.util.Optional;
@@ -29,8 +29,8 @@ public class BoardRepository {
         return boardMapper.selectAll();
     }
 
-    public Page<Board> selectBoardListBySearchDto(final SearchCondition searchCondition) {
-        return boardMapper.selectBoardListBySearchDto(searchCondition);
+    public Page<Board> selectBoardListBySearchDto(final BoardSearchRequest boardSearchRequest) {
+        return boardMapper.selectBoardListBySearchDto(boardSearchRequest);
     }
 
     @Transactional

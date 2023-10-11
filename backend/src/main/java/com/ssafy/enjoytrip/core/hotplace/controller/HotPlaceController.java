@@ -9,7 +9,7 @@ import com.ssafy.enjoytrip.core.hotplace.model.dto.response.HotPlaceResponse;
 import com.ssafy.enjoytrip.core.hotplace.service.HotPlaceService;
 import com.ssafy.enjoytrip.global.auth.model.dto.LoginUser;
 import com.ssafy.enjoytrip.global.auth.model.dto.NoAuth;
-import com.ssafy.enjoytrip.global.error.PageInfoRequest;
+import com.ssafy.enjoytrip.global.dto.PageInfoRequest;
 import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

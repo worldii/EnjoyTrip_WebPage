@@ -1,12 +1,12 @@
 package com.ssafy.enjoytrip.core.board.controller;
 
-import com.ssafy.enjoytrip.core.board.model.dto.request.SearchCondition;
+import com.ssafy.enjoytrip.core.board.model.dto.request.BoardSearchRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.response.BoardDetailResponse;
 import com.ssafy.enjoytrip.core.board.service.BoardService;
 import com.ssafy.enjoytrip.global.auth.model.dto.LoginUser;
 import com.ssafy.enjoytrip.global.auth.model.dto.NoAuth;
+import com.ssafy.enjoytrip.global.dto.PageInfoRequest;
 import com.ssafy.enjoytrip.global.dto.PageResponse;
-import com.ssafy.enjoytrip.global.error.PageInfoRequest;
 import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -43,20 +43,13 @@ public class BoardController {
     }
 
     @NoAuth
-    @GetMapping("/list/{currentPage}")
-    public ResponseEntity<PageResponse> getListByPage(@PathVariable final Integer currentPage) {
-
-        return ResponseEntity.ok(boardService.getBoardList(PageInfoRequest.from(currentPage)));
-    }
-
-    @NoAuth
     @GetMapping("/list/search")
     public ResponseEntity<PageResponse> getListBySearchDto(
         @RequestBody final PageInfoRequest pageInfoRequest,
-        @ModelAttribute final SearchCondition searchCondition
+        @ModelAttribute final BoardSearchRequest boardSearchRequest
     ) {
         return ResponseEntity.ok(
-            boardService.getBoardListBySearchDto(searchCondition, pageInfoRequest));
+            boardService.getBoardListBySearchDto(boardSearchRequest, pageInfoRequest));
     }
 
     @NoAuth

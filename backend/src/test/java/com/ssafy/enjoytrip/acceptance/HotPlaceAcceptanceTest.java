@@ -14,7 +14,7 @@ import com.ssafy.enjoytrip.core.hotplace.model.dto.response.HotPlaceResponse;
 import com.ssafy.enjoytrip.core.user.model.dto.request.UserAddRequest;
 import com.ssafy.enjoytrip.core.user.model.dto.request.UserLoginRequest;
 import com.ssafy.enjoytrip.global.auth.model.dto.response.TokenResponse;
-import com.ssafy.enjoytrip.global.error.PageInfoRequest;
+import com.ssafy.enjoytrip.global.dto.PageInfoRequest;
 import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;

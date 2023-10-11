@@ -6,7 +6,7 @@ import com.ssafy.enjoytrip.core.board.dao.BoardRepository;
 import com.ssafy.enjoytrip.core.board.dao.CommentRepository;
 import com.ssafy.enjoytrip.core.board.model.dto.request.BoardModifyRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.request.BoardSaveRequest;
-import com.ssafy.enjoytrip.core.board.model.dto.request.SearchCondition;
+import com.ssafy.enjoytrip.core.board.model.dto.request.BoardSearchRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.response.BoardDetailResponse;
 import com.ssafy.enjoytrip.core.board.model.entity.Board;
 import com.ssafy.enjoytrip.core.board.model.entity.Comment;
@@ -18,9 +18,9 @@ import com.ssafy.enjoytrip.core.media.service.MediaService;
 import com.ssafy.enjoytrip.core.media.service.UploadService;
 import com.ssafy.enjoytrip.core.user.dao.UserRepository;
 import com.ssafy.enjoytrip.core.user.model.entity.User;
+import com.ssafy.enjoytrip.global.dto.PageInfoRequest;
 import com.ssafy.enjoytrip.global.dto.PageResponse;
 import com.ssafy.enjoytrip.global.error.BoardException;
-import com.ssafy.enjoytrip.global.error.PageInfoRequest;
 import com.ssafy.enjoytrip.global.util.JsonUtil;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -93,10 +93,10 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional(readOnly = true)
     public PageResponse getBoardListBySearchDto(
-        final SearchCondition searchCondition, final PageInfoRequest pageInfoRequest
+        final BoardSearchRequest boardSearchRequest, final PageInfoRequest pageInfoRequest
     ) {
         PageHelper.startPage(pageInfoRequest.getPage(), pageInfoRequest.getPageSize());
-        final Page<Board> boards = boardRepository.selectBoardListBySearchDto(searchCondition);
+        final Page<Board> boards = boardRepository.selectBoardListBySearchDto(boardSearchRequest);
 
         return PageResponse.from(
             new PageNavigationForPageHelper(boards, "/board/list/search?page"));

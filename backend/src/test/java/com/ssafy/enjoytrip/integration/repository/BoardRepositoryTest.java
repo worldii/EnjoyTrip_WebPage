@@ -5,7 +5,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
 import com.github.pagehelper.Page;
 import com.ssafy.enjoytrip.core.board.dao.BoardRepository;
-import com.ssafy.enjoytrip.core.board.model.dto.request.SearchCondition;
+import com.ssafy.enjoytrip.core.board.model.dto.request.BoardSearchRequest;
 import com.ssafy.enjoytrip.core.board.model.entity.Board;
 import com.ssafy.enjoytrip.core.board.model.entity.BoardType;
 import org.junit.jupiter.api.DisplayName;
@@ -57,13 +57,13 @@ class BoardRepositoryTest {
             .build();
         boardRepository.insertBoard(board);
 
-        SearchCondition searchCondition = SearchCondition.builder()
+        BoardSearchRequest boardSearchRequest = BoardSearchRequest.builder()
             .keyword("test")
             .category("COMMUNITY")
             .build();
 
         // when
-        Page<Board> boards = boardRepository.selectBoardListBySearchDto(searchCondition);
+        Page<Board> boards = boardRepository.selectBoardListBySearchDto(boardSearchRequest);
 
         // then
         assertThat(boards.size()).isEqualTo(1);
