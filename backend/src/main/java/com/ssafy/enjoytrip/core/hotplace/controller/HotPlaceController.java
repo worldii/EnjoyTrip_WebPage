@@ -2,6 +2,7 @@ package com.ssafy.enjoytrip.core.hotplace.controller;
 
 import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceArticleSaveRequest;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceSaveRequest;
+import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceSearchRequest;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceVoteRequest;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.response.HotPlaceArticleResponse;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.response.HotPlaceDetailResponse;
@@ -9,7 +10,6 @@ import com.ssafy.enjoytrip.core.hotplace.model.dto.response.HotPlaceResponse;
 import com.ssafy.enjoytrip.core.hotplace.service.HotPlaceService;
 import com.ssafy.enjoytrip.global.auth.model.dto.LoginUser;
 import com.ssafy.enjoytrip.global.auth.model.dto.NoAuth;
-import com.ssafy.enjoytrip.global.dto.PageInfoRequest;
 import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -57,10 +56,9 @@ public class HotPlaceController {
     @NoAuth
     @GetMapping
     public ResponseEntity<List<HotPlaceResponse>> getHotPlaceList(
-        @ModelAttribute final PageInfoRequest pageInfoRequest,
-        @RequestParam final String keyword
+        @ModelAttribute final HotPlaceSearchRequest searchRequest
     ) {
-        return ResponseEntity.ok(hotPlaceService.selectAllHotPlace(pageInfoRequest, keyword));
+        return ResponseEntity.ok(hotPlaceService.selectAllHotPlace(searchRequest));
     }
 
     @NoAuth

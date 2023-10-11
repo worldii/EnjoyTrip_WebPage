@@ -7,6 +7,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceArticleSaveRequest;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceSaveRequest;
+import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceSearchRequest;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceVoteRequest;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.response.HotPlaceArticleResponse;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.response.HotPlaceDetailResponse;
@@ -14,7 +15,6 @@ import com.ssafy.enjoytrip.core.hotplace.model.dto.response.HotPlaceResponse;
 import com.ssafy.enjoytrip.core.user.model.dto.request.UserAddRequest;
 import com.ssafy.enjoytrip.core.user.model.dto.request.UserLoginRequest;
 import com.ssafy.enjoytrip.global.auth.model.dto.response.TokenResponse;
-import com.ssafy.enjoytrip.global.dto.PageInfoRequest;
 import io.restassured.RestAssured;
 import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.ExtractableResponse;
@@ -188,18 +188,19 @@ class HotPlaceAcceptanceTest extends AcceptanceTest {
     @Sql({"/truncate.sql", "/hotplace.sql"})
     void getHotPlaceListTest() {
         // given
-        PageInfoRequest pageInfoRequest = PageInfoRequest.builder()
+        HotPlaceSearchRequest hotPlaceSearchRequest = HotPlaceSearchRequest.builder()
             .page(1)
-            .pageSize(1)
+            .keyword("Example")
+            .pageSize(2)
             .build();
         String keyword = "Example";
 
         // when
         ExtractableResponse<Response> response = RestAssured
             .given()
-            .param("page", pageInfoRequest.getPage())
-            .param("pageSize", pageInfoRequest.getPageSize())
-            .param("keyword", keyword)
+            .param("page", hotPlaceSearchRequest.getPage())
+            .param("pageSize", hotPlaceSearchRequest.getPageSize())
+            .param("keyword", hotPlaceSearchRequest.getKeyword())
             .contentType(APPLICATION_JSON_VALUE)
             .log().all()
             .when()
