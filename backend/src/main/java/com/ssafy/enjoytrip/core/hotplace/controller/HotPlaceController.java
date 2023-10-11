@@ -53,6 +53,7 @@ public class HotPlaceController {
             .body(articleId);
     }
 
+    // TODO : 나중에 페이징 핸들러 따로 만들어서 페이지 처리
     @NoAuth
     @GetMapping
     public ResponseEntity<List<HotPlaceResponse>> getHotPlaceList(

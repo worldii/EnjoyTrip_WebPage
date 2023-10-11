@@ -2,7 +2,6 @@ package com.ssafy.enjoytrip.core.board.service;
 
 import com.ssafy.enjoytrip.core.board.model.dto.request.BoardSearchRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.response.BoardDetailResponse;
-import com.ssafy.enjoytrip.global.dto.PageInfoRequest;
 import com.ssafy.enjoytrip.global.dto.PageResponse;
 import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,10 +12,7 @@ public interface BoardService {
 
     BoardDetailResponse detail(final Long boardId);
 
-    PageResponse getBoardListBySearchDto(
-        final BoardSearchRequest boardSearchRequest, final PageInfoRequest pageInfoRequest);
-
-    PageResponse getBoardList(final PageInfoRequest pageInfoRequest);
+    PageResponse getBoardList(final BoardSearchRequest boardSearchRequest);
 
     void modify(
         final Long boardId,

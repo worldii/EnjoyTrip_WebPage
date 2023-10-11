@@ -18,7 +18,6 @@ import com.ssafy.enjoytrip.core.media.service.MediaService;
 import com.ssafy.enjoytrip.core.media.service.UploadService;
 import com.ssafy.enjoytrip.core.user.dao.UserRepository;
 import com.ssafy.enjoytrip.core.user.model.entity.User;
-import com.ssafy.enjoytrip.global.dto.PageInfoRequest;
 import com.ssafy.enjoytrip.global.dto.PageResponse;
 import com.ssafy.enjoytrip.global.error.BoardException;
 import com.ssafy.enjoytrip.global.util.JsonUtil;
@@ -36,9 +35,9 @@ import org.springframework.web.multipart.MultipartFile;
 public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
+    private final BoardTransactionService boardTransactionService;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
-    private final BoardTransactionService boardTransactionService;
 
     private final MediaService mediaService;
     private final FileService fileService;
@@ -48,11 +47,10 @@ public class BoardServiceImpl implements BoardService {
     public Long saveBoard(final String json, final List<MultipartFile> files, final String userId) {
         final User user = findUserByUserId(userId);
         final Board board = getBoard(json, user.getUserId());
-        boardRepository.insertBoard(board);
 
-        if (files != null) {
-            saveImages(files, user.getUserId(), board.getBoardId());
-        }
+        boardRepository.insertBoard(board);
+        saveImages(files, user.getUserId(), board.getBoardId());
+
         return board.getBoardId();
     }
 
@@ -83,26 +81,17 @@ public class BoardServiceImpl implements BoardService {
 
     @Override
     @Transactional(readOnly = true)
-    public PageResponse getBoardList(final PageInfoRequest pageInfoRequest) {
-        PageHelper.startPage(pageInfoRequest.getPage(), pageInfoRequest.getPageSize());
-
-        return PageResponse.from(
-            new PageNavigationForPageHelper(boardRepository.selectAll(), "/board/list?page"));
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public PageResponse getBoardListBySearchDto(
-        final BoardSearchRequest boardSearchRequest, final PageInfoRequest pageInfoRequest
+    public PageResponse getBoardList(
+        final BoardSearchRequest boardSearchRequest
     ) {
-        PageHelper.startPage(pageInfoRequest.getPage(), pageInfoRequest.getPageSize());
+        PageHelper.startPage(boardSearchRequest.getPage(), boardSearchRequest.getPageSize());
         final Page<Board> boards = boardRepository.selectBoardListBySearchDto(boardSearchRequest);
 
         return PageResponse.from(
             new PageNavigationForPageHelper(boards, "/board/list/search?page"));
     }
 
-
+    // TODO : 고민점? DTO 로 한번에 끌고 오는 것이 나은가? 아니면, 따로 따로 가져오는 것이 나은가?
     @Override
     @Transactional(readOnly = true)
     public BoardDetailResponse detail(final Long boardId) {
@@ -123,7 +112,6 @@ public class BoardServiceImpl implements BoardService {
     ) {
         final BoardModifyRequest boardModifyRequest =
             (BoardModifyRequest) JsonUtil.readValue(json, BoardModifyRequest.class);
-
         final User user = findUserByUserId(userId);
         final Board board = findBoardByBoardId(boardId);
 
@@ -137,16 +125,13 @@ public class BoardServiceImpl implements BoardService {
             .build();
 
         boardTransactionService.updateBoard(modifyBoard);
-        if (files != null) {
-            modifyMedias(board, files);
-        }
+        modifyMedias(board, files);
     }
 
     private void modifyMedias(final Board board, final List<MultipartFile> files) {
         try {
             uploadService.deleteMedias(findFileUrls(board.getBoardId()));
             mediaService.insertMedias(board.getBoardId(), files, "board/" + board.getUserId());
-
         } catch (final Exception e) {
             boardTransactionService.updateBoard(board);
             throw new BoardException("게시글 수정에 실패하였습니다.");

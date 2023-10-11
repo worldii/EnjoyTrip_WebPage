@@ -7,10 +7,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.enjoytrip.config.UploadConfig;
 import com.ssafy.enjoytrip.core.board.model.dto.request.BoardSaveRequest;
+import com.ssafy.enjoytrip.core.board.model.dto.request.BoardSearchRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.response.BoardDetailResponse;
 import com.ssafy.enjoytrip.core.board.model.entity.BoardType;
 import com.ssafy.enjoytrip.core.board.service.BoardService;
-import com.ssafy.enjoytrip.global.dto.PageInfoRequest;
 import com.ssafy.enjoytrip.global.dto.PageResponse;
 import com.ssafy.enjoytrip.global.error.BoardException;
 import java.util.List;
@@ -86,13 +86,13 @@ class BoardServiceTest {
     @DisplayName("게시판 조회 테스트")
     void selectBoardTest() {
         // when
-        PageInfoRequest pageInfoRequest = PageInfoRequest.builder()
+        BoardSearchRequest boardSearchRequest = BoardSearchRequest.builder()
             .page(1)
             .pageSize(1)
             .build();
 
         // when
-        PageResponse boardList = boardService.getBoardList(pageInfoRequest);
+        PageResponse boardList = boardService.getBoardList(boardSearchRequest);
 
         // then
         assertThat(boardList).isNotNull();

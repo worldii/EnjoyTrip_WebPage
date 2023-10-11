@@ -21,7 +21,11 @@ public class MediaService {
         final List<MultipartFile> imageFiles,
         final String folderName
     ) {
+        if (imageFiles.isEmpty()) {
+            return;
+        }
         final List<String> fileUrls = getFileUrls(imageFiles, folderName);
+        
         try {
             fileService.insertFile(boardId, fileUrls);
         } catch (final Exception e) {

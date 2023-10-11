@@ -5,7 +5,6 @@ import com.ssafy.enjoytrip.core.board.model.dto.response.BoardDetailResponse;
 import com.ssafy.enjoytrip.core.board.service.BoardService;
 import com.ssafy.enjoytrip.global.auth.model.dto.LoginUser;
 import com.ssafy.enjoytrip.global.auth.model.dto.NoAuth;
-import com.ssafy.enjoytrip.global.dto.PageInfoRequest;
 import com.ssafy.enjoytrip.global.dto.PageResponse;
 import java.net.URI;
 import java.util.List;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,13 +41,11 @@ public class BoardController {
     }
 
     @NoAuth
-    @GetMapping("/list/search")
-    public ResponseEntity<PageResponse> getListBySearchDto(
-        @RequestBody final PageInfoRequest pageInfoRequest,
-        @ModelAttribute final BoardSearchRequest boardSearchRequest
+    @GetMapping("/list")
+    public ResponseEntity<PageResponse> getList(
+        @ModelAttribute final BoardSearchRequest request
     ) {
-        return ResponseEntity.ok(
-            boardService.getBoardListBySearchDto(boardSearchRequest, pageInfoRequest));
+        return ResponseEntity.ok(boardService.getBoardList(request));
     }
 
     @NoAuth

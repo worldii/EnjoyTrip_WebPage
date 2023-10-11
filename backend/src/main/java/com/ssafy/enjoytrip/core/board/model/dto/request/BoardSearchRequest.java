@@ -13,4 +13,6 @@ public class BoardSearchRequest {
 
     private String category;
     private String keyword;
+    private Integer page = 1;
+    private Integer pageSize = 10;
 }
