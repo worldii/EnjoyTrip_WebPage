@@ -19,13 +19,14 @@ public class HotPlaceTagRepository {
         hotPlaceTagMapper.insertTags(tags);
     }
 
-    @Transactional
-    public int increaseTagCount(final Long hotPlaceTagId) {
-        return hotPlaceTagMapper.increaseTagCount(hotPlaceTagId);
-    }
-
     @Transactional(readOnly = true)
     public Optional<HotPlaceTag> findById(final Long hotPlaceTagId) {
         return hotPlaceTagMapper.findById(hotPlaceTagId);
+    }
+
+    public Optional<HotPlaceTag> selectByHotPlaceIdAndTagName(
+        final String hotPlaceId, final String tagName
+    ) {
+        return hotPlaceTagMapper.selectByHotPlaceIdAndTagName(hotPlaceId, tagName);
     }
 }

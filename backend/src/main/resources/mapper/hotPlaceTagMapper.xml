@@ -25,7 +25,7 @@
     order by count desc limit 5
   </select>
 
-  <select id="selectHotPlaceTagIdByTagNameAndHotPlaceId" resultType="Long">
+  <select id="selectByHotPlaceIdAndTagName" resultType="Long">
     select hot_place_tag_id
     from hot_place_tag
     where tag_name = #{tagName}

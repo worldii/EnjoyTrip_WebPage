@@ -12,11 +12,13 @@ import com.ssafy.enjoytrip.core.hotplace.model.dto.response.HotPlaceResponse;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlace;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceArticle;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceTag;
+import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceTags;
 import com.ssafy.enjoytrip.core.user.dao.UserRepository;
 import com.ssafy.enjoytrip.core.user.model.entity.User;
 import com.ssafy.enjoytrip.global.dto.PageInfoRequest;
 import com.ssafy.enjoytrip.global.error.HotPlaceException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -49,11 +51,12 @@ public class HotPlaceServiceImpl implements HotPlaceService {
     }
 
     @Override
-    public Long insertHotPlaceArticle(final String hotPlaceId,
-        final HotPlaceArticleSaveRequest request, final String userId) {
+    public Long insertHotPlaceArticle(
+        final String hotPlaceId,
+        final HotPlaceArticleSaveRequest request, final String userId
+    ) {
         final HotPlace hotPlace = findHotPlaceByHotPlaceId(hotPlaceId);
         final User user = findUserByUserId(userId);
-
         final HotPlaceArticle hotPlaceArticle = HotPlaceArticle.builder()
             .hotPlaceId(hotPlace.getHotPlaceId())
             .hotPlaceName(request.getHotPlaceName())
@@ -63,9 +66,8 @@ public class HotPlaceServiceImpl implements HotPlaceService {
             .build();
 
         hotPlaceArticleRepository.insertHotPlaceArticle(hotPlaceArticle);
-        if (request.getTagName() != null) {
-            insertHotPlaceTags(hotPlace.getHotPlaceId(), request.getTagName());
-        }
+        insertHotPlaceTags(hotPlace.getHotPlaceId(), request.getTagName());
+
         return hotPlaceArticle.getHotPlaceArticleId();
     }
 
@@ -93,8 +95,10 @@ public class HotPlaceServiceImpl implements HotPlaceService {
     }
 
     @Override
-    public HotPlaceArticleResponse selectHotPlaceArticleByArticleId(final String hotPlaceId,
-        final Long articleId) {
+    public HotPlaceArticleResponse selectHotPlaceArticleByArticleId(
+        final String hotPlaceId,
+        final Long articleId
+    ) {
         final HotPlace hotPlace = findHotPlaceByHotPlaceId(hotPlaceId);
         final HotPlaceArticle hotPlaceArticle = findHotPlaceArticleById(articleId);
 
@@ -113,11 +117,18 @@ public class HotPlaceServiceImpl implements HotPlaceService {
     }
 
     private void insertHotPlaceTags(final String hotPlaceId, final List<String> tagName) {
-        final List<HotPlaceTag> hotPlaceTags = tagName.stream()
-            .map(name -> HotPlaceTag.builder().hotPlaceId(hotPlaceId).tagName(name).build())
-            .collect(Collectors.toList());
+        if (tagName == null || tagName.isEmpty()) {
+            return;
+        }
 
-        hotPlaceTagRepository.insertTags(hotPlaceTags);
+        final List<HotPlaceTag> tagList = tagName.stream()
+            .map(name -> hotPlaceTagRepository.selectByHotPlaceIdAndTagName(hotPlaceId, name))
+            .filter(tag -> tag.isEmpty())
+            .map(Optional::get)
+            .collect(Collectors.toList());
+        final HotPlaceTags hotPlaceTags = new HotPlaceTags(tagList, hotPlaceId, tagName);
+
+        hotPlaceTagRepository.insertTags(hotPlaceTags.getTagList());
     }
 
     private User findUserByUserId(final String userId) {
@@ -125,8 +136,10 @@ public class HotPlaceServiceImpl implements HotPlaceService {
             .orElseThrow(() -> new HotPlaceException("존재하지 않는 유저입니다."));
     }
 
-    private void validateHotPlaceArticle(final String hotPlaceId,
-        final String hotPlaceArticlePlaceId) {
+    private void validateHotPlaceArticle(
+        final String hotPlaceId,
+        final String hotPlaceArticlePlaceId
+    ) {
         if (!hotPlaceId.equals(hotPlaceArticlePlaceId)) {
             throw new HotPlaceException("핫플레이스 게시글이 아닙니다.");
         }

@@ -25,4 +25,15 @@ public class HotPlaceTag {
         this.hotPlaceId = hotPlaceId;
         this.count = count;
     }
+
+    public static HotPlaceTag of(final String name, final String hotPlaceId) {
+        return HotPlaceTag.builder()
+            .tagName(name)
+            .hotPlaceId(hotPlaceId)
+            .build();
+    }
+
+    public void increaseTagCount() {
+        this.count++;
+    }
 }

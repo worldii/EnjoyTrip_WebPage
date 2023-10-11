@@ -12,5 +12,10 @@ public interface HotPlaceTagMapper {
 
     Optional<HotPlaceTag> findById(final Long hotPlaceTagId);
 
+    Optional<HotPlaceTag> selectByHotPlaceIdAndTagName(
+        final String hotPlaceId,
+        final String tagName
+    );
+
     int increaseTagCount(final Long hotPlaceTagId);
 }
