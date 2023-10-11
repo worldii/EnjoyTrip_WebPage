@@ -1,8 +1,6 @@
-package com.ssafy.enjoytrip.core.hotplace.model.dto;
+package com.ssafy.enjoytrip.core.hotplace.model.dto.response;
 
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceArticle;
-import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceTag;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +17,6 @@ public class HotPlaceArticleResponse {
     private String content;
     private String createAt;
     private String imageUrl;
-    private List<HotPlaceTag> hotPlaceTags;
 
     public static HotPlaceArticleResponse from(final HotPlaceArticle hotPlaceArticle) {
         return new HotPlaceArticleResponse(
@@ -29,8 +26,7 @@ public class HotPlaceArticleResponse {
             hotPlaceArticle.getUserId(),
             hotPlaceArticle.getContent(),
             hotPlaceArticle.getCreateAt(),
-            hotPlaceArticle.getImageUrl(),
-            hotPlaceArticle.getHotPlaceTags()
+            hotPlaceArticle.getImageUrl()
         );
     }
 }

@@ -71,7 +71,7 @@ public class HotPlaceController {
     }
 
     @NoAuth
-    @GetMapping("/{hotPlaceId}/{articleId}")
+    @GetMapping("/{hotPlaceId}/article/{articleId}")
     public ResponseEntity<HotPlaceArticleResponse> getHotPlaceArticleDetail(
         @PathVariable final String hotPlaceId,
         @PathVariable final Long articleId
@@ -80,7 +80,7 @@ public class HotPlaceController {
             hotPlaceService.selectHotPlaceArticleByArticleId(hotPlaceId, articleId));
     }
 
-    @PutMapping("/{hotPlaceId}")
+    @PutMapping("/vote/{hotPlaceId}")
     public ResponseEntity<Void> voteHotPlace(
         @PathVariable final String hotPlaceId,
         @RequestBody final HotPlaceVoteRequest hotPlaceVoteRequest

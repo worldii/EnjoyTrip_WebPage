@@ -1,8 +1,8 @@
 package com.ssafy.enjoytrip.core.hotplace.model.dao;
 
-import com.github.pagehelper.Page;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlace;
 import com.ssafy.enjoytrip.core.hotplace.model.mapper.HotPlaceMapper;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -20,7 +20,7 @@ public class HotPlaceRepository {
     }
 
     @Transactional(readOnly = true)
-    public Page<HotPlace> selectAllHotPlace(final String keyword) {
+    public List<HotPlace> selectAllHotPlace(final String keyword) {
         return hotPlaceMapper.selectAllHotPlace(keyword);
     }
 
