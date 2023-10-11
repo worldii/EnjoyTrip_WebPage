@@ -78,7 +78,7 @@ public class BoardController {
     }
 
     @NoAuth
-    @PostMapping("/hit/{boardId}")
+    @PutMapping("/view/{boardId}")
     public ResponseEntity<Boolean> updateHit(@PathVariable final Long boardId) {
         boardService.updateHit(boardId);
         return ResponseEntity.ok().build();
@@ -90,6 +90,6 @@ public class BoardController {
         @LoginUser final String userId
     ) {
         boardService.delete(boardId, userId);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

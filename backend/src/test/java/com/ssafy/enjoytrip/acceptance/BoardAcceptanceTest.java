@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.enjoytrip.config.UploadConfig;
 import com.ssafy.enjoytrip.core.board.model.dto.request.BoardModifyRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.request.BoardSaveRequest;
+import com.ssafy.enjoytrip.core.board.model.dto.response.BoardDetailResponse;
 import com.ssafy.enjoytrip.core.board.model.entity.BoardType;
 import com.ssafy.enjoytrip.core.user.model.dto.request.UserAddRequest;
 import com.ssafy.enjoytrip.core.user.model.dto.request.UserLoginRequest;
@@ -24,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.jdbc.Sql;
 
 @DisplayName("게시판 관련 기능")
 @Import(UploadConfig.class)
@@ -202,6 +204,46 @@ class BoardAcceptanceTest extends AcceptanceTest {
     }
 
     @Test
+    @DisplayName("게시판의 조회 수를 증가시킨다")
+    @Sql({"/truncate.sql", "/board.sql"})
+    void updateBoardViewCountTest() {
+        // given
+        Long boardId = 1L;
+        Long hit = RestAssured
+            .given()
+            .log().all()
+            .when()
+            .get("/board/" + boardId)
+            .then()
+            .log().all()
+            .extract().body().as(BoardDetailResponse.class)
+            .getHit();
+
+        // when
+        ExtractableResponse<Response> response = RestAssured
+            .given()
+            .log().all()
+            .when()
+            .put("/board/view/" + boardId)
+            .then()
+            .log().all()
+            .extract();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(OK.value());
+        Long newHit = RestAssured
+            .given()
+            .log().all()
+            .when()
+            .get("/board/" + boardId)
+            .then()
+            .log().all()
+            .extract().body().as(BoardDetailResponse.class)
+            .getHit();
+        assertThat(newHit).isEqualTo(hit + 1);
+    }
+
+    @Test
     @DisplayName("게시판을 정상적으로 삭제한다")
     void deleteBoardTest() throws IOException {
         // given
@@ -242,6 +284,7 @@ class BoardAcceptanceTest extends AcceptanceTest {
             .extract()
             .as(TokenResponse.class)
             .getAccessToken();
+
         BoardSaveRequest boardSaveRequest = BoardSaveRequest.builder()
             .boardType(BoardType.NOTICE)
             .content("test")
@@ -274,5 +317,4 @@ class BoardAcceptanceTest extends AcceptanceTest {
         // then
         assertThat(response.statusCode()).isEqualTo(NO_CONTENT.value());
     }
-
 }
