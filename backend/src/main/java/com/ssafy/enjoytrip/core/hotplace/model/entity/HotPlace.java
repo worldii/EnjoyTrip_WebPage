@@ -68,7 +68,7 @@ public class HotPlace {
         }
     }
 
-    private void validateY(Double y) {
+    private void validateY(final Double y) {
         if (y == null) {
             throw new HotPlaceException("y좌표가 없습니다.");
         }
@@ -91,10 +91,6 @@ public class HotPlace {
         if (placeUrl == null || placeUrl.isEmpty()) {
             throw new HotPlaceException("핫플레이스 URL이 없습니다.");
         }
-    }
-    
-    public void setHotPlaceTagList(final List<HotPlaceTag> hotPlaceTagList) {
-        this.hotPlaceTags = hotPlaceTagList;
     }
 
     public void updateVoteCount(final Long voteCount) {

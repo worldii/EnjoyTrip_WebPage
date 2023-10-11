@@ -7,6 +7,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceArticleSaveRequest;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceSaveRequest;
+import com.ssafy.enjoytrip.core.hotplace.model.dto.response.HotPlaceDetailResponse;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.response.HotPlaceResponse;
 import com.ssafy.enjoytrip.core.user.model.dto.request.UserAddRequest;
 import com.ssafy.enjoytrip.core.user.model.dto.request.UserLoginRequest;
@@ -212,6 +213,30 @@ class HotPlaceAcceptanceTest extends AcceptanceTest {
             }).size())
             .isEqualTo(2);
     }
-    
+
+    @Test
+    @DisplayName("HotPlace detail 목록을 조회한다")
+    @Sql({"/truncate.sql", "/hotplace.sql", "/hotplaceArticle.sql"})
+    void getHotPlaceDetailTest() {
+        // given
+        String hotPlaceId = "1";
+
+        // when
+        ExtractableResponse<Response> response = RestAssured
+            .given()
+            .contentType(APPLICATION_JSON_VALUE)
+            .log().all()
+            .when()
+            .get("/hotplace/{hotPlaceId}", hotPlaceId)
+            .then()
+            .log().all()
+            .extract();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(OK.value());
+        assertThat(response.body().as(HotPlaceDetailResponse.class))
+            .extracting("hotPlaceId")
+            .isEqualTo(hotPlaceId);
+    }
 
 }

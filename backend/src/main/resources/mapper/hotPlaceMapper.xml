@@ -52,7 +52,7 @@
 
 
   <select id="selectAllHotPlace" resultMap="hotPlace">
-    select *
+    select hot_place_id, hot_place_name
     from hot_place
     <where>
       <if test="keyword != null and keyword != ''">

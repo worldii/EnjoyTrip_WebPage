@@ -1,7 +1,5 @@
 package com.ssafy.enjoytrip.core.hotplace.service;
 
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import com.ssafy.enjoytrip.core.hotplace.model.dao.HotPlaceArticleRepository;
 import com.ssafy.enjoytrip.core.hotplace.model.dao.HotPlaceRepository;
 import com.ssafy.enjoytrip.core.hotplace.model.dao.HotPlaceTagRepository;
@@ -9,9 +7,11 @@ import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceArticleSaveRe
 import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceSaveRequest;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceVoteRequest;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.response.HotPlaceArticleResponse;
+import com.ssafy.enjoytrip.core.hotplace.model.dto.response.HotPlaceDetailResponse;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.response.HotPlaceResponse;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlace;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceArticle;
+import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceTag;
 import com.ssafy.enjoytrip.core.user.dao.UserRepository;
 import com.ssafy.enjoytrip.core.user.model.entity.User;
 import com.ssafy.enjoytrip.global.error.HotPlaceException;
@@ -49,11 +49,8 @@ public class HotPlaceServiceImpl implements HotPlaceService {
     }
 
     @Override
-    public Long insertHotPlaceArticle(
-        final String hotPlaceId,
-        final HotPlaceArticleSaveRequest request,
-        final String userId
-    ) {
+    public Long insertHotPlaceArticle(final String hotPlaceId,
+        final HotPlaceArticleSaveRequest request, final String userId) {
         final HotPlace hotPlace = findHotPlaceByHotPlaceId(hotPlaceId);
         final User user = findUserByUserId(userId);
 
@@ -65,39 +62,39 @@ public class HotPlaceServiceImpl implements HotPlaceService {
             .userId(user.getUserId())
             .build();
 
-        // final List<Long> tagIds = getTagIdsByTagName(hotPlaceId, request.getTagName());
         hotPlaceArticleRepository.insertHotPlaceArticle(hotPlaceArticle);
-        // hotPlaceTagRepository.insertHotPlaceTagList(hotPlaceId, tagIds);
+        if (request.getTagName() != null) {
+            insertHotPlaceTags(hotPlace.getHotPlaceId(), request.getTagName());
+        }
         return hotPlaceArticle.getHotPlaceArticleId();
     }
 
-    private List<Long> getTagIdsByTagName(String hotPlaceId, List<String> tagName) {
-        return tagName.stream()
-            .map(name -> hotPlaceTagRepository.selectHotPlaceTagIdByTagNameAndHotPlaceId(name,
-                hotPlaceId))
-            .collect(Collectors.toList());
+    private HotPlace findHotPlaceByHotPlaceId(final String hotPlaceId) {
+        return hotPlaceRepository.selectHotPlaceByHotPlaceId(hotPlaceId)
+            .orElseThrow(() -> new HotPlaceException("존재하지 않는 핫플레이스입니다."));
     }
 
     @Override
     public List<HotPlaceResponse> selectAllHotPlace(
-        final PageInfoRequest pageInfoRequest, final String keyword) {
-        PageHelper.startPage(pageInfoRequest.getPage(), pageInfoRequest.getPageSize());
-        final Page<HotPlace> hotPlaces = hotPlaceRepository.selectAllHotPlace(keyword);
-
-        return hotPlaces.stream()
-            .map(HotPlaceResponse::from)
-            .collect(Collectors.toList());
-    }
-
-    @Override
-    public HotPlaceResponse selectHotPlaceByHotPlaceId(final String hotPlaceId) {
-        return HotPlaceResponse.from(findHotPlaceByHotPlaceId(hotPlaceId));
-    }
-
-    @Override
-    public HotPlaceArticleResponse selectHotPlaceArticleByArticleId(
-        final String hotPlaceId, final Long articleId
+        final PageInfoRequest pageInfoRequest,
+        final String keyword
     ) {
+        final List<HotPlace> hotPlaces = hotPlaceRepository.selectAllHotPlace(keyword);
+
+        return hotPlaces.stream().map(HotPlaceResponse::from).collect(Collectors.toList());
+    }
+
+    @Override
+    public HotPlaceDetailResponse selectAllByHotPlaceId(final String hotPlaceId) {
+        HotPlace hotPlace = hotPlaceRepository.selectAllByHotPlaceId(hotPlaceId)
+            .orElseThrow(() -> new HotPlaceException("존재하지 않는 핫플레이스입니다."));
+
+        return HotPlaceDetailResponse.from(hotPlace);
+    }
+
+    @Override
+    public HotPlaceArticleResponse selectHotPlaceArticleByArticleId(final String hotPlaceId,
+        final Long articleId) {
         final HotPlace hotPlace = findHotPlaceByHotPlaceId(hotPlaceId);
         final HotPlaceArticle hotPlaceArticle = findHotPlaceArticleById(articleId);
 
@@ -107,8 +104,7 @@ public class HotPlaceServiceImpl implements HotPlaceService {
     }
 
     @Override
-    public void updateVoteCount(final String hotPlaceId, final HotPlaceVoteRequest voteRequest
-    ) {
+    public void updateVoteCount(final String hotPlaceId, final HotPlaceVoteRequest voteRequest) {
         final HotPlace hotPlace = findHotPlaceByHotPlaceId(hotPlaceId);
 
         hotPlace.updateVoteCount(voteRequest.getVoteCount());
@@ -116,30 +112,12 @@ public class HotPlaceServiceImpl implements HotPlaceService {
         hotPlaceRepository.updateHotPlace(hotPlace);
     }
 
+    private void insertHotPlaceTags(final String hotPlaceId, final List<String> tagName) {
+        final List<HotPlaceTag> hotPlaceTags = tagName.stream()
+            .map(name -> HotPlaceTag.builder().hotPlaceId(hotPlaceId).tagName(name).build())
+            .collect(Collectors.toList());
 
-    @Override
-    public int updateHotPlaceArticleImage(final int hotPlaceArticleId, final String imageUrl) {
-        return hotPlaceArticleRepository.updateHotPlaceArticleImage(hotPlaceArticleId, imageUrl);
-    }
-
-    @Override
-    public int updateHotPlaceTag(final String hotPlaceId, final String tagName) {
-        return hotPlaceTagRepository.updateHotPlaceTag(hotPlaceId, tagName);
-    }
-
-    @Override
-    public void updateHotPlaceTagList(final String hotPlaceId, final List<String> tagIdList) {
-        tagIdList.forEach(tagId -> updateHotPlaceTag(hotPlaceId, tagId));
-    }
-
-    @Override
-    public int insertHotPlaceTag(final String hotPlaceId, final String tagName) {
-        return hotPlaceTagRepository.insertHotPlaceTag(hotPlaceId, tagName);
-    }
-
-    private HotPlace findHotPlaceByHotPlaceId(String hotPlaceId) {
-        return hotPlaceRepository.selectHotPlaceByHotPlaceId(hotPlaceId)
-            .orElseThrow(() -> new HotPlaceException("존재하지 않는 핫플레이스입니다."));
+        hotPlaceTagRepository.insertTags(hotPlaceTags);
     }
 
     private User findUserByUserId(final String userId) {
@@ -147,10 +125,8 @@ public class HotPlaceServiceImpl implements HotPlaceService {
             .orElseThrow(() -> new HotPlaceException("존재하지 않는 유저입니다."));
     }
 
-    private void validateHotPlaceArticle(
-        final String hotPlaceId,
-        final String hotPlaceArticlePlaceId
-    ) {
+    private void validateHotPlaceArticle(final String hotPlaceId,
+        final String hotPlaceArticlePlaceId) {
         if (!hotPlaceId.equals(hotPlaceArticlePlaceId)) {
             throw new HotPlaceException("핫플레이스 게시글이 아닙니다.");
         }
