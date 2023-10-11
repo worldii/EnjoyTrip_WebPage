@@ -11,7 +11,7 @@ public class HotPlaceTag {
     private Long hotPlaceTagId;
     private String tagName;
     private String hotPlaceId;
-    private Long count = 0L;
+    private Long count = 1L;
 
     @Builder
     public HotPlaceTag(

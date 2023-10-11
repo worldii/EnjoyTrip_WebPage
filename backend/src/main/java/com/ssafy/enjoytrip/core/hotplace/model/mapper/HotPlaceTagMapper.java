@@ -1,13 +1,16 @@
 package com.ssafy.enjoytrip.core.hotplace.model.mapper;
 
+import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceTag;
+import java.util.List;
+import java.util.Optional;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface HotPlaceTagMapper {
 
-    int updateHotPlaceTag(String hotPlaceId, String tagName);
+    void insertTags(final List<HotPlaceTag> tags);
 
-    int insertHotPlaceTag(String hotPlaceId, String tagName);
+    Optional<HotPlaceTag> findById(final Long hotPlaceTagId);
 
-    Long selectHotPlaceTagIdByTagNameAndHotPlaceId(final String tagName, final String hotPlaceId);
+    int increaseTagCount(final Long hotPlaceTagId);
 }

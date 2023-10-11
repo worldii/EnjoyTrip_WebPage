@@ -1,6 +1,9 @@
 package com.ssafy.enjoytrip.core.hotplace.model.dao;
 
+import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceTag;
 import com.ssafy.enjoytrip.core.hotplace.model.mapper.HotPlaceTagMapper;
+import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,20 +15,17 @@ public class HotPlaceTagRepository {
     private final HotPlaceTagMapper hotPlaceTagMapper;
 
     @Transactional
-    public int updateHotPlaceTag(final String hotPlaceId, final String tagName) {
-        return hotPlaceTagMapper.updateHotPlaceTag(hotPlaceId, tagName);
+    public void insertTags(final List<HotPlaceTag> tags) {
+        hotPlaceTagMapper.insertTags(tags);
     }
 
     @Transactional
-    public int insertHotPlaceTag(final String hotPlaceId, final String tagName) {
-        return hotPlaceTagMapper.insertHotPlaceTag(hotPlaceId, tagName);
+    public int increaseTagCount(final Long hotPlaceTagId) {
+        return hotPlaceTagMapper.increaseTagCount(hotPlaceTagId);
     }
 
     @Transactional(readOnly = true)
-    public Long selectHotPlaceTagIdByTagNameAndHotPlaceId(
-        final String tagName,
-        final String hotPlaceId
-    ) {
-        return hotPlaceTagMapper.selectHotPlaceTagIdByTagNameAndHotPlaceId(tagName, hotPlaceId);
+    public Optional<HotPlaceTag> findById(final Long hotPlaceTagId) {
+        return hotPlaceTagMapper.findById(hotPlaceTagId);
     }
 }

@@ -10,6 +10,14 @@
     <result column="count" property="count"/>
   </resultMap>
 
+  <insert id="insertTags" parameterType="List">
+    insert into hot_place_tag (tag_name, hot_place_id, count)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.tagName}, #{item.hotPlaceId}, #{item.count})
+    </foreach>
+  </insert>
+
   <select id="selectHotPlaceTagList" resultMap="hotPlaceTag">
     select *
     from hot_place_tag
@@ -24,11 +32,16 @@
       and hot_place_id = #{hotPlaceId}
   </select>
 
-  <update id="updateHotPlaceTag">
+
+  <update id="increaseTagCount">
     update hot_place_tag
     set count = count + 1
-    where hot_place_id = #{hotPlaceId}
-      and tag_name = #{tagName}
+    where hot_place_tag_id = #{hotPlaceTagId}
   </update>
 
+  <select id="findById" resultMap="hotPlaceTag">
+    select *
+    from hot_place_tag
+    where hot_place_tag_id = #{hotPlaceTagId}
+  </select>
 </mapper>
