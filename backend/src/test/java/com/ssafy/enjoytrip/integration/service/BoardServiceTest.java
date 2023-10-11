@@ -13,15 +13,12 @@ import com.ssafy.enjoytrip.core.board.model.entity.BoardType;
 import com.ssafy.enjoytrip.core.board.service.BoardService;
 import com.ssafy.enjoytrip.global.dto.PageResponse;
 import com.ssafy.enjoytrip.global.error.BoardException;
-import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.web.multipart.MultipartFile;
 
 @SpringBootTest
 @DisplayName("BoardService 통합 테스트")
@@ -44,16 +41,10 @@ class BoardServiceTest {
             .content("test")
             .subject("test")
             .build();
-        String json = objectMapper.writeValueAsString(boardSaveRequest);
-        final List<MultipartFile> images = List.of(
-            new MockMultipartFile("image1", "image1.jpg", "image/jpeg", "image1".getBytes()),
-            new MockMultipartFile("image2", "image2.jpg", "image/jpeg", "image2".getBytes()),
-            new MockMultipartFile("image3", "image3.jpg", "image/jpeg", "image3".getBytes())
-        );
 
         // when & then
         assertThatCode(
-            () -> boardService.saveBoard(json, images, userId)).doesNotThrowAnyException();
+            () -> boardService.saveBoard(boardSaveRequest, userId)).doesNotThrowAnyException();
     }
 
 
@@ -68,16 +59,10 @@ class BoardServiceTest {
             .content("test")
             .subject("test")
             .build();
-        String json = objectMapper.writeValueAsString(boardSaveRequest);
-        final List<MultipartFile> images = List.of(
-            new MockMultipartFile("image1", "image1.jpg", "image/jpeg", "image1".getBytes()),
-            new MockMultipartFile("image2", "image2.jpg", "image/jpeg", "image2".getBytes()),
-            new MockMultipartFile("image3", "image3.jpg", "image/jpeg", "image3".getBytes())
-        );
 
         // when & then
         assertThatCode(
-            () -> boardService.saveBoard(json, images, wrongUserId))
+            () -> boardService.saveBoard(boardSaveRequest, wrongUserId))
             .isInstanceOf(BoardException.class)
             .hasMessage("해당 userId에 해당하는 user가 없습니다.");
     }

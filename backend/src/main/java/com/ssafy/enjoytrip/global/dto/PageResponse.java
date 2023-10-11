@@ -1,6 +1,6 @@
 package com.ssafy.enjoytrip.global.dto;
 
-import com.ssafy.enjoytrip.core.board.util.PageNavigationForPageHelper;
+import com.ssafy.enjoytrip.infra.PageNavigationForPageHelper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

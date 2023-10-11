@@ -10,24 +10,20 @@ import com.ssafy.enjoytrip.core.board.model.dto.request.BoardSearchRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.response.BoardDetailResponse;
 import com.ssafy.enjoytrip.core.board.model.entity.Board;
 import com.ssafy.enjoytrip.core.board.model.entity.Comment;
-import com.ssafy.enjoytrip.core.board.util.PageNavigationForPageHelper;
 import com.ssafy.enjoytrip.core.media.model.dto.FileInfoResponse;
 import com.ssafy.enjoytrip.core.media.model.entity.FileInfo;
 import com.ssafy.enjoytrip.core.media.service.FileService;
-import com.ssafy.enjoytrip.core.media.service.MediaService;
-import com.ssafy.enjoytrip.core.media.service.UploadService;
 import com.ssafy.enjoytrip.core.user.dao.UserRepository;
 import com.ssafy.enjoytrip.core.user.model.entity.User;
 import com.ssafy.enjoytrip.global.dto.PageResponse;
 import com.ssafy.enjoytrip.global.error.BoardException;
-import com.ssafy.enjoytrip.global.util.JsonUtil;
+import com.ssafy.enjoytrip.infra.PageNavigationForPageHelper;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Slf4j
@@ -35,49 +31,27 @@ import org.springframework.web.multipart.MultipartFile;
 public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
-    private final BoardTransactionService boardTransactionService;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
-
-    private final MediaService mediaService;
     private final FileService fileService;
-    private final UploadService uploadService;
 
     @Override
-    public Long saveBoard(final String json, final List<MultipartFile> files, final String userId) {
+    @Transactional
+    public Long saveBoard(final BoardSaveRequest request, final String userId) {
         final User user = findUserByUserId(userId);
-        final Board board = getBoard(json, user.getUserId());
+
+        final Board board = Board.builder()
+            .boardType(request.getBoardType())
+            .subject(request.getSubject())
+            .content(request.getContent())
+            .userId(user.getUserId())
+            .build();
 
         boardRepository.insertBoard(board);
-        saveImages(files, user.getUserId(), board.getBoardId());
 
         return board.getBoardId();
     }
 
-    private void saveImages(
-        final List<MultipartFile> files,
-        final String userId,
-        final Long boardId
-    ) {
-        try {
-            mediaService.insertMedias(boardId, files, "board/" + userId);
-        } catch (final Exception e) {
-            boardRepository.deleteBoard(boardId);
-            throw new BoardException("파일 저장에 실패하였습니다.");
-        }
-    }
-
-    private Board getBoard(final String json, final String userId) {
-        final BoardSaveRequest request = (BoardSaveRequest)
-            JsonUtil.readValue(json, BoardSaveRequest.class);
-
-        return Board.builder()
-            .boardType(request.getBoardType())
-            .subject(request.getSubject())
-            .content(request.getContent())
-            .userId(userId)
-            .build();
-    }
 
     @Override
     @Transactional(readOnly = true)
@@ -108,10 +82,8 @@ public class BoardServiceImpl implements BoardService {
     @Transactional
     public void modify(
         final Long boardId, final String userId,
-        final String json, final List<MultipartFile> files
+        final BoardModifyRequest boardModifyRequest
     ) {
-        final BoardModifyRequest boardModifyRequest =
-            (BoardModifyRequest) JsonUtil.readValue(json, BoardModifyRequest.class);
         final User user = findUserByUserId(userId);
         final Board board = findBoardByBoardId(boardId);
 
@@ -124,51 +96,27 @@ public class BoardServiceImpl implements BoardService {
             .content(boardModifyRequest.getContent())
             .build();
 
-        boardTransactionService.updateBoard(modifyBoard);
-        modifyMedias(board, files);
+        boardRepository.updateBoard(modifyBoard);
     }
 
-    private void modifyMedias(final Board board, final List<MultipartFile> files) {
-        try {
-            uploadService.deleteMedias(findFileUrls(board.getBoardId()));
-            mediaService.insertMedias(board.getBoardId(), files, "board/" + board.getUserId());
-        } catch (final Exception e) {
-            boardTransactionService.updateBoard(board);
-            throw new BoardException("게시글 수정에 실패하였습니다.");
-        }
-    }
 
     @Override
+    @Transactional
     public void delete(final Long boardId, final String userId) {
         final User user = findUserByUserId(userId);
         final Board board = findBoardByBoardId(boardId);
 
         validateSameMember(user.getUserId(), board.getUserId());
 
-        boardTransactionService.deleteBoard(boardId);
-        deleteMedias(board);
-    }
-
-    private void deleteMedias(final Board board) {
-        try {
-            final List<String> fileUrls = findFileUrls(board.getBoardId());
-            uploadService.deleteMedias(fileUrls);
-        } catch (final Exception e) {
-            boardTransactionService.insertBoard(board);
-            throw new BoardException("게시글 삭제에 실패하였습니다.");
-        }
+        fileService.deleteFile(boardId);
+        commentRepository.deleteAll(boardId);
+        boardRepository.deleteBoard(boardId);
     }
 
     @Override
     @Transactional
     public void updateHit(final Long boardId) {
         boardRepository.updateHit(boardId);
-    }
-
-    private List<String> findFileUrls(final Long boardId) {
-        return fileService.selectFile(boardId).stream()
-            .map(FileInfoResponse::getFileUrl)
-            .collect(Collectors.toList());
     }
 
     private void validateSameMember(final String userId, final String boardUserId) {
