@@ -80,7 +80,7 @@ public class HotPlaceController {
             hotPlaceService.selectHotPlaceArticleByArticleId(hotPlaceId, articleId));
     }
 
-    @PutMapping("/vote/{hotPlaceId}")
+    @PutMapping("/{hotPlaceId}/vote")
     public ResponseEntity<Void> voteHotPlace(
         @PathVariable final String hotPlaceId,
         @RequestBody final HotPlaceVoteRequest hotPlaceVoteRequest

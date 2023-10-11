@@ -267,4 +267,78 @@ class HotPlaceAcceptanceTest extends AcceptanceTest {
             .extracting("hotPlaceArticleId")
             .isEqualTo(hotPlaceArticleId);
     }
+
+    @Test
+    @DisplayName("HotPlace의 투표 수를 업데이트 한다")
+    @Sql({"/truncate.sql", "/hotplace.sql", "/user.sql"})
+    void voteHotPlaceTest() {
+        // given
+        String hotPlaceId = "1";
+        Long voteCount = RestAssured
+            .given()
+            .contentType(APPLICATION_JSON_VALUE)
+            .log().all()
+            .when()
+            .get("/hotplace/{hotPlaceId}", hotPlaceId)
+            .then()
+            .log().all()
+            .extract().body().as(HotPlaceDetailResponse.class).getVote();
+
+        UserAddRequest userAddRequest = UserAddRequest.builder()
+            .userId("jongha")
+            .name("jongha")
+            .address("test")
+            .password("test")
+            .email("test")
+            .authority(1)
+            .build();
+
+        RestAssured
+            .given()
+            .contentType(APPLICATION_JSON_VALUE)
+            .body(userAddRequest)
+            .log().all()
+            .when()
+            .post("/user")
+            .then()
+            .log().all()
+            .extract();
+
+        UserLoginRequest userLoginRequest = UserLoginRequest.builder()
+            .userId("jongha")
+            .password("test")
+            .build();
+
+        String accessToken = RestAssured
+            .given()
+            .contentType(APPLICATION_JSON_VALUE)
+            .body(userLoginRequest)
+            .log().all()
+            .when()
+            .post("/user/login")
+            .then()
+            .log().all()
+            .extract()
+            .as(TokenResponse.class)
+            .getAccessToken();
+
+        // when
+        ExtractableResponse<Response> response = RestAssured
+            .given()
+            .contentType(APPLICATION_JSON_VALUE)
+            .header("Authorization", accessToken)
+            .log().all()
+            .when()
+            .put("/hotplace/{hotPlaceId}/vote", hotPlaceId)
+            .then()
+            .log().all()
+            .extract();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(OK.value());
+        assertThat(response.body().as(HotPlaceDetailResponse.class))
+            .extracting("vote")
+            .isEqualTo(voteCount + 1);
+    }
 }
+
