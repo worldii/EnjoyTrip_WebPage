@@ -22,6 +22,7 @@ CREATE TABLE user (
 CREATE TABLE file_info (
     file_info_id BIGINT not null AUTO_INCREMENT PRIMARY KEY,
     file_url VARCHAR(255),
+    user_id VARCHAR(255),
     board_id BIGINT
 );
 
