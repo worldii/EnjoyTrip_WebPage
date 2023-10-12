@@ -40,15 +40,17 @@ class FileServiceTest {
     void fileServiceTest() {
         // given
         Long boardId = 1L;
+        String userId = "test";
         int currentSize = fileService.selectFile(boardId).size();
 
         FileInfo fileInfo = FileInfo.builder()
             .boardId(boardId)
             .fileUrl("test")
+            .userId(userId)
             .build();
 
         // when
-        fileService.insertFile(boardId, List.of(fileInfo.getFileUrl()));
+        fileService.insertFile(boardId, userId, List.of(fileInfo.getFileUrl()));
 
         // then
         List<FileInfoResponse> fileInfos = fileService.selectFile(boardId);
@@ -60,10 +62,11 @@ class FileServiceTest {
     void fileServiceTestWithNullBoardId() {
         // given
         Long boardId = null;
+        String userId = "test";
         List<String> fileUrls = List.of("test");
 
         // when & then
-        assertThatCode(() -> fileService.insertFile(boardId, fileUrls))
+        assertThatCode(() -> fileService.insertFile(boardId, userId, fileUrls))
             .isInstanceOf(MediaException.class)
             .hasMessage("boardId는 null이 될 수 없습니다.");
     }

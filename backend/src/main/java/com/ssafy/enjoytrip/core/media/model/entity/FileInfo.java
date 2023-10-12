@@ -12,14 +12,24 @@ public class FileInfo {
     private Long fileInfoId;
     private Long boardId;
     private String fileUrl;
+    private String userId;
 
     @Builder
-    public FileInfo(final Long fileInfoId, final Long boardId, final String fileUrl) {
+    public FileInfo(final Long fileInfoId, final Long boardId, final String fileUrl,
+        final String userId) {
         validateBoardId(boardId);
+        validateUserId(userId);
         validateFileUrl(fileUrl);
         this.fileInfoId = fileInfoId;
+        this.userId = userId;
         this.boardId = boardId;
         this.fileUrl = fileUrl;
+    }
+
+    private void validateUserId(final String userId) {
+        if (userId == null || userId.isEmpty()) {
+            throw new MediaException("userId는 null이거나 비어있을 수 없습니다.");
+        }
     }
 
     private void validateFileUrl(final String fileUrl) {
@@ -34,8 +44,9 @@ public class FileInfo {
         }
     }
 
-    public static FileInfo of(final Long boardId, final String fileUrl) {
+    public static FileInfo of(final Long boardId, final String fileUrl, final String userId) {
         return FileInfo.builder()
+            .userId(userId)
             .boardId(boardId)
             .fileUrl(fileUrl)
             .build();

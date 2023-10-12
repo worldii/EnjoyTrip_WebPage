@@ -35,17 +35,21 @@ class FileRepositoryTest {
 
     @Test
     @DisplayName("fileinfo 삽입 테스트")
+    @Sql({"/truncate.sql", "/fileinfo.sql"})
     void insertFileInfoTest() {
         // given
         Long boardId = 1L;
+        String userId = "test";
         List<FileInfo> imageFiles = List.of(
             FileInfo.builder()
                 .boardId(boardId)
                 .fileUrl("test")
+                .userId(userId)
                 .build(),
             FileInfo.builder()
                 .boardId(boardId)
                 .fileUrl("test")
+                .userId(userId)
                 .build()
         );
 
@@ -65,6 +69,6 @@ class FileRepositoryTest {
         fileRepository.deleteFileByBoardId(boardId);
 
         // then
-        assertThat(fileRepository.selectFileByBoardId(boardId).size()).isEqualTo(0);
+        assertThat(fileRepository.selectFileByBoardId(boardId).size()).isZero();
     }
 }

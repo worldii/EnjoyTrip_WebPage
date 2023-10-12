@@ -13,12 +13,14 @@ public class FileInfoResponse {
     private Long fileInfoId;
     private Long boardId;
     private String fileUrl;
+    private String userId;
 
     public static FileInfoResponse from(final FileInfo fileInfo) {
         return new FileInfoResponse(
             fileInfo.getFileInfoId(),
             fileInfo.getBoardId(),
-            fileInfo.getFileUrl()
+            fileInfo.getFileUrl(),
+            fileInfo.getUserId()
         );
     }
 
@@ -27,6 +29,7 @@ public class FileInfoResponse {
             .fileInfoId(fileInfoId)
             .boardId(boardId)
             .fileUrl(fileUrl)
+            .userId(userId)
             .build();
     }
 }
