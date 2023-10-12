@@ -1,8 +1,8 @@
 package com.ssafy.enjoytrip.fake;
 
-import com.ssafy.enjoytrip.core.board.model.ImageFiles;
 import com.ssafy.enjoytrip.core.media.service.UploadService;
 import com.ssafy.enjoytrip.core.media.util.FileUtil;
+import com.ssafy.enjoytrip.infra.model.ImageFiles;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.context.annotation.Profile;
@@ -19,7 +19,7 @@ public class MockUploadService implements UploadService {
         final String folderName
     ) {
         final ImageFiles images = new ImageFiles(multipartFiles);
-        
+
         return getFileUrls(folderName, images);
     }
 

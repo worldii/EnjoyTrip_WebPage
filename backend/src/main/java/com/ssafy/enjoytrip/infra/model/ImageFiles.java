@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.core.board.model;
+package com.ssafy.enjoytrip.infra.model;
 
 import com.ssafy.enjoytrip.global.error.MediaException;
 import java.util.List;
