@@ -49,7 +49,7 @@ public class BoardServiceImpl implements BoardService {
 
         boardRepository.insertBoard(board);
         if (request.getFileUrls() != null && !request.getFileUrls().isEmpty()) {
-            fileService.insertFile(board.getBoardId(), user.getUserId(), request.getFileUrls());
+            fileService.insertFile(board.getBoardId(), request.getFileUrls());
         }
 
         return board.getBoardId();
@@ -102,7 +102,7 @@ public class BoardServiceImpl implements BoardService {
         boardRepository.updateBoard(modifyBoard);
         if (boardModifyRequest.getImageUrls() != null
             && !boardModifyRequest.getImageUrls().isEmpty()) {
-            fileService.modifyFile(boardId, user.getUserId(), boardModifyRequest.getImageUrls());
+            fileService.modifyFile(boardId, boardModifyRequest.getImageUrls());
         }
     }
 

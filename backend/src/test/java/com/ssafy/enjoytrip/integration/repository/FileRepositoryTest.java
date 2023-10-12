@@ -44,12 +44,10 @@ class FileRepositoryTest {
             FileInfo.builder()
                 .boardId(boardId)
                 .fileUrl("test")
-                .userId(userId)
                 .build(),
             FileInfo.builder()
                 .boardId(boardId)
                 .fileUrl("test")
-                .userId(userId)
                 .build()
         );
 

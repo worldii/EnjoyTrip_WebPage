@@ -6,14 +6,12 @@
     <id column="file_info_id" property="fileInfoId"/>
     <result column="file_url" property="fileUrl"/>
     <result column="board_id" property="boardId"/>
-    <result column="user_id" property="userId"/>
   </resultMap>
-
   <insert id="insertFile" parameterType="List">
-    INSERT INTO file_info (board_id, file_url, user_id)
+    INSERT INTO file_info (board_id, file_url)
     VALUES
     <foreach collection="imageFiles" item="item" separator=",">
-      (#{item.boardId}, #{item.fileUrl}, #{item.userId})
+      (#{item.boardId}, #{item.fileUrl})
     </foreach>
   </insert>
   <select id="selectFile" resultMap="fileInfo">
@@ -27,6 +25,4 @@
     from file_info
     where board_id = #{boardId}
   </delete>
-
-
 </mapper>

@@ -19,7 +19,6 @@ class FileInfoTest {
         assertThatCode(() -> FileInfo.builder()
             .fileUrl("https://www.naver.com")
             .boardId(1L)
-            .userId("test")
             .build()).doesNotThrowAnyException();
     }
 
@@ -30,7 +29,6 @@ class FileInfoTest {
         // given
         assertThatCode(() -> FileInfo.builder()
             .fileUrl(fileUrl)
-            .userId("test")
             .boardId(1L)
             .build()).hasMessage("file의 url은 null이거나 비어있을 수 없습니다.");
     }
@@ -43,20 +41,6 @@ class FileInfoTest {
         assertThatCode(() -> FileInfo.builder()
             .fileUrl("https://www.naver.com")
             .boardId(boardId)
-            .userId("test")
             .build()).hasMessage("boardId는 null이 될 수 없습니다.");
-    }
-
-    @ParameterizedTest
-    @NullSource
-    @DisplayName("fileInfo 의 userId가 null일 때 예외 발생")
-    void fileInfoCreateFailWithUserIdNull(String userId) {
-        // given
-        assertThatCode(() -> FileInfo.builder()
-            .fileUrl("https://www.naver.com")
-            .boardId(1L)
-            .userId(userId)
-            .build())
-            .hasMessage("userId는 null이거나 비어있을 수 없습니다.");
     }
 }

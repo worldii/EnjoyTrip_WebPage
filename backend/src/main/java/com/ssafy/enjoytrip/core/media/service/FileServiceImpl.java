@@ -20,11 +20,10 @@ public class FileServiceImpl implements FileService {
     @Transactional
     public void insertFile(
         final Long boardId,
-        final String userId,
         final List<String> fileUrls
     ) {
         final List<FileInfo> fileInfos = fileUrls.stream()
-            .map(fileUrl -> FileInfo.of(boardId, userId, fileUrl))
+            .map(fileUrl -> FileInfo.of(boardId, fileUrl))
             .collect(Collectors.toList());
 
         fileRepository.insertFile(boardId, fileInfos);
@@ -45,8 +44,8 @@ public class FileServiceImpl implements FileService {
 
     @Override
     @Transactional
-    public void modifyFile(Long boardId, String userId, List<String> fileUrls) {
+    public void modifyFile(Long boardId, List<String> fileUrls) {
         fileRepository.deleteFileByBoardId(boardId);
-        insertFile(boardId, userId, fileUrls);
+        insertFile(boardId, fileUrls);
     }
 }
