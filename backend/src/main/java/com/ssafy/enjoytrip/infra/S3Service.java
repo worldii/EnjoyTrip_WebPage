@@ -5,8 +5,8 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.ssafy.enjoytrip.core.media.model.FileUrlResponse;
-import com.ssafy.enjoytrip.core.media.model.ImageFiles;
+import com.ssafy.enjoytrip.core.board.model.ImageFiles;
+import com.ssafy.enjoytrip.core.board.model.dto.response.BoardImageUrlResponse;
 import com.ssafy.enjoytrip.core.media.service.UploadService;
 import com.ssafy.enjoytrip.core.media.util.FileUtil;
 import com.ssafy.enjoytrip.global.error.MediaException;
@@ -34,7 +34,7 @@ public class S3Service implements UploadService {
     }
 
     @Override
-    public List<FileUrlResponse> uploadMedias(
+    public List<BoardImageUrlResponse> uploadMedias(
         final List<MultipartFile> files,
         final String folderName
     ) {
@@ -45,7 +45,7 @@ public class S3Service implements UploadService {
             .collect(Collectors.toList());
 
         return fileUrls.stream()
-            .map(FileUrlResponse::new)
+            .map(BoardImageUrlResponse::new)
             .collect(Collectors.toList());
     }
 

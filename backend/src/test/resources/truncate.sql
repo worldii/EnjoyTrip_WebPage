@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS comment cascade ;
-DROP TABLE IF EXISTS file_info cascade;
+DROP TABLE IF EXISTS board_image_info cascade;
 DROP TABLE IF EXISTS hot_place_article cascade;
 DROP TABLE IF EXISTS plan cascade;
 DROP TABLE IF EXISTS plan_board cascade;
@@ -19,10 +19,9 @@ CREATE TABLE user (
                       salt VARCHAR(255)
 );
 
-CREATE TABLE file_info (
-    file_info_id BIGINT not null AUTO_INCREMENT PRIMARY KEY,
-    file_url VARCHAR(255),
-    user_id VARCHAR(255),
+CREATE TABLE board_image_info (
+    image_info_id BIGINT not null AUTO_INCREMENT PRIMARY KEY,
+    image_url VARCHAR(255),
     board_id BIGINT
 );
 

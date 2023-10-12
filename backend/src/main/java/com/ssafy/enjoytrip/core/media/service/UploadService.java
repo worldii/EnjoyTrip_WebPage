@@ -1,12 +1,12 @@
 package com.ssafy.enjoytrip.core.media.service;
 
-import com.ssafy.enjoytrip.core.media.model.FileUrlResponse;
+import com.ssafy.enjoytrip.core.board.model.dto.response.BoardImageUrlResponse;
 import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface UploadService {
 
-    List<FileUrlResponse> uploadMedias(
+    List<BoardImageUrlResponse> uploadMedias(
         final List<MultipartFile> multipartFiles,
         final String folderName);
 

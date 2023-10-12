@@ -1,9 +1,9 @@
 package com.ssafy.enjoytrip.core.board.model.dto.response;
 
 import com.ssafy.enjoytrip.core.board.model.entity.Board;
+import com.ssafy.enjoytrip.core.board.model.entity.BoardImageInfo;
 import com.ssafy.enjoytrip.core.board.model.entity.BoardType;
 import com.ssafy.enjoytrip.core.board.model.entity.Comment;
-import com.ssafy.enjoytrip.core.media.model.entity.FileInfo;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,12 +24,12 @@ public class BoardDetailResponse {
     private String currentUpdate;
 
     private BoardType boardType;
-    private List<FileInfo> imageFiles;
+    private List<BoardImageInfo> imageFiles;
     private List<Comment> comments;
 
     public static BoardDetailResponse of(
         final Board board, final List<Comment> comments,
-        final List<FileInfo> imageFiles
+        final List<BoardImageInfo> imageFiles
     ) {
         return new BoardDetailResponse(
             board.getBoardId(),

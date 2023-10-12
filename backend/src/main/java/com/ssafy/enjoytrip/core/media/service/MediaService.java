@@ -1,7 +1,8 @@
 package com.ssafy.enjoytrip.core.media.service;
 
-import com.ssafy.enjoytrip.core.media.model.FileUrlResponse;
-import com.ssafy.enjoytrip.core.media.model.dto.FileInfoResponse;
+import com.ssafy.enjoytrip.core.board.model.dto.request.BoardImageInfoResponse;
+import com.ssafy.enjoytrip.core.board.model.dto.response.BoardImageUrlResponse;
+import com.ssafy.enjoytrip.core.board.service.BoardImageService;
 import com.ssafy.enjoytrip.global.error.MediaException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class MediaService {
 
-    private final FileService fileService;
+    private final BoardImageService fileService;
     private final UploadService uploadService;
 
     public void insertMedias(
@@ -37,7 +38,7 @@ public class MediaService {
     ) {
         return uploadService.uploadMedias(imageFiles, folderName)
             .stream()
-            .map(FileUrlResponse::getUrl)
+            .map(BoardImageUrlResponse::getUrl)
             .collect(Collectors.toList());
     }
 
@@ -58,7 +59,7 @@ public class MediaService {
 
     public void deleteMedias(final Long boardId) {
         final List<String> fileUrls = fileService.selectFile(boardId).stream()
-            .map(FileInfoResponse::getFileUrl)
+            .map(BoardImageInfoResponse::getImageUrl)
             .collect(Collectors.toList());
 
         uploadService.deleteMedias(fileUrls);

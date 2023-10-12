@@ -1,9 +1,7 @@
 package com.ssafy.enjoytrip.core.board.controller;
 
-import com.ssafy.enjoytrip.core.media.model.FileUrlResponse;
-import com.ssafy.enjoytrip.core.media.service.FileService;
-import com.ssafy.enjoytrip.core.media.service.MediaService;
-import com.ssafy.enjoytrip.core.media.service.UploadService;
+import com.ssafy.enjoytrip.core.board.model.dto.response.BoardImageUrlResponse;
+import com.ssafy.enjoytrip.core.board.service.BoardImageService;
 import com.ssafy.enjoytrip.global.auth.model.dto.LoginUser;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -21,16 +19,14 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class BoardImageController {
 
-    private final MediaService mediaService;
-    private final UploadService uploadService;
-    private final FileService fileService;
+    private final BoardImageService imageService;
 
     @PostMapping("/{boardId}")
-    public ResponseEntity<List<FileUrlResponse>> uploadImage(
+    public ResponseEntity<List<BoardImageUrlResponse>> uploadImage(
         @PathVariable final Long boardId,
         @RequestParam("files") final List<MultipartFile> files
     ) {
-        return ResponseEntity.ok(uploadService.uploadMedias(files, "board/" + boardId));
+        return ResponseEntity.ok(imageService.uploadMedias(files, "board/" + boardId));
     }
 
     @DeleteMapping("/{boardId}")
@@ -38,7 +34,7 @@ public class BoardImageController {
         @PathVariable final Long boardId,
         @LoginUser final String userId
     ) {
-        mediaService.deleteMedias(boardId);
+        imageService.deleteMedias(boardId);
         return ResponseEntity.ok().build();
     }
 }

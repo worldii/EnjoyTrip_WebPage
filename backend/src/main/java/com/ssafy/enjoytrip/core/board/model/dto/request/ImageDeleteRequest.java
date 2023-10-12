@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.core.media.model.dto;
+package com.ssafy.enjoytrip.core.board.model.dto.request;
 
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -11,5 +11,4 @@ import lombok.NoArgsConstructor;
 public class ImageDeleteRequest {
 
     private List<String> fileUrls;
-
 }

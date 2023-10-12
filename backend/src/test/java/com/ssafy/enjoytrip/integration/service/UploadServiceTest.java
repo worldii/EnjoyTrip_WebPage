@@ -4,7 +4,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
 import com.ssafy.enjoytrip.config.UploadConfig;
-import com.ssafy.enjoytrip.core.media.model.FileUrlResponse;
+import com.ssafy.enjoytrip.core.board.model.dto.response.BoardImageUrlResponse;
 import com.ssafy.enjoytrip.core.media.service.UploadService;
 import com.ssafy.enjoytrip.global.error.MediaException;
 import java.util.List;
@@ -36,7 +36,7 @@ class UploadServiceTest {
         String folderName = "test";
 
         // when 
-        List<FileUrlResponse> fileUrls = uploadService.uploadMedias(imagesFiles, folderName);
+        List<BoardImageUrlResponse> fileUrls = uploadService.uploadMedias(imagesFiles, folderName);
 
         // then
         assertThat(imagesFiles.size()).isEqualTo(fileUrls.size());

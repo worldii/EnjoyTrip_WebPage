@@ -4,15 +4,14 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.ssafy.enjoytrip.core.board.dao.BoardRepository;
 import com.ssafy.enjoytrip.core.board.dao.CommentRepository;
+import com.ssafy.enjoytrip.core.board.model.dto.request.BoardImageInfoResponse;
 import com.ssafy.enjoytrip.core.board.model.dto.request.BoardModifyRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.request.BoardSaveRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.request.BoardSearchRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.response.BoardDetailResponse;
 import com.ssafy.enjoytrip.core.board.model.entity.Board;
+import com.ssafy.enjoytrip.core.board.model.entity.BoardImageInfo;
 import com.ssafy.enjoytrip.core.board.model.entity.Comment;
-import com.ssafy.enjoytrip.core.media.model.dto.FileInfoResponse;
-import com.ssafy.enjoytrip.core.media.model.entity.FileInfo;
-import com.ssafy.enjoytrip.core.media.service.FileService;
 import com.ssafy.enjoytrip.core.user.dao.UserRepository;
 import com.ssafy.enjoytrip.core.user.model.entity.User;
 import com.ssafy.enjoytrip.global.dto.PageResponse;
@@ -33,7 +32,7 @@ public class BoardServiceImpl implements BoardService {
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
-    private final FileService fileService;
+    private final BoardImageService fileService;
 
     @Override
     @Transactional
@@ -73,12 +72,12 @@ public class BoardServiceImpl implements BoardService {
     @Transactional(readOnly = true)
     public BoardDetailResponse detail(final Long boardId) {
         final Board board = findBoardByBoardId(boardId);
-        final List<FileInfo> fileInfos = fileService.selectFile(boardId).stream()
-            .map(FileInfoResponse::toEntity)
+        final List<BoardImageInfo> boardImageInfos = fileService.selectFile(boardId).stream()
+            .map(BoardImageInfoResponse::toEntity)
             .collect(Collectors.toList());
         final List<Comment> comments = commentRepository.selectAll(boardId);
 
-        return BoardDetailResponse.of(board, comments, fileInfos);
+        return BoardDetailResponse.of(board, comments, boardImageInfos);
     }
 
     @Override

@@ -3,10 +3,10 @@ package com.ssafy.enjoytrip.integration.service;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
-import com.ssafy.enjoytrip.core.media.model.dto.FileInfoResponse;
-import com.ssafy.enjoytrip.core.media.model.entity.FileInfo;
-import com.ssafy.enjoytrip.core.media.service.FileService;
-import com.ssafy.enjoytrip.global.error.MediaException;
+import com.ssafy.enjoytrip.core.board.model.dto.request.BoardImageInfoResponse;
+import com.ssafy.enjoytrip.core.board.model.entity.BoardImageInfo;
+import com.ssafy.enjoytrip.core.board.service.BoardImageService;
+import com.ssafy.enjoytrip.global.error.BoardException;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,11 +16,11 @@ import org.springframework.test.context.jdbc.Sql;
 
 @SpringBootTest
 @DisplayName("FileService 통합 테스트")
-@Sql({"/truncate.sql", "/fileInfo.sql"})
-class FileServiceTest {
+@Sql({"/truncate.sql", "/boardImageInfo.sql"})
+class BoardImageServiceTest {
 
     @Autowired
-    private FileService fileService;
+    private BoardImageService fileService;
 
     @Test
     @DisplayName("fileInfo 정상 조회 테스트")
@@ -29,7 +29,7 @@ class FileServiceTest {
         Long boardId = 1L;
 
         // when
-        List<FileInfoResponse> fileInfos = fileService.selectFile(boardId);
+        List<BoardImageInfoResponse> fileInfos = fileService.selectFile(boardId);
 
         // then
         assertThat(fileInfos).isNotNull();
@@ -42,16 +42,16 @@ class FileServiceTest {
         Long boardId = 1L;
         int currentSize = fileService.selectFile(boardId).size();
 
-        FileInfo fileInfo = FileInfo.builder()
+        BoardImageInfo boardImageInfo = BoardImageInfo.builder()
             .boardId(boardId)
-            .fileUrl("test")
+            .imageUrl("test")
             .build();
 
         // when
-        fileService.insertFile(boardId, List.of(fileInfo.getFileUrl()));
+        fileService.insertFile(boardId, List.of(boardImageInfo.getImageUrl()));
 
         // then
-        List<FileInfoResponse> fileInfos = fileService.selectFile(boardId);
+        List<BoardImageInfoResponse> fileInfos = fileService.selectFile(boardId);
         assertThat(fileInfos.size()).isEqualTo(currentSize + 1);
     }
 
@@ -64,7 +64,7 @@ class FileServiceTest {
 
         // when & then
         assertThatCode(() -> fileService.insertFile(boardId, fileUrls))
-            .isInstanceOf(MediaException.class)
+            .isInstanceOf(BoardException.class)
             .hasMessage("boardId는 null이 될 수 없습니다.");
     }
 
@@ -79,7 +79,7 @@ class FileServiceTest {
         fileService.deleteFile(boardId);
 
         // then
-        List<FileInfoResponse> fileInfos = fileService.selectFile(boardId);
+        List<BoardImageInfoResponse> fileInfos = fileService.selectFile(boardId);
         assertThat(fileInfos.size()).isEqualTo(currentSize - 1);
     }
 }

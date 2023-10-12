@@ -1,7 +1,7 @@
 package com.ssafy.enjoytrip.fake;
 
-import com.ssafy.enjoytrip.core.media.model.FileUrlResponse;
-import com.ssafy.enjoytrip.core.media.model.ImageFiles;
+import com.ssafy.enjoytrip.core.board.model.ImageFiles;
+import com.ssafy.enjoytrip.core.board.model.dto.response.BoardImageUrlResponse;
 import com.ssafy.enjoytrip.core.media.service.UploadService;
 import com.ssafy.enjoytrip.core.media.util.FileUtil;
 import java.util.List;
@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class MockUploadService implements UploadService {
 
     @Override
-    public List<FileUrlResponse> uploadMedias(
+    public List<BoardImageUrlResponse> uploadMedias(
         final List<MultipartFile> multipartFiles,
         final String folderName
     ) {
@@ -23,7 +23,7 @@ public class MockUploadService implements UploadService {
         final List<String> fileUrls = getFileUrls(folderName, images);
 
         return fileUrls.stream()
-            .map(FileUrlResponse::new)
+            .map(BoardImageUrlResponse::new)
             .collect(Collectors.toList());
     }
 

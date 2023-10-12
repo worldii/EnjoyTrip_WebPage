@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ssafy.enjoytrip.core.media.model.mapper.FileMapper">
-  <resultMap type="com.ssafy.enjoytrip.core.media.model.entity.FileInfo" id="fileInfo">
-    <id column="file_info_id" property="fileInfoId"/>
-    <result column="file_url" property="fileUrl"/>
+<mapper namespace="com.ssafy.enjoytrip.core.board.model.mapper.BoardImageMapper">
+  <resultMap type="com.ssafy.enjoytrip.core.board.model.entity.BoardImageInfo" id="boardImageInfo">
+    <id column="image_info_id" property="imageInfoId"/>
+    <result column="image_url" property="imageUrl"/>
     <result column="board_id" property="boardId"/>
   </resultMap>
   <insert id="insertFile" parameterType="List">
-    INSERT INTO file_info (board_id, file_url)
+    INSERT INTO board_image_info (board_id, image_url)
     VALUES
     <foreach collection="imageFiles" item="item" separator=",">
-      (#{item.boardId}, #{item.fileUrl})
+      (#{item.boardId}, #{item.imageUrl})
     </foreach>
   </insert>
-  <select id="selectFile" resultMap="fileInfo">
+  <select id="selectFile" resultMap="boardImageInfo">
     select *
-    from file_info
+    from board_image_info
     where board_id = #{boardId}
   </select>
 
   <delete id="deleteFileByBoardId">
     delete
-    from file_info
+    from board_image_info
     where board_id = #{boardId}
   </delete>
 </mapper>
