@@ -1,6 +1,7 @@
 package com.ssafy.enjoytrip.core.hotplace.model.entity;
 
 import com.ssafy.enjoytrip.global.error.HotPlaceException;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,12 +17,13 @@ public class HotPlaceArticle {
     private String userId;
     private String content;
     private String createAt;
-    private String imageUrl;
+    private List<String> imageUrl;
 
     @Builder
     public HotPlaceArticle(
         final Long hotPlaceArticleId, final String hotPlaceId, final String hotPlaceName,
-        final String userId, final String content, final String createAt, final String imageUrl
+        final String userId, final String content, final String createAt,
+        final List<String> imageUrl
     ) {
         validateHotPlaceId(hotPlaceId);
         validateUserId(userId);
@@ -36,7 +38,7 @@ public class HotPlaceArticle {
         this.imageUrl = imageUrl;
     }
 
-    private void validateImageUrl(final String imageUrl) {
+    private void validateImageUrl(final List<String> imageUrl) {
         if (imageUrl == null || imageUrl.isEmpty()) {
             throw new HotPlaceException("이미지 URL이 없습니다.");
         }
@@ -59,5 +61,13 @@ public class HotPlaceArticle {
         if (hotPlaceId == null || hotPlaceId.isEmpty()) {
             throw new HotPlaceException("핫플레이스 아이디가 없습니다.");
         }
+    }
+
+    private boolean isImageUrlsEmpty() {
+        return imageUrl == null || imageUrl.isEmpty();
+    }
+    
+    public boolean isImageUrlsNotEmpty() {
+        return !isImageUrlsEmpty();
     }
 }

@@ -16,6 +16,6 @@ public class HotPlaceArticleSaveRequest {
 
     private String hotPlaceName;
     private String content;
-    private String imageUrl;
     private List<String> tagName;
+    private List<String> imageUrl;
 }
