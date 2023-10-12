@@ -63,7 +63,7 @@ class BoardRepositoryTest {
             .build();
 
         // when
-        Page<Board> boards = boardRepository.selectBoardListBySearchDto(boardSearchRequest);
+        Page<Board> boards = boardRepository.selectBoardList(boardSearchRequest);
 
         // then
         assertThat(boards.size()).isEqualTo(1);

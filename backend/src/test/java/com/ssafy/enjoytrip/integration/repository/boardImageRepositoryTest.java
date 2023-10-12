@@ -3,7 +3,7 @@ package com.ssafy.enjoytrip.integration.repository;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
-import com.ssafy.enjoytrip.core.board.dao.boardImageRepository;
+import com.ssafy.enjoytrip.core.board.dao.BoardImageRepository;
 import com.ssafy.enjoytrip.core.board.model.entity.BoardImageInfo;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -17,7 +17,7 @@ import org.springframework.test.context.jdbc.Sql;
 class boardImageRepositoryTest {
 
     @Autowired
-    private boardImageRepository boardImageRepository;
+    private BoardImageRepository boardImageRepository;
 
     @Test
     @Sql({"/truncate.sql", "/boardImageInfo.sql"})

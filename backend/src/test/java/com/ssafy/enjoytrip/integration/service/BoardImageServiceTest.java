@@ -29,7 +29,7 @@ class BoardImageServiceTest {
         Long boardId = 1L;
 
         // when
-        List<BoardImageInfoResponse> fileInfos = fileService.selectFile(boardId);
+        List<BoardImageInfoResponse> fileInfos = fileService.selectBoardImage(boardId);
 
         // then
         assertThat(fileInfos).isNotNull();
@@ -40,7 +40,7 @@ class BoardImageServiceTest {
     void fileServiceTest() {
         // given
         Long boardId = 1L;
-        int currentSize = fileService.selectFile(boardId).size();
+        int currentSize = fileService.selectBoardImage(boardId).size();
 
         BoardImageInfo boardImageInfo = BoardImageInfo.builder()
             .boardId(boardId)
@@ -48,10 +48,10 @@ class BoardImageServiceTest {
             .build();
 
         // when
-        fileService.insertFile(boardId, List.of(boardImageInfo.getImageUrl()));
+        fileService.insertBoardImage(boardId, List.of(boardImageInfo.getImageUrl()));
 
         // then
-        List<BoardImageInfoResponse> fileInfos = fileService.selectFile(boardId);
+        List<BoardImageInfoResponse> fileInfos = fileService.selectBoardImage(boardId);
         assertThat(fileInfos.size()).isEqualTo(currentSize + 1);
     }
 
@@ -63,7 +63,7 @@ class BoardImageServiceTest {
         List<String> fileUrls = List.of("test");
 
         // when & then
-        assertThatCode(() -> fileService.insertFile(boardId, fileUrls))
+        assertThatCode(() -> fileService.insertBoardImage(boardId, fileUrls))
             .isInstanceOf(BoardException.class)
             .hasMessage("boardId는 null이 될 수 없습니다.");
     }
@@ -73,13 +73,13 @@ class BoardImageServiceTest {
     void fileServiceDeleteTest() {
         // given
         Long boardId = 1L;
-        int currentSize = fileService.selectFile(boardId).size();
+        int currentSize = fileService.selectBoardImage(boardId).size();
 
         // when
-        fileService.deleteFile(boardId);
+        fileService.deleteBoardImage(boardId);
 
         // then
-        List<BoardImageInfoResponse> fileInfos = fileService.selectFile(boardId);
+        List<BoardImageInfoResponse> fileInfos = fileService.selectBoardImage(boardId);
         assertThat(fileInfos.size()).isEqualTo(currentSize - 1);
     }
 }

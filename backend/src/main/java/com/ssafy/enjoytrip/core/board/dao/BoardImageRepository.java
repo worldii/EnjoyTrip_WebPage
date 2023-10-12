@@ -10,21 +10,21 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class boardImageRepository {
+public class BoardImageRepository {
 
-    private final BoardImageMapper fileMapper;
+    private final BoardImageMapper boardImageMapper;
 
     @Transactional
     public void insertFile(final Long boardId, final List<BoardImageInfo> imageFiles) {
-        fileMapper.insertFile(boardId, imageFiles);
+        boardImageMapper.insertFile(boardId, imageFiles);
     }
 
     public List<BoardImageInfo> selectFileByBoardId(final Long boardId) {
-        return fileMapper.selectFile(boardId);
+        return boardImageMapper.selectFile(boardId);
     }
 
     @Transactional
     public void deleteFileByBoardId(final Long boardId) {
-        fileMapper.deleteFileByBoardId(boardId);
+        boardImageMapper.deleteFileByBoardId(boardId);
     }
 }

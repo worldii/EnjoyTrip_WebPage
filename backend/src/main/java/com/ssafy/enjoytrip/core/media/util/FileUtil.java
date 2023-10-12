@@ -11,12 +11,4 @@ public class FileUtil {
     ) {
         return folderName + "/" + filename;
     }
-
-    public String getExt(String fileName) {
-        return fileName.substring(fileName.lastIndexOf(".") + 1);
-    }
-
-    public String findExt(String fileName) {
-        return fileName.split("\\.")[1];
-    }
 }

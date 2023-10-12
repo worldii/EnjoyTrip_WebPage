@@ -30,9 +30,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
-    private final UserRepository userRepository;
+    private final BoardImageService boardImageService;
     private final CommentRepository commentRepository;
-    private final BoardImageService fileService;
+    private final UserRepository userRepository;
 
     @Override
     @Transactional
@@ -44,16 +44,16 @@ public class BoardServiceImpl implements BoardService {
             .subject(request.getSubject())
             .content(request.getContent())
             .userId(user.getUserId())
+            .imageUrls(request.getFileUrls())
             .build();
 
         boardRepository.insertBoard(board);
-        if (request.getFileUrls() != null && !request.getFileUrls().isEmpty()) {
-            fileService.insertFile(board.getBoardId(), request.getFileUrls());
+        if (board.isImageUrlNotEmpty()) {
+            boardImageService.insertBoardImage(board.getBoardId(), request.getFileUrls());
         }
 
         return board.getBoardId();
     }
-
 
     @Override
     @Transactional(readOnly = true)
@@ -61,10 +61,9 @@ public class BoardServiceImpl implements BoardService {
         final BoardSearchRequest boardSearchRequest
     ) {
         PageHelper.startPage(boardSearchRequest.getPage(), boardSearchRequest.getPageSize());
-        final Page<Board> boards = boardRepository.selectBoardListBySearchDto(boardSearchRequest);
+        final Page<Board> boards = boardRepository.selectBoardList(boardSearchRequest);
 
-        return PageResponse.from(
-            new PageNavigationForPageHelper(boards, "/board/list/search?page"));
+        return PageResponse.from(new PageNavigationForPageHelper(boards, "/board/"));
     }
 
     // TODO : 고민점? DTO 로 한번에 끌고 오는 것이 나은가? 아니면, 따로 따로 가져오는 것이 나은가?
@@ -72,9 +71,13 @@ public class BoardServiceImpl implements BoardService {
     @Transactional(readOnly = true)
     public BoardDetailResponse detail(final Long boardId) {
         final Board board = findBoardByBoardId(boardId);
-        final List<BoardImageInfo> boardImageInfos = fileService.selectFile(boardId).stream()
+
+        final List<BoardImageInfo> boardImageInfos = boardImageService
+            .selectBoardImage(boardId)
+            .stream()
             .map(BoardImageInfoResponse::toEntity)
             .collect(Collectors.toList());
+        
         final List<Comment> comments = commentRepository.selectAll(boardId);
 
         return BoardDetailResponse.of(board, comments, boardImageInfos);
@@ -96,12 +99,12 @@ public class BoardServiceImpl implements BoardService {
             .userId(user.getUserId())
             .subject(boardModifyRequest.getSubject())
             .content(boardModifyRequest.getContent())
+            .imageUrls(boardModifyRequest.getImageUrls())
             .build();
 
         boardRepository.updateBoard(modifyBoard);
-        if (boardModifyRequest.getImageUrls() != null
-            && !boardModifyRequest.getImageUrls().isEmpty()) {
-            fileService.modifyFile(boardId, boardModifyRequest.getImageUrls());
+        if (modifyBoard.isImageUrlNotEmpty()) {
+            boardImageService.insertBoardImage(boardId, boardModifyRequest.getImageUrls());
         }
     }
 
@@ -114,7 +117,7 @@ public class BoardServiceImpl implements BoardService {
 
         validateSameMember(user.getUserId(), board.getUserId());
 
-        fileService.deleteFile(boardId);
+        boardImageService.deleteBoardImage(boardId);
         commentRepository.deleteAll(boardId);
         boardRepository.deleteBoard(boardId);
     }

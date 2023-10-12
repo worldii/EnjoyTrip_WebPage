@@ -29,7 +29,7 @@ public class BoardRepository {
         return boardMapper.selectAll();
     }
 
-    public Page<Board> selectBoardListBySearchDto(final BoardSearchRequest boardSearchRequest) {
+    public Page<Board> selectBoardList(final BoardSearchRequest boardSearchRequest) {
         return boardMapper.selectBoardListBySearchDto(boardSearchRequest);
     }
 
