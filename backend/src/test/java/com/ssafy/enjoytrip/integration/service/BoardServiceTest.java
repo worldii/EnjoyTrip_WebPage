@@ -3,7 +3,6 @@ package com.ssafy.enjoytrip.integration.service;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.enjoytrip.config.UploadConfig;
 import com.ssafy.enjoytrip.core.board.model.dto.request.BoardSaveRequest;
@@ -13,6 +12,7 @@ import com.ssafy.enjoytrip.core.board.model.entity.BoardType;
 import com.ssafy.enjoytrip.core.board.service.BoardService;
 import com.ssafy.enjoytrip.global.dto.PageResponse;
 import com.ssafy.enjoytrip.global.error.BoardException;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,13 +33,14 @@ class BoardServiceTest {
     @Test
     @Sql({"/truncate.sql", "/user.sql"})
     @DisplayName("게시판 등록 테스트")
-    void insertBoardTest() throws JsonProcessingException {
+    void insertBoardTest() {
         // given
         String userId = "test";
         BoardSaveRequest boardSaveRequest = BoardSaveRequest.builder()
             .boardType(BoardType.NOTICE)
             .content("test")
             .subject("test")
+            .fileUrls(List.of("abc", "def"))
             .build();
 
         // when & then
@@ -51,13 +52,14 @@ class BoardServiceTest {
     @Test
     @Sql({"/truncate.sql", "/user.sql"})
     @DisplayName("게시판 등록 실패 테스트 : 유저가 없을 때")
-    void insertBoardFailTest() throws JsonProcessingException {
+    void insertBoardFailTest() {
         // given
         String wrongUserId = "wrong";
         BoardSaveRequest boardSaveRequest = BoardSaveRequest.builder()
             .boardType(BoardType.NOTICE)
             .content("test")
             .subject("test")
+            .fileUrls(List.of("abc", "def"))
             .build();
 
         // when & then

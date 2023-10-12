@@ -6,7 +6,6 @@ import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.enjoytrip.config.UploadConfig;
 import com.ssafy.enjoytrip.core.board.model.dto.request.BoardModifyRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.request.BoardSaveRequest;
@@ -21,22 +20,16 @@ import io.restassured.response.Response;
 import java.io.IOException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
-import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.jdbc.Sql;
 
 @DisplayName("게시판 관련 기능")
 @Import(UploadConfig.class)
 class BoardAcceptanceTest extends AcceptanceTest {
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
     @Test
     @DisplayName("게시판을 정상적으로 등록한다")
-    void insertBoardTest() throws IOException {
+    void insertBoardTest() {
         // given
         UserAddRequest userAddRequest = UserAddRequest.builder()
             .userId("jongha")
@@ -82,15 +75,11 @@ class BoardAcceptanceTest extends AcceptanceTest {
             .content("test")
             .subject("test")
             .build();
-        String boardSaveJson = objectMapper.writeValueAsString(boardSaveRequest);
-        MockMultipartFile file = new MockMultipartFile("data", "test.png",
-            MediaType.IMAGE_PNG_VALUE, "test".getBytes());
-
         ExtractableResponse<Response> response = RestAssured
             .given()
             .header("Authorization", accessToken)
-            .multiPart("json", boardSaveJson, APPLICATION_JSON_VALUE)
-            .multiPart("file", "data", file.getBytes())
+            .contentType(APPLICATION_JSON_VALUE)
+            .body(boardSaveRequest)
             .log().all()
             .when()
             .post("/board")
@@ -166,12 +155,12 @@ class BoardAcceptanceTest extends AcceptanceTest {
             .content("test")
             .subject("test")
             .build();
-        String boardSaveJson = objectMapper.writeValueAsString(boardSaveRequest);
 
         Long boardId = RestAssured
             .given()
             .header("Authorization", accessToken)
-            .multiPart("json", boardSaveJson, APPLICATION_JSON_VALUE)
+            .contentType(APPLICATION_JSON_VALUE)
+            .body(boardSaveRequest)
             .log().all()
             .when()
             .post("/board")
@@ -184,14 +173,12 @@ class BoardAcceptanceTest extends AcceptanceTest {
             .content("test")
             .subject("test")
             .build();
-        String boardModifyJson = objectMapper.writeValueAsString(boardModifyRequest);
-        MockMultipartFile file = new MockMultipartFile("data", "test.png",
-            MediaType.IMAGE_PNG_VALUE, "test".getBytes());
+
         ExtractableResponse<Response> response = RestAssured
             .given()
             .header("Authorization", accessToken)
-            .multiPart("json", boardModifyJson, APPLICATION_JSON_VALUE)
-            .multiPart("files", "data", file.getBytes())
+            .contentType(APPLICATION_JSON_VALUE)
+            .body(boardModifyRequest)
             .log().all()
             .when()
             .put("/board/" + boardId)
@@ -245,7 +232,7 @@ class BoardAcceptanceTest extends AcceptanceTest {
 
     @Test
     @DisplayName("게시판을 정상적으로 삭제한다")
-    void deleteBoardTest() throws IOException {
+    void deleteBoardTest() {
         // given
         UserAddRequest userAddRequest = UserAddRequest.builder()
             .userId("jongha")
@@ -290,12 +277,12 @@ class BoardAcceptanceTest extends AcceptanceTest {
             .content("test")
             .subject("test")
             .build();
-        String boardSaveJson = objectMapper.writeValueAsString(boardSaveRequest);
 
         Long boardId = RestAssured
             .given()
+            .contentType(APPLICATION_JSON_VALUE)
             .header("Authorization", accessToken)
-            .multiPart("json", boardSaveJson, APPLICATION_JSON_VALUE)
+            .body(boardSaveRequest)
             .log().all()
             .when()
             .post("/board")
