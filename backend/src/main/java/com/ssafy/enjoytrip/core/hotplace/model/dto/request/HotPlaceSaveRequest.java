@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.hotplace.model.dto.request;
 
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,4 +21,5 @@ public class HotPlaceSaveRequest {
     private String placeUrl;
     private String roadAddressName;
     private String addressName;
+    private List<String> imageUrls;
 }

@@ -22,6 +22,7 @@ public class HotPlace {
     private String addressName;
     private List<HotPlaceArticle> hotPlaceArticles;
     private List<HotPlaceTag> hotPlaceTags;
+    private List<String> imageUrls;
 
     @Builder
     public HotPlace(
@@ -29,7 +30,11 @@ public class HotPlace {
         final String hotPlaceName,
         final Double x, final Double y,
         final Long vote, final String placeUrl,
-        final String roadAddressName, final String addressName
+        final String roadAddressName,
+        final String addressName,
+        final List<HotPlaceArticle> hotPlaceArticles,
+        final List<HotPlaceTag> hotPlaceTags,
+        final List<String> imageUrls
     ) {
         validateHotPlaceId(hotPlaceId);
         validateHotPlaceName(hotPlaceName);
@@ -47,6 +52,9 @@ public class HotPlace {
         this.placeUrl = placeUrl;
         this.roadAddressName = roadAddressName;
         this.addressName = addressName;
+        this.hotPlaceArticles = hotPlaceArticles;
+        this.hotPlaceTags = hotPlaceTags;
+        this.imageUrls = imageUrls;
     }
 
     private void validateHotPlaceId(final String hotPlaceId) {
@@ -95,5 +103,13 @@ public class HotPlace {
 
     public void updateVoteCount(final Long voteCount) {
         this.vote = voteCount;
+    }
+
+    private boolean isImageUrlsEmpty() {
+        return imageUrls == null || imageUrls.isEmpty();
+    }
+
+    public boolean isImageUrlsNotEmpty() {
+        return !isImageUrlsEmpty();
     }
 }
