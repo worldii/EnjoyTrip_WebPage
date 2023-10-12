@@ -17,10 +17,7 @@ public class BoardImageServiceImpl implements BoardImageService {
 
     @Override
     @Transactional
-    public void insertBoardImage(
-        final Long boardId,
-        final List<String> imageUrls
-    ) {
+    public void insertBoardImage(final Long boardId, final List<String> imageUrls) {
         final List<BoardImageInfo> boardImageInfos = imageUrls.stream()
             .map(imageUrl -> BoardImageInfo.of(boardId, imageUrl))
             .collect(Collectors.toList());
