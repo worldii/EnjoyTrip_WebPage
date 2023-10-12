@@ -41,13 +41,10 @@
 
 
   <insert id="insertHotPlace" parameterType="hotPlace">
-    <selectKey resultType="String" keyProperty="hotPlaceId" order="AFTER">
-      SELECT LAST_INSERT_ID() AS hotPlaceId
-    </selectKey>
     insert into hot_place (hot_place_id, hot_place_name, road_address_name, address_name, place_url,
-    x, y)
+                           x, y)
     values (#{hotPlaceId}, #{hotPlaceName}, #{roadAddressName}, #{addressName}, #{placeUrl}, #{x},
-    #{y})
+            #{y})
   </insert>
 
 
