@@ -1,10 +1,11 @@
 package com.ssafy.enjoytrip.infra;
 
 import com.github.pagehelper.Page;
-import lombok.Data;
+import com.ssafy.enjoytrip.global.util.PaginationHelper;
+import lombok.Getter;
 
-@Data
-public class PageNavigationForPageHelper {
+@Getter
+public class PageNavigationForPageHelper implements PaginationHelper {
 
     private int naviSize = 5;
     private int countPerPage = 10;
@@ -59,5 +60,4 @@ public class PageNavigationForPageHelper {
         str.append("</ul>");
         return str.toString();
     }
-
 }
