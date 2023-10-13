@@ -2,25 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<!--
-   int insertPlanBoard(PlanBoardDto planBoardDto);
-   int insertPlanList(List<PlanDto> planDtoList);
-
-   List<PlanBoardDto> selectPlanBoardByUserId(String userId);
-   List<PlanDto> selectPlanByPlanBoardId(int planBoardId);
-   PlanBoardDto selectPlanBoardByPlanBoardId(int planBoardId);
-
-   int deletePlanList(int planBoardId, Date date);
--->
-
 <mapper namespace="com.ssafy.enjoytrip.core.plan.model.mapper.PlanMapper">
-  <select id="selectPlanBoardByUserId" parameterType="string" resultType="planBoardDto">
+
+  <insert id="insertPlanBoard" parameterType="planBoard">
+    <selectKey resultType="int" keyProperty="planBoardId" order="AFTER">
+      select MAX(plan_board_id) from plan_board
+    </selectKey>
+    insert into plan_board(title, user_id, start_date, end_date) value
+    (#{title},#{userId},#{startDate},#{endDate})
+  </insert>
+
+  <select id="selectPlanBoardByUserId" parameterType="string" resultType="planBoard">
     select *
     from plan_board
     where user_id = #{userId}
   </select>
 
-  <select id="selectPlanBoardByPlanBoardId" parameterType="int" resultType="planBoardDto">
+  <select id="selectPlanBoardByPlanBoardId" parameterType="int" resultType="planBoard">
     select *
     from plan_board
     where plan_board_id = #{planBoardId}
@@ -33,13 +31,6 @@
     order by `order`;
   </select>
 
-  <insert id="insertPlanBoard" parameterType="planBoardDto">
-    <selectKey resultType="int" keyProperty="planBoardId" order="AFTER">
-      select MAX(plan_board_id) from plan_board
-    </selectKey>
-    insert into plan_board(title, user_id, start_date, end_date) value
-    (#{title},#{userId},#{startDate},#{endDate})
-  </insert>
 
   <insert id="insertPlanList" parameterType="java.util.List">
     insert into plan(plan_board_id, place, `order`, duration,date, start_time, end_time)

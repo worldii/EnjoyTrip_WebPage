@@ -3,8 +3,8 @@ package com.ssafy.enjoytrip.domain.plan;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.ssafy.enjoytrip.core.plan.model.dto.Plan;
-import com.ssafy.enjoytrip.core.plan.model.dto.PlanBoardDto;
+import com.ssafy.enjoytrip.core.plan.model.entity.Plan;
+import com.ssafy.enjoytrip.core.plan.model.entity.PlanBoard;
 import com.ssafy.enjoytrip.core.plan.model.mapper.PlanMapper;
 import java.sql.Date;
 import java.sql.Time;
@@ -28,19 +28,12 @@ class PlanMapperTest {
     static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
     @Test
-    void testLoadBean() {
-        // given - when -then
-        System.out.println("planMapper = " + planMapper);
-        assertNotNull(planMapper);
-    }
-
-    @Test
     void testSelectPlanBoardByPlanBoardId() {
         // given
         Long planBoardId = 1L;
 
         // when
-        PlanBoardDto planBoard = planMapper.selectPlanBoardByPlanBoardId(planBoardId);
+        PlanBoard planBoard = planMapper.selectPlanBoardByPlanBoardId(planBoardId);
 
         // then
         System.out.println(planBoard);
@@ -54,7 +47,7 @@ class PlanMapperTest {
         String userId = "test";
 
         // when
-        List<PlanBoardDto> planBoardDtoList = planMapper.selectPlanBoardByUserId(userId);
+        List<PlanBoard> planBoardDtoList = planMapper.selectPlanBoardByUserId(userId);
 
         // then
         System.out.println(planBoardDtoList);
@@ -66,13 +59,13 @@ class PlanMapperTest {
     @Transactional
     void testInsertPlanBoardDto() {
         // given
-        PlanBoardDto insertPlanBoardDto = makePlanBoardDto();
+        PlanBoard insertPlanBoardDto = makePlanBoardDto();
         System.out.println("insertPlanBoardDto = " + insertPlanBoardDto);
         // when
         int result = planMapper.insertPlanBoard(insertPlanBoardDto);
 
         // then
-        PlanBoardDto selectPlanBoardDto = planMapper.selectPlanBoardByPlanBoardId(
+        PlanBoard selectPlanBoardDto = planMapper.selectPlanBoardByPlanBoardId(
             insertPlanBoardDto.getPlanBoardId());
 
         assertEquals(1, result);
@@ -127,16 +120,16 @@ class PlanMapperTest {
     Plan makePlanDto(int order, Long planBoardId) {
         return Plan.builder()
             .planBoardId(planBoardId)
-            .place("test")
-            .order(order)
-            .date(Date.valueOf("2023-05-05"))
+            .placeName("test")
+            .planOrder(order)
+            .expectDate(Date.valueOf("2023-05-05"))
             .startTime(Time.valueOf("09:00:" + order))
             .endTime(Time.valueOf("09:00:" + (order + 1)))
             .build();
     }
 
-    PlanBoardDto makePlanBoardDto() {
-        return PlanBoardDto
+    PlanBoard makePlanBoardDto() {
+        return PlanBoard
             .builder()
             .userId("test")
             .title("test")

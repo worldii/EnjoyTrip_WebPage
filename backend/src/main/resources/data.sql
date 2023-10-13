@@ -1,7 +1,5 @@
 insert into user(user_id,name,address,password,email) value ('ssafy','ssafy','ssafy','ssafy','ssafy@ssafy');
 insert into user(user_id, password, name, address, email, authority) value ('test','$2a$10$2aw6uUAXMQymIZ4QS/A5GugoAddLyRh2RT0sCyZHyRakXfEIzAmj6','test','test','ssafy@ssafy',2);
-
-
 insert into board(user_id,subject,content) value ('ssafy','ssafy1','ssafy');
 insert into board(user_id,subject,content) value ('ssafy','ssafy2','ssafy');
 insert into board(user_id,subject,content) value ('ssafy','ssafy3','ssafy');
@@ -31,6 +29,7 @@ insert into board(user_id,subject,content) value ('ssafy','ssafy26','ssafy');
 insert into board(user_id,subject,content) value ('ssafy','ssafy27','ssafy');
 insert into board(user_id,subject,content) value ('ssafy','ssafy28','ssafy');
 insert into comment(user_id,content,board_id) value ('ssafy','ssafy',1);
+
 insert into hot_place(hot_place_id, hot_place_name, image_url, x, y, road_address_name, address_name) value ('ssafy', 'ssafy', 'ssafy', 'ssafy', 'ssafy','ssafy','ssafy');
 insert into hot_place(hot_place_id, hot_place_name, image_url, x, y, road_address_name, address_name) value ('ssafy2', 'ssafy', 'ssafy', 'ssafy', 'ssafy','ssafy','ssafy');
 insert into hot_place(hot_place_id, hot_place_name, image_url, x, y, road_address_name, address_name) value ('ssafy3', 'ssafy', 'ssafy', 'ssafy', 'ssafy','ssafy','ssafy');
@@ -38,5 +37,4 @@ insert into hot_place(hot_place_id, hot_place_name, image_url, x, y, road_addres
 insert into hot_place(hot_place_id, hot_place_name, image_url, x, y, road_address_name, address_name) value ('ssafy5', 'ssafy', 'ssafy', 'ssafy', 'ssafy','ssafy','ssafy');
 insert into hot_place(hot_place_id, hot_place_name, image_url, x, y, road_address_name, address_name) value ('ssafy6', 'ssafy', 'ssafy', 'ssafy', 'ssafy','ssafy','ssafy');
 insert into hot_place(hot_place_id, hot_place_name, image_url, x, y, road_address_name, address_name) value ('ssafy7', 'ssafy', 'ssafy', 'ssafy', 'ssafy','ssafy','ssafy');
-
 insert into hot_place_article(hot_place_id, hot_place_name,  content, user_id) value ('ssafy', 'ssafy', 'ssafy', 'ssafy');
