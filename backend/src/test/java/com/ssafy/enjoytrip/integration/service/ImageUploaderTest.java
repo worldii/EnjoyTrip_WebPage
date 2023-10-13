@@ -4,7 +4,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
 import com.ssafy.enjoytrip.config.UploadConfig;
-import com.ssafy.enjoytrip.core.media.service.UploadService;
+import com.ssafy.enjoytrip.core.media.service.ImageUploader;
 import com.ssafy.enjoytrip.global.error.MediaException;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -18,10 +18,10 @@ import org.springframework.web.multipart.MultipartFile;
 @SpringBootTest
 @DisplayName("UploadService 통합 테스트")
 @Import(UploadConfig.class)
-class UploadServiceTest {
+class ImageUploaderTest {
 
     @Autowired
-    private UploadService uploadService;
+    private ImageUploader imageUploader;
 
     @Test
     @DisplayName("파일 업로드 테스트")
@@ -35,7 +35,7 @@ class UploadServiceTest {
         String folderName = "test";
 
         // when 
-        List<String> imageUrls = uploadService.uploadMedias(imagesFiles, folderName);
+        List<String> imageUrls = imageUploader.uploadMedias(imagesFiles, folderName);
 
         // then
         assertThat(imagesFiles.size()).isEqualTo(imageUrls.size());
@@ -49,7 +49,7 @@ class UploadServiceTest {
         String folderName = "test";
 
         // when & then
-        assertThatCode(() -> uploadService.uploadMedias(imagesFiles, folderName))
+        assertThatCode(() -> imageUploader.uploadMedias(imagesFiles, folderName))
             .isInstanceOf(MediaException.class)
             .hasMessage("imageFiles은 null이 될 수 없습니다.");
     }

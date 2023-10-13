@@ -5,7 +5,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.ssafy.enjoytrip.core.media.service.UploadService;
+import com.ssafy.enjoytrip.core.media.service.ImageUploader;
 import com.ssafy.enjoytrip.core.media.util.FileUtil;
 import com.ssafy.enjoytrip.global.error.MediaException;
 import com.ssafy.enjoytrip.infra.model.ImageFiles;
@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Profile("!test")
-public class S3Service implements UploadService {
+public class S3Service implements ImageUploader {
 
     private final AmazonS3 amazonS3;
     private final String bucket;

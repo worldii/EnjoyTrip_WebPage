@@ -1,7 +1,7 @@
 package com.ssafy.enjoytrip.config;
 
-import com.ssafy.enjoytrip.core.media.service.UploadService;
-import com.ssafy.enjoytrip.fake.MockUploadService;
+import com.ssafy.enjoytrip.core.media.service.ImageUploader;
+import com.ssafy.enjoytrip.fake.MockImageUploader;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 
@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 public class UploadConfig {
 
     @Bean
-    public UploadService uploadService() {
-        return new MockUploadService();
+    public ImageUploader uploadService() {
+        return new MockImageUploader();
     }
 }

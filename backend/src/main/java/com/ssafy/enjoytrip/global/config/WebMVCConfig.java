@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.global.auth.config;
+package com.ssafy.enjoytrip.global.config;
 
 import com.ssafy.enjoytrip.global.auth.interceptor.JwtArgumentResolver;
 import com.ssafy.enjoytrip.global.auth.interceptor.JwtInterceptor;

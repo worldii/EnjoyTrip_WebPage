@@ -1,6 +1,6 @@
 package com.ssafy.enjoytrip.fake;
 
-import com.ssafy.enjoytrip.core.media.service.UploadService;
+import com.ssafy.enjoytrip.core.media.service.ImageUploader;
 import com.ssafy.enjoytrip.core.media.util.FileUtil;
 import com.ssafy.enjoytrip.infra.model.ImageFiles;
 import java.util.List;
@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Component
 @Profile("test")
-public class MockUploadService implements UploadService {
+public class MockImageUploader implements ImageUploader {
 
     @Override
     public List<String> uploadMedias(

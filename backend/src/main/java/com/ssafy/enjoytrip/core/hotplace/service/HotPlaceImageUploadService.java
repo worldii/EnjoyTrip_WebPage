@@ -2,7 +2,7 @@ package com.ssafy.enjoytrip.core.hotplace.service;
 
 import com.ssafy.enjoytrip.core.hotplace.model.dao.HotPlaceArticleRepository;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceArticle;
-import com.ssafy.enjoytrip.core.media.service.UploadService;
+import com.ssafy.enjoytrip.core.media.service.ImageUploader;
 import com.ssafy.enjoytrip.core.user.dao.UserRepository;
 import com.ssafy.enjoytrip.core.user.model.entity.User;
 import com.ssafy.enjoytrip.global.error.BoardException;
@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class HotPlaceImageUploadService {
 
-    private final UploadService uploadService;
+    private final ImageUploader imageUploader;
     private final UserRepository userRepository;
     private final HotPlaceArticleRepository hotPlaceArticleRepository;
 
@@ -27,7 +27,7 @@ public class HotPlaceImageUploadService {
         if (files.size() != 1) {
             throw new HotPlaceException("핫플레이스 이미지 등록은 1개만 업로드 가능합니다.");
         }
-        return uploadService.uploadMedias(files, "/hotplace/" + hotPlaceId);
+        return imageUploader.uploadMedias(files, "/hotplace/" + hotPlaceId);
     }
 
     public List<String> uploadHotPlaceArticleImage(
@@ -40,7 +40,7 @@ public class HotPlaceImageUploadService {
 
         validateUser(hotPlaceArticle.getUserId(), user.getUserId());
 
-        return uploadService.uploadMedias(files,
+        return imageUploader.uploadMedias(files,
             "/hotplace/article/" + hotPlaceArticle.getHotPlaceId());
     }
 

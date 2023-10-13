@@ -23,8 +23,7 @@ public class HotPlaceImageController {
         @PathVariable final String hotPlaceId,
         @RequestParam final List<MultipartFile> files
     ) {
-        final List<String> imageUrls = hotPlaceImageService.uploadHotPlaceImage(files, hotPlaceId);
-        return ResponseEntity.ok(imageUrls);
+        return ResponseEntity.ok(hotPlaceImageService.uploadHotPlaceImage(files, hotPlaceId));
     }
 
     @PostMapping("/article/{articleId}")

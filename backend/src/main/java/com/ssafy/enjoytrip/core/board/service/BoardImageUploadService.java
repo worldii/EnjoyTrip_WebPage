@@ -5,7 +5,7 @@ import com.ssafy.enjoytrip.core.board.dao.BoardRepository;
 import com.ssafy.enjoytrip.core.board.model.dto.response.BoardImageUrlResponse;
 import com.ssafy.enjoytrip.core.board.model.entity.Board;
 import com.ssafy.enjoytrip.core.board.model.entity.BoardImageInfo;
-import com.ssafy.enjoytrip.core.media.service.UploadService;
+import com.ssafy.enjoytrip.core.media.service.ImageUploader;
 import com.ssafy.enjoytrip.core.user.dao.UserRepository;
 import com.ssafy.enjoytrip.core.user.model.entity.User;
 import com.ssafy.enjoytrip.global.error.BoardException;
@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RequiredArgsConstructor
 public class BoardImageUploadService {
 
-    private final UploadService uploadService;
+    private final ImageUploader imageUploader;
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
     private final BoardImageRepository boardImageRepository;
@@ -33,7 +33,7 @@ public class BoardImageUploadService {
         final User user = findUserByUserId(userId);
 
         validateUser(board.getUserId(), user.getUserId());
-        final List<String> imageUrls = uploadService.uploadMedias(files,
+        final List<String> imageUrls = imageUploader.uploadMedias(files,
             "/board/" + board.getBoardId());
 
         return imageUrls.stream()
@@ -61,7 +61,7 @@ public class BoardImageUploadService {
             .stream()
             .map(BoardImageInfo::getImageUrl)
             .collect(Collectors.toList());
-        uploadService.deleteMedias(imageUrls);
+        imageUploader.deleteMedias(imageUrls);
     }
 
     private void validateUser(final String boardUserId, final String userId) {
