@@ -13,7 +13,7 @@ import com.ssafy.enjoytrip.core.hotplace.model.dto.response.HotPlaceDetailRespon
 import com.ssafy.enjoytrip.core.hotplace.model.dto.response.HotPlaceResponse;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlace;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceArticle;
-import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceArticleImageInfo;
+import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceArticleImage;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceTag;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceTags;
 import com.ssafy.enjoytrip.core.user.dao.UserRepository;
@@ -82,14 +82,14 @@ public class HotPlaceServiceImpl implements HotPlaceService {
     }
 
     private void insertHotPlaceArticleImages(final HotPlaceArticle hotPlaceArticle) {
-        final List<HotPlaceArticleImageInfo> imageInfos = hotPlaceArticle.getImageUrl().stream()
-            .map(imageUrl -> HotPlaceArticleImageInfo.builder()
+        final List<HotPlaceArticleImage> imageInfos = hotPlaceArticle.getImageUrl().stream()
+            .map(imageUrl -> HotPlaceArticleImage.builder()
                 .hotPlaceArticleId(hotPlaceArticle.getHotPlaceArticleId())
                 .imageUrl(imageUrl)
-                .build()).collect(Collectors.toList());
+                .build())
+            .collect(Collectors.toList());
 
-        hotPlaceArticleImageRepository
-            .insertFile(hotPlaceArticle.getHotPlaceArticleId(), imageInfos);
+        hotPlaceArticleImageRepository.insertFile(imageInfos);
     }
 
     private HotPlace findHotPlaceByHotPlaceId(final String hotPlaceId) {

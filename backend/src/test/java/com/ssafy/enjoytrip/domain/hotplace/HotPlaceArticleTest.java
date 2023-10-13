@@ -4,6 +4,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceArticle;
 import com.ssafy.enjoytrip.global.error.HotPlaceException;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -28,7 +29,7 @@ class HotPlaceArticleTest {
             .hotPlaceId(hotPlaceId)
             .userId(userId)
             .content(content)
-            .imageUrl(imageUrl)
+            .imageUrl(List.of("www.naver.com"))
             .build())
             .doesNotThrowAnyException();
     }
@@ -49,7 +50,7 @@ class HotPlaceArticleTest {
             .hotPlaceId(hotPlaceId)
             .userId(userId)
             .content(content)
-            .imageUrl(imageUrl)
+            .imageUrl(List.of("www.naver.com"))
             .build())
             .isInstanceOf(HotPlaceException.class)
             .hasMessage("핫플레이스 아이디가 없습니다.");
@@ -71,7 +72,7 @@ class HotPlaceArticleTest {
             .hotPlaceId(hotPlaceId)
             .userId(userId)
             .content(content)
-            .imageUrl(imageUrl)
+            .imageUrl(List.of("www.naver.com"))
             .build())
             .isInstanceOf(HotPlaceException.class)
             .hasMessage("유저 아이디가 없습니다.");
@@ -93,7 +94,7 @@ class HotPlaceArticleTest {
             .hotPlaceId(hotPlaceId)
             .userId(userId)
             .content(content)
-            .imageUrl(imageUrl)
+            .imageUrl(List.of("www.naver.com"))
             .build())
             .isInstanceOf(HotPlaceException.class)
             .hasMessage("내용이 없습니다.");
@@ -115,7 +116,7 @@ class HotPlaceArticleTest {
             .hotPlaceId(hotPlaceId)
             .userId(userId)
             .content(content)
-            .imageUrl(imageUrl)
+            .imageUrl(List.of("www.naver.com"))
             .build())
             .isInstanceOf(HotPlaceException.class)
             .hasMessage("이미지 URL이 없습니다.");

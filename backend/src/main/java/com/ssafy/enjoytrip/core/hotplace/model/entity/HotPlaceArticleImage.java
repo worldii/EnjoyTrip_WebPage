@@ -5,21 +5,21 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class HotPlaceArticleImageInfo {
+public class HotPlaceArticleImage {
 
-    private final Long imageInfoId;
+    private final Long hotPlaceArticleImageId;
     private final Long hotPlaceArticleId;
     private final String imageUrl;
 
     @Builder
-    public HotPlaceArticleImageInfo(
-        final Long imageInfoId,
+    public HotPlaceArticleImage(
+        final Long hotPlaceArticleImageId,
         final String imageUrl,
         final Long hotPlaceArticleId
     ) {
         validateImageUrl(imageUrl);
         validateHotPlaceArticleId(hotPlaceArticleId);
-        this.imageInfoId = imageInfoId;
+        this.hotPlaceArticleImageId = hotPlaceArticleImageId;
         this.imageUrl = imageUrl;
         this.hotPlaceArticleId = hotPlaceArticleId;
     }

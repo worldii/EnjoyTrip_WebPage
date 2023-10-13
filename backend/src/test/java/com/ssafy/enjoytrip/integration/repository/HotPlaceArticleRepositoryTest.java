@@ -4,6 +4,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import com.ssafy.enjoytrip.core.hotplace.model.dao.HotPlaceArticleRepository;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceArticle;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,7 +43,7 @@ class HotPlaceArticleRepositoryTest {
             .hotPlaceId("1")
             .userId("1")
             .hotPlaceName("서울")
-            .imageUrl("www.naver.com")
+            .imageUrl(List.of("www.naver.com"))
             .content("content")
             .build();
 

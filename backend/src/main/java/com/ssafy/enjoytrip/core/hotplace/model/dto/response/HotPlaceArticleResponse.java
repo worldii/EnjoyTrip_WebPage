@@ -1,6 +1,7 @@
 package com.ssafy.enjoytrip.core.hotplace.model.dto.response;
 
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceArticle;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,7 @@ public class HotPlaceArticleResponse {
     private String userId;
     private String content;
     private String createAt;
-    private String imageUrl;
+    private List<String> imageUrl;
 
     public static HotPlaceArticleResponse from(final HotPlaceArticle hotPlaceArticle) {
         return new HotPlaceArticleResponse(

@@ -1,6 +1,6 @@
 package com.ssafy.enjoytrip.core.hotplace.model.dao;
 
-import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceArticleImageInfo;
+import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceArticleImage;
 import com.ssafy.enjoytrip.core.hotplace.model.mapper.HotPlaceArticleImageMapper;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -15,14 +15,11 @@ public class HotPlaceArticleImageRepository {
     private final HotPlaceArticleImageMapper hotPlaceArticleImageMapper;
 
     @Transactional
-    public void insertFile(
-        final Long hotPlaceArticleId,
-        final List<HotPlaceArticleImageInfo> imageFiles
-    ) {
-        hotPlaceArticleImageMapper.insertFile(hotPlaceArticleId, imageFiles);
+    public void insertFile(final List<HotPlaceArticleImage> imageFiles) {
+        hotPlaceArticleImageMapper.insertFile(imageFiles);
     }
 
-    public List<HotPlaceArticleImageInfo> selectFile(final Long hotPlaceArticleId) {
+    public List<HotPlaceArticleImage> selectFile(final Long hotPlaceArticleId) {
         return hotPlaceArticleImageMapper.selectFile(hotPlaceArticleId);
     }
 

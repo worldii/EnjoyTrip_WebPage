@@ -9,7 +9,6 @@
     <result column="hot_place_id" property="hotPlaceId"/>
     <result column="content" property="content"/>
     <result column="createAt" property="createAt"/>
-    <result column="image_url" property="imageUrl"/>
   </resultMap>
 
   <insert id="insertHotPlaceArticle" parameterType="hotPlaceArticle" useGeneratedKeys="true"
@@ -17,8 +16,8 @@
     <selectKey resultType="Long" keyProperty="hotPlaceArticleId" order="AFTER">
       SELECT LAST_INSERT_ID() AS hotPlaceArticleId
     </selectKey>
-    insert into hot_place_article (user_id, hot_place_id, content, image_url, hot_place_name)
-    values (#{userId}, #{hotPlaceId}, #{content}, #{imageUrl}, #{hotPlaceName})
+    insert into hot_place_article (user_id, hot_place_id, content, hot_place_name)
+    values (#{userId}, #{hotPlaceId}, #{content}, #{hotPlaceName})
   </insert>
 
   <select id="selectHotPlaceArticleByArticleId" resultMap="hotPlaceArticle">
@@ -26,10 +25,4 @@
     from hot_place_article
     where hot_place_article_id = #{hotPlaceArticleId}
   </select>
-
-  <update id="updateHotPlaceArticleImage">
-    update hot_place_article
-    set image_url = #{imageUrl}
-    where hot_place_article_id = #{hotPlaceArticleId}
-  </update>
 </mapper>

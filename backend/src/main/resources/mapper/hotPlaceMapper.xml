@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.enjoytrip.core.hotplace.model.mapper.HotPlaceMapper">
-
   <resultMap id="hotPlace" type="com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlace">
     <id column="hot_place_id" property="hotPlaceId"/>
     <result column="hot_place_name" property="hotPlaceName"/>
@@ -30,7 +29,6 @@
       <result column="user_id" property="userId"/>
       <result column="content" property="content"/>
       <result column="create_at" property="createAt"/>
-      <result column="image_url" property="imageUrl"/>
     </collection>
     <collection property="hotPlaceTags" ofType="HotPlaceTag">
       <result column="tag_name" property="tagName"/>

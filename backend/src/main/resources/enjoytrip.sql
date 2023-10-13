@@ -12,6 +12,8 @@ DROP TABLE IF EXISTS `USER` cascade;
 DROP TABLE IF EXISTS hot_place_tag cascade;
 DROP TABLE IF EXISTS hot_place_article cascade;
 DROP TABLE IF EXISTS hot_place cascade;
+DROP TABLE IF EXISTS hot_place_article_image cascade;
+
 
 CREATE TABLE user (
                       user_id VARCHAR(255) PRIMARY KEY,
@@ -29,10 +31,10 @@ CREATE TABLE board_image_info (
                                  board_id BIGINT
 );
 
-CREATE TABLE hot_place_article_image_info (
-                                  image_info_id BIGINT not null AUTO_INCREMENT PRIMARY KEY,
-                                  image_url VARCHAR(255),
-                                    hot_place_article_id BIGINT
+CREATE TABLE hot_place_article_image (
+    hot_place_article_image_id BIGINT not null AUTO_INCREMENT PRIMARY KEY,
+    image_url VARCHAR(255),
+    hot_place_article_id BIGINT
 );
 
 CREATE TABLE board (
@@ -65,14 +67,13 @@ create table hot_place (
 );
 
 create table hot_place_article (
-                                   hot_place_article_id BIGINT AUTO_INCREMENT PRIMARY KEY,
-                                   user_id VARCHAR(255) NOT NULL,
-                                   hot_place_id VARCHAR(255) NOT NULL,
-                                   current_update TIMESTAMP default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                                   hot_place_name VARCHAR(255) NOT NULL,
-                                   content VARCHAR(255) NOT NULL,
-                                   hit BIGINT DEFAULT 0,
-                                   image_url VARCHAR(255)
+    hot_place_article_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id VARCHAR(255) NOT NULL,
+    hot_place_id VARCHAR(255) NOT NULL,
+    current_update TIMESTAMP default CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    hot_place_name VARCHAR(255) NOT NULL,
+    content VARCHAR(255) NOT NULL,
+    hit BIGINT DEFAULT 0
 );
 
 create table hot_place_tag (
