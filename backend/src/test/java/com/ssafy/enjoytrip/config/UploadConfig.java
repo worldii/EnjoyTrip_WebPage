@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Bean;
 public class UploadConfig {
 
     @Bean
-    public ImageUploader uploadService() {
+    public ImageUploader imageUploader() {
         return new MockImageUploader();
     }
 }

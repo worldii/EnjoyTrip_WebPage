@@ -26,7 +26,7 @@ import org.springframework.test.context.jdbc.Sql;
 @DisplayName("게시판 관련 기능")
 @Import(UploadConfig.class)
 class BoardAcceptanceTest extends AcceptanceTest {
-
+    
     @Test
     @DisplayName("게시판을 정상적으로 등록한다")
     void insertBoardTest() {

@@ -21,7 +21,6 @@ class HotPlaceArticleTest {
         String hotPlaceId = "1";
         String userId = "1";
         String content = "content";
-        String imageUrl = "imageUrl";
 
         // when & then
         assertThatCode(() -> HotPlaceArticle.builder()
@@ -42,7 +41,6 @@ class HotPlaceArticleTest {
         Long hotPlaceArticleId = 1L;
         String userId = "1";
         String content = "content";
-        String imageUrl = "imageUrl";
 
         // when & then
         assertThatCode(() -> HotPlaceArticle.builder()
@@ -64,7 +62,6 @@ class HotPlaceArticleTest {
         Long hotPlaceArticleId = 1L;
         String hotPlaceId = "1";
         String content = "content";
-        String imageUrl = "imageUrl";
 
         // when & then
         assertThatCode(() -> HotPlaceArticle.builder()
@@ -86,7 +83,6 @@ class HotPlaceArticleTest {
         Long hotPlaceArticleId = 1L;
         String hotPlaceId = "1";
         String userId = "1";
-        String imageUrl = "imageUrl";
 
         // when & then
         assertThatCode(() -> HotPlaceArticle.builder()
@@ -98,27 +94,5 @@ class HotPlaceArticleTest {
             .build())
             .isInstanceOf(HotPlaceException.class)
             .hasMessage("내용이 없습니다.");
-    }
-
-    @ParameterizedTest
-    @NullAndEmptySource
-    @DisplayName("ImageUrl이 null일 경우, 예외가 발생한다")
-    void createHotPlaceArticleFailByImageUrl(String imageUrl) {
-        // given
-        Long hotPlaceArticleId = 1L;
-        String hotPlaceId = "1";
-        String userId = "1";
-        String content = "content";
-
-        // when & then
-        assertThatCode(() -> HotPlaceArticle.builder()
-            .hotPlaceArticleId(hotPlaceArticleId)
-            .hotPlaceId(hotPlaceId)
-            .userId(userId)
-            .content(content)
-            .imageUrl(List.of("www.naver.com"))
-            .build())
-            .isInstanceOf(HotPlaceException.class)
-            .hasMessage("이미지 URL이 없습니다.");
     }
 }
