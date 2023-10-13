@@ -12,10 +12,13 @@ public class HotPlaceResponse {
 
     private String hotPlaceId;
     private String hotPlaceName;
+    private String imageUrl;
 
     public static HotPlaceResponse from(final HotPlace hotPlace) {
         return new HotPlaceResponse(
             hotPlace.getHotPlaceId(),
-            hotPlace.getHotPlaceName());
+            hotPlace.getHotPlaceName(),
+            hotPlace.getImageUrl()
+        );
     }
 }

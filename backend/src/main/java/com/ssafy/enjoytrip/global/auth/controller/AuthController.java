@@ -18,17 +18,14 @@ public class AuthController {
     private final TokenService tokenService;
 
     @PostMapping("/refresh-token")
-    public ResponseEntity<RefreshTokenResponse> generateRefreshToken(
-        @LoginUser final String userId
+    public ResponseEntity<RefreshTokenResponse> generateRefreshToken(@LoginUser final String userId
     ) {
         return ResponseEntity.ok(tokenService.generateRefreshToken(userId));
     }
 
     // TODO : 로그인 유저 아니게 바꾸기.
     @PostMapping("/access-token")
-    public ResponseEntity<AccessTokenResponse> generateAccessToken(
-        @LoginUser final String userId
-    ) {
+    public ResponseEntity<AccessTokenResponse> generateAccessToken(@LoginUser final String userId) {
         return ResponseEntity.ok(tokenService.generateAccessToken(userId));
     }
 }

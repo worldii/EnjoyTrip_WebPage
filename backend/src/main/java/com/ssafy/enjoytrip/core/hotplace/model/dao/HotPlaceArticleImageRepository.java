@@ -23,6 +23,7 @@ public class HotPlaceArticleImageRepository {
         return hotPlaceArticleImageMapper.selectFile(hotPlaceArticleId);
     }
 
+    @Transactional
     public void deleteFileByHotPlaceArticleId(final Long hotPlaceArticleId) {
         hotPlaceArticleImageMapper.deleteFileByHotPlaceArticleId(hotPlaceArticleId);
     }

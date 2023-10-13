@@ -81,22 +81,6 @@ public class HotPlaceServiceImpl implements HotPlaceService {
         return hotPlaceArticle.getHotPlaceArticleId();
     }
 
-    private void insertHotPlaceArticleImages(final HotPlaceArticle hotPlaceArticle) {
-        final List<HotPlaceArticleImage> imageInfos = hotPlaceArticle.getImageUrl().stream()
-            .map(imageUrl -> HotPlaceArticleImage.builder()
-                .hotPlaceArticleId(hotPlaceArticle.getHotPlaceArticleId())
-                .imageUrl(imageUrl)
-                .build())
-            .collect(Collectors.toList());
-
-        hotPlaceArticleImageRepository.insertFile(imageInfos);
-    }
-
-    private HotPlace findHotPlaceByHotPlaceId(final String hotPlaceId) {
-        return hotPlaceRepository.selectHotPlaceByHotPlaceId(hotPlaceId)
-            .orElseThrow(() -> new HotPlaceException("존재하지 않는 핫플레이스입니다."));
-    }
-
     @Transactional(readOnly = true)
     @Override
     public List<HotPlaceResponse> selectAllHotPlace(
@@ -112,13 +96,14 @@ public class HotPlaceServiceImpl implements HotPlaceService {
     @Transactional(readOnly = true)
     @Override
     public HotPlaceDetailResponse selectAllByHotPlaceId(final String hotPlaceId) {
-        HotPlace hotPlace = hotPlaceRepository.selectAllByHotPlaceId(hotPlaceId)
+        final HotPlace hotPlace = hotPlaceRepository.selectAllByHotPlaceId(hotPlaceId)
             .orElseThrow(() -> new HotPlaceException("존재하지 않는 핫플레이스입니다."));
 
         return HotPlaceDetailResponse.from(hotPlace);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public HotPlaceArticleResponse selectHotPlaceArticleByArticleId(
         final String hotPlaceId,
         final Long articleId
@@ -132,6 +117,7 @@ public class HotPlaceServiceImpl implements HotPlaceService {
     }
 
     @Override
+    @Transactional
     public void updateVoteCount(final String hotPlaceId, final HotPlaceVoteRequest voteRequest) {
         final HotPlace hotPlace = findHotPlaceByHotPlaceId(hotPlaceId);
 
@@ -172,5 +158,21 @@ public class HotPlaceServiceImpl implements HotPlaceService {
     private HotPlaceArticle findHotPlaceArticleById(final Long articleId) {
         return hotPlaceArticleRepository.selectHotPlaceArticleByArticleId(articleId)
             .orElseThrow(() -> new HotPlaceException("존재하지 않는 핫플레이스 게시글입니다."));
+    }
+
+    private void insertHotPlaceArticleImages(final HotPlaceArticle hotPlaceArticle) {
+        final List<HotPlaceArticleImage> imageInfos = hotPlaceArticle.getImageUrl().stream()
+            .map(imageUrl -> HotPlaceArticleImage.builder()
+                .hotPlaceArticleId(hotPlaceArticle.getHotPlaceArticleId())
+                .imageUrl(imageUrl)
+                .build())
+            .collect(Collectors.toList());
+
+        hotPlaceArticleImageRepository.insertFile(imageInfos);
+    }
+
+    private HotPlace findHotPlaceByHotPlaceId(final String hotPlaceId) {
+        return hotPlaceRepository.selectHotPlaceByHotPlaceId(hotPlaceId)
+            .orElseThrow(() -> new HotPlaceException("존재하지 않는 핫플레이스입니다."));
     }
 }

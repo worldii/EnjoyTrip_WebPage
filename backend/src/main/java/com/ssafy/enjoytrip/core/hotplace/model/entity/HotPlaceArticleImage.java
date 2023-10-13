@@ -19,6 +19,7 @@ public class HotPlaceArticleImage {
     ) {
         validateImageUrl(imageUrl);
         validateHotPlaceArticleId(hotPlaceArticleId);
+        
         this.hotPlaceArticleImageId = hotPlaceArticleImageId;
         this.imageUrl = imageUrl;
         this.hotPlaceArticleId = hotPlaceArticleId;

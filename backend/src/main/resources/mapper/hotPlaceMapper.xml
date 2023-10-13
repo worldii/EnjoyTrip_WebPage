@@ -47,7 +47,7 @@
 
 
   <select id="selectAllHotPlace" resultMap="hotPlace">
-    select hot_place_id, hot_place_name
+    select hot_place_id, hot_place_name, image_url
     from hot_place
     <where>
       <if test="keyword != null and keyword != ''">
