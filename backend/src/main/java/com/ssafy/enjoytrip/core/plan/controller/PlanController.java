@@ -1,9 +1,8 @@
 package com.ssafy.enjoytrip.core.plan.controller;
 
 
-import com.ssafy.enjoytrip.core.plan.model.dto.request.PlanBoardRequest;
+import com.ssafy.enjoytrip.core.plan.model.dto.request.PlanBoardSaveRequest;
 import com.ssafy.enjoytrip.core.plan.model.dto.response.PlanBoardResponse;
-import com.ssafy.enjoytrip.core.plan.model.entity.PlanBoard;
 import com.ssafy.enjoytrip.core.plan.service.PlanService;
 import com.ssafy.enjoytrip.global.auth.model.dto.LoginUser;
 import java.util.List;
@@ -24,13 +23,13 @@ public class PlanController {
     private final PlanService planService;
 
     @PostMapping
-    ResponseEntity<Long> save(final @RequestBody PlanBoardRequest planBoardRequest) {
+    ResponseEntity<Long> save(final @RequestBody PlanBoardSaveRequest planBoardRequest) {
         return ResponseEntity.ok(planService.savePlanBoard(planBoardRequest));
     }
 
     @GetMapping
-    ResponseEntity<List<PlanBoard>> getPlanListByUser(@LoginUser final String userId) {
-        return ResponseEntity.ok(planService.list(userId));
+    ResponseEntity<List<PlanBoardResponse>> getPlanListByUser(@LoginUser final String userId) {
+        return ResponseEntity.ok(planService.selectAll(userId));
     }
 
     @GetMapping("/{planBoardId}")

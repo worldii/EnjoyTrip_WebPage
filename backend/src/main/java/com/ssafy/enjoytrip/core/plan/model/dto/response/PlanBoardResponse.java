@@ -1,8 +1,7 @@
 package com.ssafy.enjoytrip.core.plan.model.dto.response;
 
-import com.ssafy.enjoytrip.core.plan.model.dto.Plan;
+import com.ssafy.enjoytrip.core.plan.model.entity.PlanBoard;
 import java.util.List;
-import java.util.Map;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,5 +19,26 @@ public class PlanBoardResponse {
     private String title;
     private String startDate;
     private String endDate;
-    private Map<String, List<Plan>> planDateMap;
+    private List<PlanResponse> planList;
+
+    public static PlanBoardResponse of(final PlanBoard planBoard, final List<PlanResponse> plans) {
+        return PlanBoardResponse.builder()
+            .planBoardId(planBoard.getPlanBoardId())
+            .userId(planBoard.getUserId())
+            .title(planBoard.getTitle())
+            .startDate(planBoard.getStartDate().toString())
+            .endDate(planBoard.getEndDate().toString())
+            .planList(plans)
+            .build();
+    }
+
+    public static PlanBoardResponse from(final PlanBoard planBoard) {
+        return PlanBoardResponse.builder()
+            .planBoardId(planBoard.getPlanBoardId())
+            .userId(planBoard.getUserId())
+            .title(planBoard.getTitle())
+            .startDate(planBoard.getStartDate().toString())
+            .endDate(planBoard.getEndDate().toString())
+            .build();
+    }
 }

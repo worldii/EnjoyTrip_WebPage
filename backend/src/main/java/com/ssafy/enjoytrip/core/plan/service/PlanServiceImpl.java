@@ -1,14 +1,15 @@
 package com.ssafy.enjoytrip.core.plan.service;
 
 import com.ssafy.enjoytrip.core.plan.model.dao.PlanRepository;
-import com.ssafy.enjoytrip.core.plan.model.dto.request.PlanBoardRequest;
+import com.ssafy.enjoytrip.core.plan.model.dto.request.PlanBoardSaveRequest;
 import com.ssafy.enjoytrip.core.plan.model.dto.response.PlanBoardResponse;
+import com.ssafy.enjoytrip.core.plan.model.dto.response.PlanResponse;
 import com.ssafy.enjoytrip.core.plan.model.entity.Plan;
 import com.ssafy.enjoytrip.core.plan.model.entity.PlanBoard;
+import com.ssafy.enjoytrip.global.error.PlanException;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +23,7 @@ public class PlanServiceImpl implements PlanService {
 
     @Transactional
     @Override
-    public Long savePlanBoard(PlanBoardRequest planBoardRequest) {
+    public Long savePlanBoard(final PlanBoardSaveRequest planBoardRequest) {
         final PlanBoard planBoard = PlanBoard
             .builder()
             .startDate(Date.valueOf(planBoardRequest.getStartDate()))
@@ -33,46 +34,39 @@ public class PlanServiceImpl implements PlanService {
 
         planRepository.insertPlanBoard(planBoard);
 
-//        for (List<Plan> planList : planBoardRequest.getPlanDateMap().values()) {
-//            for (Plan plan : planList) {
-//                plan.setPlanBoardId(planBoardDto.getPlanBoardId());
-//            }
-//            planRepository.insertPlanList(planList);
-//        }
+        final List<Plan> plans = planBoardRequest.getPlanList().stream()
+            .map(plan -> Plan.builder()
+                .planBoardId(planBoard.getPlanBoardId())
+                .planOrder(plan.getPlanOrder())
+                .expectDuration(plan.getExpectDuration())
+                .startTime(plan.getStartTime())
+                .endTime(plan.getEndTime())
+                .placeName(plan.getPlaceName())
+                .content(plan.getContent())
+                .build()).collect(Collectors.toList());
+
+        planRepository.insertPlanList(plans);
         return planBoard.getPlanBoardId();
     }
 
     @Override
-    public PlanBoardResponse detail(Long planBoardId, String userId) {
-        PlanBoardResponse planBoardResponse = null;
-        PlanBoard planBoardDto = planRepository.selectPlanBoardByPlanBoardId(planBoardId);
-        List<Plan> planList = planRepository.selectPlanByPlanBoardId(planBoardId);
-        HashMap<String, List<Plan>> planDateMap = new HashMap<>();
+    public PlanBoardResponse detail(final Long planBoardId, final String userId) {
+        final PlanBoard planBoard = planRepository.selectPlanBoardByPlanBoardId(planBoardId)
+            .orElseThrow(() -> new PlanException("해당 일정이 존재하지 않습니다."));
+        
+        final List<PlanResponse> plans = planRepository.selectPlanByPlanBoardId(planBoardId)
+            .stream()
+            .map(PlanResponse::from)
+            .collect(Collectors.toList());
 
-        for (int i = 0; i < planList.size(); i++) {
-            if (planDateMap.containsKey(planList.get(i).getExpectDate().toString())) {
-                planDateMap.get(planList.get(i).getExpectDate().toString()).add(planList.get(i));
-            } else {
-                List<Plan> list = new ArrayList<>();
-                list.add(planList.get(i));
-                planDateMap.put(planList.get(i).getExpectDate().toString(), list);
-            }
-        }
-
-        planBoardResponse = PlanBoardResponse
-            .builder()
-            .planBoardId(planBoardDto.getPlanBoardId())
-            .title(planBoardDto.getTitle())
-            .userId(planBoardDto.getUserId())
-            .startDate(planBoardDto.getStartDate().toString())
-            .endDate(planBoardDto.getEndDate().toString())
-            .planDateMap(planDateMap)
-            .build();
-        return planBoardResponse;
+        return PlanBoardResponse.of(planBoard, plans);
     }
 
     @Override
-    public List<PlanBoard> list(String userId) {
-        return planRepository.selectPlanBoardByUserId(userId);
+    public List<PlanBoardResponse> selectAll(final String userId) {
+        return planRepository.selectPlanBoardByUserId(userId)
+            .stream()
+            .map(PlanBoardResponse::from)
+            .collect(Collectors.toList());
     }
 }
