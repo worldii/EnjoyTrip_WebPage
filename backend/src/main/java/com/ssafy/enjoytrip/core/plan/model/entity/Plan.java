@@ -75,7 +75,7 @@ public class Plan {
     }
 
     private void validatePlanOrder(int planOrder) {
-        if (planOrder < 0) {
+        if (planOrder <= 0) {
             throw new PlanException("plan의 planOrder는 0보다 작을 수 없습니다.");
         }
     }
