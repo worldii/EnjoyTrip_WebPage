@@ -2,9 +2,9 @@ package com.ssafy.enjoytrip.core.board.service;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.ssafy.enjoytrip.core.board.dao.BoardImageRepository;
 import com.ssafy.enjoytrip.core.board.dao.BoardRepository;
 import com.ssafy.enjoytrip.core.board.dao.CommentRepository;
-import com.ssafy.enjoytrip.core.board.model.dto.request.BoardImageInfoResponse;
 import com.ssafy.enjoytrip.core.board.model.dto.request.BoardModifyRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.request.BoardSaveRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.request.BoardSearchRequest;
@@ -30,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class BoardServiceImpl implements BoardService {
 
     private final BoardRepository boardRepository;
-    private final BoardImageService boardImageService;
+    private final BoardImageRepository boardImageRepository;
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
 
@@ -49,10 +49,18 @@ public class BoardServiceImpl implements BoardService {
 
         boardRepository.insertBoard(board);
         if (board.isImageUrlNotEmpty()) {
-            boardImageService.insertBoardImage(board.getBoardId(), request.getFileUrls());
+            insertImageUrls(request.getFileUrls(), board.getBoardId());
         }
 
         return board.getBoardId();
+    }
+
+    private void insertImageUrls(final List<String> imageUrls, final Long boardId) {
+        final List<BoardImageInfo> boardImageInfos = imageUrls.stream()
+            .map(imageUrl -> BoardImageInfo.of(boardId, imageUrl))
+            .collect(Collectors.toList());
+
+        boardImageRepository.insertFile(boardId, boardImageInfos);
     }
 
     @Override
@@ -66,18 +74,14 @@ public class BoardServiceImpl implements BoardService {
         return PageResponse.from(new PageNavigationForPageHelper(boards, "/board/"));
     }
 
-    // TODO : 고민점? DTO 로 한번에 끌고 오는 것이 나은가? 아니면, 따로 따로 가져오는 것이 나은가?
     @Override
     @Transactional(readOnly = true)
     public BoardDetailResponse detail(final Long boardId) {
         final Board board = findBoardByBoardId(boardId);
 
-        final List<BoardImageInfo> boardImageInfos = boardImageService
-            .selectBoardImage(boardId)
-            .stream()
-            .map(BoardImageInfoResponse::toEntity)
-            .collect(Collectors.toList());
-        
+        final List<BoardImageInfo> boardImageInfos = boardImageRepository
+            .selectFileByBoardId(boardId).stream().collect(Collectors.toList());
+
         final List<Comment> comments = commentRepository.selectAll(boardId);
 
         return BoardDetailResponse.of(board, comments, boardImageInfos);
@@ -103,8 +107,10 @@ public class BoardServiceImpl implements BoardService {
             .build();
 
         boardRepository.updateBoard(modifyBoard);
+
         if (modifyBoard.isImageUrlNotEmpty()) {
-            boardImageService.insertBoardImage(boardId, boardModifyRequest.getImageUrls());
+            boardImageRepository.deleteFileByBoardId(boardId);
+            insertImageUrls(boardModifyRequest.getImageUrls(), board.getBoardId());
         }
     }
 
@@ -117,7 +123,7 @@ public class BoardServiceImpl implements BoardService {
 
         validateSameMember(user.getUserId(), board.getUserId());
 
-        boardImageService.deleteBoardImage(boardId);
+        boardImageRepository.deleteFileByBoardId(boardId);
         commentRepository.deleteAll(boardId);
         boardRepository.deleteBoard(boardId);
     }

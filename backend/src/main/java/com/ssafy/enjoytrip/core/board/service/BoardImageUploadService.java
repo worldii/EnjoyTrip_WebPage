@@ -33,8 +33,8 @@ public class BoardImageUploadService {
         final User user = findUserByUserId(userId);
 
         validateUser(board.getUserId(), user.getUserId());
-        final List<String> imageUrls = uploadService.uploadMedias(
-            files, "/board/" + board.getBoardId());
+        final List<String> imageUrls = uploadService.uploadMedias(files,
+            "/board/" + board.getBoardId());
 
         return imageUrls.stream()
             .map(BoardImageUrlResponse::new)
