@@ -2,7 +2,6 @@ package com.ssafy.enjoytrip.core.hotplace.service;
 
 import com.ssafy.enjoytrip.core.hotplace.model.dao.HotPlaceArticleImageRepository;
 import com.ssafy.enjoytrip.core.hotplace.model.dao.HotPlaceArticleRepository;
-import com.ssafy.enjoytrip.core.hotplace.model.dao.HotPlaceImageInfoRepository;
 import com.ssafy.enjoytrip.core.hotplace.model.dao.HotPlaceRepository;
 import com.ssafy.enjoytrip.core.hotplace.model.dao.HotPlaceTagRepository;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceArticleSaveRequest;
@@ -15,7 +14,6 @@ import com.ssafy.enjoytrip.core.hotplace.model.dto.response.HotPlaceResponse;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlace;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceArticle;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceArticleImageInfo;
-import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceImageInfo;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceTag;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceTags;
 import com.ssafy.enjoytrip.core.user.dao.UserRepository;
@@ -36,7 +34,6 @@ public class HotPlaceServiceImpl implements HotPlaceService {
     private final HotPlaceRepository hotPlaceRepository;
     private final HotPlaceArticleRepository hotPlaceArticleRepository;
     private final HotPlaceTagRepository hotPlaceTagRepository;
-    private final HotPlaceImageInfoRepository hotPlaceImageInfoRepository;
     private final HotPlaceArticleImageRepository hotPlaceArticleImageRepository;
     private final UserRepository userRepository;
 
@@ -46,30 +43,16 @@ public class HotPlaceServiceImpl implements HotPlaceService {
         final HotPlace hotPlace = HotPlace.builder()
             .hotPlaceId(request.getHotPlaceId())
             .hotPlaceName(request.getHotPlaceName())
-            .placeUrl(request.getPlaceUrl())
+            .imageUrl(request.getImageUrl())
             .x(request.getX())
             .y(request.getY())
             .addressName(request.getAddressName())
             .roadAddressName(request.getRoadAddressName())
-            .imageUrls(request.getImageUrls())
             .build();
 
-        if (hotPlace.isImageUrlsNotEmpty()) {
-            insertHotPlaceImages(hotPlace);
-        }
         hotPlaceRepository.insertHotPlace(hotPlace);
 
         return hotPlace.getHotPlaceId();
-    }
-
-    private void insertHotPlaceImages(final HotPlace hotPlace) {
-        final List<HotPlaceImageInfo> imageInfos = hotPlace.getImageUrls().stream()
-            .map(imageUrl -> HotPlaceImageInfo.builder()
-                .hotPlaceId(hotPlace.getHotPlaceId())
-                .imageUrl(imageUrl)
-                .build()).collect(Collectors.toList());
-
-        hotPlaceImageInfoRepository.insertFile(hotPlace.getHotPlaceId(), imageInfos);
     }
 
     @Transactional
@@ -121,7 +104,9 @@ public class HotPlaceServiceImpl implements HotPlaceService {
     ) {
         final List<HotPlace> hotPlaces = hotPlaceRepository.selectAllHotPlace(request.getKeyword());
 
-        return hotPlaces.stream().map(HotPlaceResponse::from).collect(Collectors.toList());
+        return hotPlaces.stream()
+            .map(HotPlaceResponse::from)
+            .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)

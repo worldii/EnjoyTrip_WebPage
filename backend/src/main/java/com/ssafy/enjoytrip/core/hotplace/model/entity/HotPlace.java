@@ -2,12 +2,10 @@ package com.ssafy.enjoytrip.core.hotplace.model.entity;
 
 import com.ssafy.enjoytrip.global.error.HotPlaceException;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 public class HotPlace {
@@ -17,30 +15,28 @@ public class HotPlace {
     private Double x;
     private Double y;
     private Long vote;
-    private String placeUrl;
+    private String imageUrl;
     private String roadAddressName;
     private String addressName;
     private List<HotPlaceArticle> hotPlaceArticles;
     private List<HotPlaceTag> hotPlaceTags;
-    private List<String> imageUrls;
 
     @Builder
     public HotPlace(
         final String hotPlaceId,
         final String hotPlaceName,
         final Double x, final Double y,
-        final Long vote, final String placeUrl,
+        final Long vote, final String imageUrl,
         final String roadAddressName,
         final String addressName,
         final List<HotPlaceArticle> hotPlaceArticles,
-        final List<HotPlaceTag> hotPlaceTags,
-        final List<String> imageUrls
+        final List<HotPlaceTag> hotPlaceTags
     ) {
         validateHotPlaceId(hotPlaceId);
         validateHotPlaceName(hotPlaceName);
         validateX(x);
         validateY(y);
-        validatePlaceUrl(placeUrl);
+        validatePlaceUrl(imageUrl);
         validateRoadAddressName(roadAddressName);
         validateAddressName(addressName);
 
@@ -49,12 +45,11 @@ public class HotPlace {
         this.x = x;
         this.y = y;
         this.vote = vote;
-        this.placeUrl = placeUrl;
+        this.imageUrl = imageUrl;
         this.roadAddressName = roadAddressName;
         this.addressName = addressName;
         this.hotPlaceArticles = hotPlaceArticles;
         this.hotPlaceTags = hotPlaceTags;
-        this.imageUrls = imageUrls;
     }
 
     private void validateHotPlaceId(final String hotPlaceId) {
@@ -103,13 +98,5 @@ public class HotPlace {
 
     public void updateVoteCount(final Long voteCount) {
         this.vote = voteCount;
-    }
-
-    private boolean isImageUrlsEmpty() {
-        return imageUrls == null || imageUrls.isEmpty();
-    }
-
-    public boolean isImageUrlsNotEmpty() {
-        return !isImageUrlsEmpty();
     }
 }

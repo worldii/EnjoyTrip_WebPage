@@ -4,7 +4,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
-import com.ssafy.enjoytrip.core.hotplace.model.dao.HotPlaceRepository;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceArticleSaveRequest;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceSaveRequest;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceSearchRequest;
@@ -25,8 +24,6 @@ class HotPlaceServiceTest {
 
     @Autowired
     private HotPlaceService hotPlaceService;
-    @Autowired
-    private HotPlaceRepository hotPlaceRepository;
 
     @Test
     @DisplayName("HotPlace를 정상적으로 생성한다.")
@@ -37,7 +34,7 @@ class HotPlaceServiceTest {
             .hotPlaceName("test")
             .roadAddressName("test")
             .addressName("test")
-            .placeUrl("abc")
+            .imageUrl("abc")
             .x(1.0)
             .y(1.0)
             .build();
@@ -58,7 +55,7 @@ class HotPlaceServiceTest {
         List<String> tags = List.of("test", "test2");
         HotPlaceArticleSaveRequest hotPlaceArticle = HotPlaceArticleSaveRequest.builder()
             .content("test")
-            .imageUrl("test")
+            .imageUrl(List.of("www.naver.com"))
             .hotPlaceName("test")
             .tagName(tags)
             .build();
@@ -80,7 +77,7 @@ class HotPlaceServiceTest {
         List<String> tags = List.of("test", "test2");
         HotPlaceArticleSaveRequest hotPlaceArticle = HotPlaceArticleSaveRequest.builder()
             .content("test")
-            .imageUrl("test")
+            .imageUrl(List.of("www.naver.com"))
             .hotPlaceName("test")
             .tagName(tags)
             .build();
@@ -101,7 +98,7 @@ class HotPlaceServiceTest {
         List<String> tags = List.of("test", "test2");
         HotPlaceArticleSaveRequest hotPlaceArticle = HotPlaceArticleSaveRequest.builder()
             .content("test")
-            .imageUrl("test")
+            .imageUrl(List.of("www.naver.com"))
             .hotPlaceName("test")
             .tagName(tags)
             .build();

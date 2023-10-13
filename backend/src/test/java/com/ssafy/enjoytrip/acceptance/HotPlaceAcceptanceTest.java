@@ -75,7 +75,7 @@ class HotPlaceAcceptanceTest extends AcceptanceTest {
             .hotPlaceName("test")
             .x(1.0)
             .y(1.0)
-            .placeUrl("test")
+            .imageUrl("test")
             .addressName("test")
             .roadAddressName("test")
             .build();
@@ -144,7 +144,7 @@ class HotPlaceAcceptanceTest extends AcceptanceTest {
             .hotPlaceName("test")
             .x(1.0)
             .y(1.0)
-            .placeUrl("test")
+            .imageUrl("test")
             .addressName("test")
             .roadAddressName("test")
             .build();
@@ -163,7 +163,7 @@ class HotPlaceAcceptanceTest extends AcceptanceTest {
 
         HotPlaceArticleSaveRequest hotPlaceArticleSaveRequest = HotPlaceArticleSaveRequest.builder()
             .hotPlaceName("test")
-            .imageUrl("test")
+            .imageUrl(List.of("www.naver.com"))
             .content("test")
             .build();
 

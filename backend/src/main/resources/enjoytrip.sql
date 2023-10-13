@@ -29,6 +29,12 @@ CREATE TABLE board_image_info (
                                  board_id BIGINT
 );
 
+CREATE TABLE hot_place_article_image_info (
+                                  image_info_id BIGINT not null AUTO_INCREMENT PRIMARY KEY,
+                                  image_url VARCHAR(255),
+                                    hot_place_article_id BIGINT
+);
+
 CREATE TABLE board (
                        board_id BIGINT AUTO_INCREMENT PRIMARY KEY,
                        user_id VARCHAR(255) NOT NULL,
@@ -53,7 +59,7 @@ create table hot_place (
                            x VARCHAR(255) NOT NULL,
                            y VARCHAR(255) NOT NULL,
                            vote BIGINT DEFAULT 0,
-                           place_url VARCHAR(255),
+                           image_url VARCHAR(255),
                            road_address_name VARCHAR(255),
                            address_name VARCHAR(255)
 );

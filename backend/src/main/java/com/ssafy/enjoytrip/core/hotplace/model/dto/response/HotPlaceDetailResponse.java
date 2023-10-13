@@ -35,7 +35,7 @@ public class HotPlaceDetailResponse {
             hotPlace.getX(),
             hotPlace.getY(),
             hotPlace.getVote(),
-            hotPlace.getPlaceUrl(),
+            hotPlace.getImageUrl(),
             hotPlace.getRoadAddressName(),
             hotPlace.getAddressName(),
             hotPlaceArticles,

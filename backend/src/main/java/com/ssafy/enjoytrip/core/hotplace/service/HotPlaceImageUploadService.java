@@ -1,8 +1,6 @@
 package com.ssafy.enjoytrip.core.hotplace.service;
 
 import com.ssafy.enjoytrip.core.hotplace.model.dao.HotPlaceArticleRepository;
-import com.ssafy.enjoytrip.core.hotplace.model.dao.HotPlaceRepository;
-import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlace;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceArticle;
 import com.ssafy.enjoytrip.core.media.service.UploadService;
 import com.ssafy.enjoytrip.core.user.dao.UserRepository;
@@ -19,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 public class HotPlaceImageUploadService {
 
     private final UploadService uploadService;
-    private final HotPlaceRepository hotPlaceRepository;
     private final UserRepository userRepository;
     private final HotPlaceArticleRepository hotPlaceArticleRepository;
 
@@ -27,9 +24,10 @@ public class HotPlaceImageUploadService {
         final List<MultipartFile> files,
         final String hotPlaceId
     ) {
-        final HotPlace hotPlace = findHotPlaceByHotPlaceId(hotPlaceId);
-
-        return uploadService.uploadMedias(files, "/hotplace/" + hotPlace.getHotPlaceId());
+        if (files.size() != 1) {
+            throw new HotPlaceException("핫플레이스 이미지 등록은 1개만 업로드 가능합니다.");
+        }
+        return uploadService.uploadMedias(files, "/hotplace/" + hotPlaceId);
     }
 
     public List<String> uploadHotPlaceArticleImage(
@@ -46,15 +44,9 @@ public class HotPlaceImageUploadService {
             "/hotplace/article/" + hotPlaceArticle.getHotPlaceId());
     }
 
-    private HotPlaceArticle findHotPlaceArticleById(Long hotPlaceArticleId) {
+    private HotPlaceArticle findHotPlaceArticleById(final Long hotPlaceArticleId) {
         return hotPlaceArticleRepository
             .selectHotPlaceArticleByArticleId(hotPlaceArticleId)
-            .orElseThrow(() -> new HotPlaceException("존재하지 않는 게시글입니다."));
-    }
-
-    private HotPlace findHotPlaceByHotPlaceId(final String hotPlaceId) {
-        return hotPlaceRepository
-            .selectHotPlaceByHotPlaceId(hotPlaceId)
             .orElseThrow(() -> new HotPlaceException("존재하지 않는 게시글입니다."));
     }
 

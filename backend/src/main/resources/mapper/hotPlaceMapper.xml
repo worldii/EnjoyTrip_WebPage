@@ -8,7 +8,7 @@
     <result column="hot_place_name" property="hotPlaceName"/>
     <result column="road_address_name" property="roadAddressName"/>
     <result column="address_name" property="addressName"/>
-    <result column="place_url" property="placeUrl"/>
+    <result column="image_url" property="imageUrl"/>
     <result column="vote" property="vote"/>
     <result column="x" property="x"/>
     <result column="y" property="y"/>
@@ -20,7 +20,7 @@
     <result column="x" property="x"/>
     <result column="y" property="y"/>
     <result column="vote" property="vote"/>
-    <result column="place_url" property="placeUrl"/>
+    <result column="image_url" property="imageUrl"/>
     <result column="road_address_name" property="roadAddressName"/>
     <result column="address_name" property="addressName"/>
     <collection property="hotPlaceArticles" ofType="HotPlaceArticle">
@@ -41,9 +41,9 @@
 
 
   <insert id="insertHotPlace" parameterType="hotPlace">
-    insert into hot_place (hot_place_id, hot_place_name, road_address_name, address_name, place_url,
+    insert into hot_place (hot_place_id, hot_place_name, road_address_name, address_name, image_url,
                            x, y)
-    values (#{hotPlaceId}, #{hotPlaceName}, #{roadAddressName}, #{addressName}, #{placeUrl}, #{x},
+    values (#{hotPlaceId}, #{hotPlaceName}, #{roadAddressName}, #{addressName}, #{imageUrl}, #{x},
             #{y})
   </insert>
 
@@ -79,7 +79,7 @@
     set hot_place_name    = #{hotPlaceName},
         road_address_name = #{roadAddressName},
         address_name      = #{addressName},
-        place_url         = #{placeUrl},
+        image_url         = #{imageUrl},
         x                 = #{x},
         y                 = #{y},
         vote              = #{vote}
