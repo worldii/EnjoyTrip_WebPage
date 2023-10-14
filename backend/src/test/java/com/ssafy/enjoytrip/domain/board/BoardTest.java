@@ -15,13 +15,16 @@ class BoardTest {
     @DisplayName("게시판 생성 테스트")
     void createBoard() {
         // given
-        Board board = Board.builder()
-            .boardType(BoardType.COMMUNITY)
-            .subject("test")
-            .userId("test")
-            .content("test")
-            .imageUrls(null)
-            .build();
+        assertThatCode(
+            () ->
+                Board.builder()
+                    .boardType(BoardType.COMMUNITY)
+                    .subject("test")
+                    .userId("test")
+                    .content("test")
+                    .imageUrls(null)
+                    .build()
+        ).doesNotThrowAnyException();
     }
 
     @Test
