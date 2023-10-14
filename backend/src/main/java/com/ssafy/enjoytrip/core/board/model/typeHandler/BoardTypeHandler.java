@@ -1,6 +1,7 @@
 package com.ssafy.enjoytrip.core.board.model.typeHandler;
 
 import com.ssafy.enjoytrip.core.board.model.entity.BoardType;
+import java.sql.ResultSet;
 import org.apache.ibatis.type.MappedTypes;
 import org.apache.ibatis.type.TypeHandler;
 
@@ -21,7 +22,7 @@ public class BoardTypeHandler implements TypeHandler<BoardType> {
     }
 
     @Override
-    public BoardType getResult(java.sql.ResultSet rs, int columnIndex)
+    public BoardType getResult(ResultSet rs, int columnIndex)
         throws java.sql.SQLException {
         String typeKey = rs.getString(columnIndex);
         return getBoardType(typeKey);

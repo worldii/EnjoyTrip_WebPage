@@ -9,7 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @DisplayName("PlanBoard 테스트")
-public class PlanBoardTest {
+class PlanBoardTest {
 
     @Test
     @DisplayName("PlanBoard 생성 테스트")

@@ -3,8 +3,6 @@ package com.ssafy.enjoytrip.integration.service;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ssafy.enjoytrip.config.UploadConfig;
 import com.ssafy.enjoytrip.core.board.model.dto.request.BoardSaveRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.request.BoardSearchRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.response.BoardDetailResponse;
@@ -17,18 +15,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.jdbc.Sql;
 
 @SpringBootTest
 @DisplayName("BoardService 통합 테스트")
-@Import(UploadConfig.class)
 class BoardServiceTest {
 
     @Autowired
     private BoardService boardService;
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @Test
     @Sql({"/truncate.sql", "/user.sql"})
