@@ -15,28 +15,28 @@ public class PlanRepository {
 
     private final PlanMapper planMapper;
 
+    @Transactional(readOnly = true)
+    public List<Plan> selectPlanByPlanBoardId(final Long planBoardId) {
+        return planMapper.selectPlanByPlanBoardId(planBoardId);
+    }
+
     @Transactional
     public int insertPlanBoard(final PlanBoard planBoard) {
         return planMapper.insertPlanBoard(planBoard);
     }
 
     @Transactional
-    public int insertPlanList(final List<Plan> planDtoList) {
-        return planMapper.insertPlanList(planDtoList);
-    }
-
-    @Transactional(readOnly = true)
-    public List<PlanBoard> selectPlanBoardByUserId(final String userId) {
-        return planMapper.selectPlanBoardByUserId(userId);
-    }
-
-    @Transactional(readOnly = true)
-    public List<Plan> selectPlanByPlanBoardId(final Long planBoardId) {
-        return planMapper.selectPlanByPlanBoardId(planBoardId);
+    public int insertPlanList(final List<Plan> plans) {
+        return planMapper.insertPlanList(plans);
     }
 
     @Transactional(readOnly = true)
     public Optional<PlanBoard> selectPlanBoardByPlanBoardId(final Long planBoardId) {
         return planMapper.selectPlanBoardByPlanBoardId(planBoardId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<PlanBoard> selectPlanBoardByUserId(final String userId) {
+        return planMapper.selectPlanBoardByUserId(userId);
     }
 }

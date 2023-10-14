@@ -91,25 +91,23 @@ create table hot_place_tag (
 --
 
 DROP TABLE IF EXISTS `plan_board`;
-CREATE TABLE `plan_board` (
-        `plan_board_id` int NOT NULL AUTO_INCREMENT,
-        `title` varchar(100) NOT NULL,
-        `user_id` varchar(45) NOT NULL,
-        `start_date` date NOT NULL,
-        `end_date` date NOT NULL,
-        PRIMARY KEY (`plan_board_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
+create table plan_board (
+                            plan_board_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+                            title VARCHAR(255) NOT NULL,
+                            user_id VARCHAR(255) NOT NULL,
+                            start_date date NOT NULL,
+                            end_date date NOT NULL
+);
 
 DROP TABLE IF EXISTS `plan`;
 
 CREATE TABLE `plan` (
-                        `plan_id` int NOT NULL AUTO_INCREMENT,
-                        `plan_board_id` int NOT NULL,
+                        `plan_id` BIGINT NOT NULL AUTO_INCREMENT,
+                        `plan_board_id` BIGINT NOT NULL,
                         `place_name` varchar(100) NOT NULL,
                         `content` varchar(100) DEFAULT NULL,
                         `plan_order` int NOT NULL,
-                        `expect_duration` int DEFAULT '0',
+                        `expect_duration` BIGINT DEFAULT '0',
                         `expect_date` date NOT NULL,
                         `start_time` time NOT NULL,
                         `end_time` time NOT NULL,

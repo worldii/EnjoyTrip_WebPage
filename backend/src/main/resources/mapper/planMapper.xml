@@ -3,10 +3,48 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ssafy.enjoytrip.core.plan.model.mapper.PlanMapper">
+  <resultMap id="planResultMap" type="plan">
+    <id property="planId" column="plan_id"/>
+    <result property="planBoardId" column="plan_board_id"/>
+    <result property="placeName" column="place_name"/>
+    <result property="content" column="content"/>
+    <result property="planOrder" column="plan_order"/>
+    <result property="expectDuration" column="expect_duration"/>
+    <result property="expectDate" column="expect_date"/>
+    <result property="startTime" column="start_time"/>
+    <result property="endTime" column="end_time"/>
+  </resultMap>
 
+  <resultMap id="planBoardResultMap" type="planBoard">
+    <id property="planBoardId" column="plan_board_id"/>
+    <result property="userId" column="user_id"/>
+    <result property="title" column="title"/>
+    <result property="startDate" column="start_date"/>
+    <result property="endDate" column="end_date"/>
+  </resultMap>
+
+  <insert id="insertPlanList" parameterType="java.util.List">
+    insert into plan(
+    plan_board_id, place_name,
+    plan_order, expect_duration,
+    expect_date, start_time, end_time)
+    values
+    <foreach collection="list" item="item" separator=",">
+      (
+      #{item.planBoardId},
+      #{item.placeName},
+      #{item.planOrder},
+      #{item.expectDuration},
+      #{item.expectDate},
+      #{item.startTime},
+      #{item.endTime}
+      )
+    </foreach>
+  </insert>
+  
   <insert id="insertPlanBoard" parameterType="planBoard">
-    <selectKey resultType="int" keyProperty="planBoardId" order="AFTER">
-      select MAX(plan_board_id) from plan_board
+    <selectKey resultType="Long" keyProperty="planBoardId" order="AFTER">
+      select last_insert_id()
     </selectKey>
     insert into plan_board(title, user_id, start_date, end_date) value
     (#{title},#{userId},#{startDate},#{endDate})
@@ -18,33 +56,16 @@
     where user_id = #{userId}
   </select>
 
-  <select id="selectPlanBoardByPlanBoardId" parameterType="int" resultType="planBoard">
+  <select id="selectPlanBoardByPlanBoardId" parameterType="Long" resultType="planBoard">
     select *
     from plan_board
     where plan_board_id = #{planBoardId}
   </select>
 
-  <select id="selectPlanByPlanBoardId" parameterType="int" resultType="plan">
+  <select id="selectPlanByPlanBoardId" parameterType="Long" resultType="plan">
     select *
     from plan
     where plan_board_id = #{planBoardId}
-    order by `order`;
+    order by plan_order
   </select>
-
-
-  <insert id="insertPlanList" parameterType="java.util.List">
-    insert into plan(plan_board_id, place, `order`, duration,date, start_time, end_time)
-    values
-    <foreach collection="list" item="item" separator=",">
-      (
-      #{item.planBoardId},
-      #{item.place},
-      #{item.order},
-      #{item.duration},
-      #{item.date},
-      #{item.startTime},
-      #{item.endTime}
-      )
-    </foreach>
-  </insert>
 </mapper>

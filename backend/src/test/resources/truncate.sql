@@ -76,3 +76,22 @@ create table hot_place_tag (
     tag_name VARCHAR(255) NOT NULL,
     count BIGINT DEFAULT 0
 );
+CREATE TABLE `plan` (
+    `plan_id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    `plan_board_id` BIGINT NOT NULL,
+    `place_name` varchar(100) NOT NULL,
+    `content` varchar(100) DEFAULT NULL,
+    `plan_order` int NOT NULL,
+    `expect_duration` BIGINT DEFAULT 0,
+    `expect_date` date NOT NULL,
+    `start_time` time NOT NULL,
+    `end_time` time NOT NULL
+);
+
+create table plan_board (
+    plan_board_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    user_id VARCHAR(255) NOT NULL,
+    start_date date NOT NULL,
+    end_date date NOT NULL
+);

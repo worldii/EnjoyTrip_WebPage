@@ -11,7 +11,7 @@ public interface PlanMapper {
 
     int insertPlanBoard(final PlanBoard planBoardDto);
 
-    int insertPlanList(final List<Plan> planDtoList);
+    int insertPlanList(final List<Plan> plans);
 
     List<PlanBoard> selectPlanBoardByUserId(final String userId);
 
