@@ -30,7 +30,6 @@ public class Plan {
         final Date expectDate,
         final Time startTime, final Time endTime
     ) {
-        validatePlaceBoardId(planBoardId);
         validatePlaceName(placeName);
         validateContent(content);
         validatePlanOrder(planOrder);
@@ -53,12 +52,6 @@ public class Plan {
         validateEndTime(endTime);
         if (startTime.after(endTime)) {
             throw new PlanException("startTime은 endTime보다 빠를 수 없습니다.");
-        }
-    }
-
-    private void validatePlaceBoardId(final Long planBoardId) {
-        if (planBoardId == null) {
-            throw new PlanException("plan의 planBoardId는 null이 될 수 없습니다.");
         }
     }
 

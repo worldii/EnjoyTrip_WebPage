@@ -15,11 +15,6 @@ public class PlanRepository {
 
     private final PlanMapper planMapper;
 
-    @Transactional(readOnly = true)
-    public List<Plan> selectPlanByPlanBoardId(final Long planBoardId) {
-        return planMapper.selectPlanByPlanBoardId(planBoardId);
-    }
-
     @Transactional
     public int insertPlanBoard(final PlanBoard planBoard) {
         return planMapper.insertPlanBoard(planBoard);
@@ -28,6 +23,11 @@ public class PlanRepository {
     @Transactional
     public int insertPlanList(final List<Plan> plans) {
         return planMapper.insertPlanList(plans);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Plan> selectPlanByPlanBoardId(final Long planBoardId) {
+        return planMapper.selectPlanByPlanBoardId(planBoardId);
     }
 
     @Transactional(readOnly = true)
