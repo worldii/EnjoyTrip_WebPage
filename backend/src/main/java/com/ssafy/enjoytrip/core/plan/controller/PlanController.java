@@ -5,6 +5,7 @@ import com.ssafy.enjoytrip.core.plan.model.dto.request.PlanBoardSaveRequest;
 import com.ssafy.enjoytrip.core.plan.model.dto.response.PlanBoardResponse;
 import com.ssafy.enjoytrip.core.plan.service.PlanService;
 import com.ssafy.enjoytrip.global.auth.model.dto.LoginUser;
+import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,9 @@ public class PlanController {
 
     @PostMapping
     public ResponseEntity<Long> save(final @RequestBody PlanBoardSaveRequest planBoardRequest) {
-        return ResponseEntity.ok(planService.savePlanBoard(planBoardRequest));
+        final Long boardId = planService.savePlanBoard(planBoardRequest);
+        
+        return ResponseEntity.created(URI.create("/plan/" + boardId)).body(boardId);
     }
 
     @GetMapping
