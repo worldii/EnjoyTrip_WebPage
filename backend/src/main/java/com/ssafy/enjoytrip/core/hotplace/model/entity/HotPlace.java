@@ -2,12 +2,13 @@ package com.ssafy.enjoytrip.core.hotplace.model.entity;
 
 import com.ssafy.enjoytrip.global.error.HotPlaceException;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 @Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class HotPlace {
 
     private String hotPlaceId;
@@ -64,7 +65,6 @@ public class HotPlace {
             throw new HotPlaceException("핫플레이스 이름이 없습니다.");
         }
     }
-
 
     private void validateX(final Double x) {
         if (x == null) {

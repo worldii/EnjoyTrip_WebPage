@@ -23,17 +23,18 @@ public class PlanController {
     private final PlanService planService;
 
     @PostMapping
-    ResponseEntity<Long> save(final @RequestBody PlanBoardSaveRequest planBoardRequest) {
+    public ResponseEntity<Long> save(final @RequestBody PlanBoardSaveRequest planBoardRequest) {
         return ResponseEntity.ok(planService.savePlanBoard(planBoardRequest));
     }
 
     @GetMapping
-    ResponseEntity<List<PlanBoardResponse>> getPlanListByUser(@LoginUser final String userId) {
+    public ResponseEntity<List<PlanBoardResponse>> getPlanListByUser(
+        @LoginUser final String userId) {
         return ResponseEntity.ok(planService.selectAll(userId));
     }
 
     @GetMapping("/{planBoardId}")
-    ResponseEntity<PlanBoardResponse> detail(
+    public ResponseEntity<PlanBoardResponse> detail(
         @PathVariable final Long planBoardId,
         @LoginUser final String userId
     ) {

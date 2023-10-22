@@ -2,12 +2,13 @@ package com.ssafy.enjoytrip.core.board.model.entity;
 
 import com.ssafy.enjoytrip.global.error.BoardException;
 import java.util.List;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 public class Board {
 
@@ -16,18 +17,9 @@ public class Board {
     private String subject;
     private String content;
     private Long hit;
-    // TODO : 수정해야 함
     private String currentUpdate;
     private BoardType boardType;
     private List<String> imageUrls;
-
-    public boolean isImageUrlNotEmpty() {
-        return !isImageUrlsEmpty();
-    }
-
-    private boolean isImageUrlsEmpty() {
-        return imageUrls == null || imageUrls.isEmpty();
-    }
 
     @Builder
     public Board(
@@ -65,5 +57,13 @@ public class Board {
         if (content == null || content.isEmpty()) {
             throw new BoardException("내용이 없습니다.");
         }
+    }
+
+    public boolean isImageUrlNotEmpty() {
+        return !isImageUrlsEmpty();
+    }
+
+    private boolean isImageUrlsEmpty() {
+        return imageUrls == null || imageUrls.isEmpty();
     }
 }

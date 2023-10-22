@@ -1,11 +1,12 @@
 package com.ssafy.enjoytrip.core.board.model.entity;
 
 import com.ssafy.enjoytrip.global.error.BoardException;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class BoardImageInfo {
 

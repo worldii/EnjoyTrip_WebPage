@@ -1,12 +1,13 @@
 package com.ssafy.enjoytrip.core.user.model.entity;
 
 import com.ssafy.enjoytrip.global.error.UserException;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class User {
 
     private String userId;

@@ -8,6 +8,6 @@ import lombok.Getter;
 public enum BoardType {
     COMMUNITY("community"), NOTICE("notice"),
     ;
-
+    
     private String type;
 }

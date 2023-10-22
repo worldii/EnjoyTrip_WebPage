@@ -69,7 +69,7 @@ public class BoardImageUploadService {
             throw new BoardException("해당 게시글의 작성자가 아닙니다.");
         }
     }
-
+    
     private Board findBoardByBoardId(final Long boardId) {
         return boardRepository.selectBoard(boardId)
             .orElseThrow(() -> new BoardException("해당 boardId에 해당하는 Board가 없습니다."));

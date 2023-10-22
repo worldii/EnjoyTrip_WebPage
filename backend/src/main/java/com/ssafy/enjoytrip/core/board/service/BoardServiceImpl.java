@@ -63,12 +63,9 @@ public class BoardServiceImpl implements BoardService {
         boardImageRepository.insertFile(boardId, boardImageInfos);
     }
 
-    // TODO : 외부 의존성 분리
     @Override
     @Transactional(readOnly = true)
-    public PageResponse getBoardList(
-        final BoardSearchRequest boardSearchRequest
-    ) {
+    public PageResponse getBoardList(final BoardSearchRequest boardSearchRequest) {
         PageHelper.startPage(boardSearchRequest.getPage(), boardSearchRequest.getPageSize());
         final Page<Board> boards = boardRepository.selectBoardList(boardSearchRequest);
 

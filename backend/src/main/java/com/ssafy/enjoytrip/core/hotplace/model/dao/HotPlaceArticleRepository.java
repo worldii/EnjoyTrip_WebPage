@@ -26,7 +26,7 @@ public class HotPlaceArticleRepository {
     }
 
     @Transactional
-    public int updateHotPlaceArticleImage(final int hotPlaceArticleId, String imageUrl) {
+    public int updateHotPlaceArticleImage(final int hotPlaceArticleId, final String imageUrl) {
         return hotPlaceArticleMapper.updateHotPlaceArticleImage(hotPlaceArticleId, imageUrl);
     }
 }

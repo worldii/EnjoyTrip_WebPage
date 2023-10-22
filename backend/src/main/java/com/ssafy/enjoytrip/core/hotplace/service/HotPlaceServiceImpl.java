@@ -105,8 +105,7 @@ public class HotPlaceServiceImpl implements HotPlaceService {
     @Override
     @Transactional(readOnly = true)
     public HotPlaceArticleResponse selectHotPlaceArticleByArticleId(
-        final String hotPlaceId,
-        final Long articleId
+        final String hotPlaceId, final Long articleId
     ) {
         final HotPlace hotPlace = findHotPlaceByHotPlaceId(hotPlaceId);
         final HotPlaceArticle hotPlaceArticle = findHotPlaceArticleById(articleId);
@@ -162,10 +161,11 @@ public class HotPlaceServiceImpl implements HotPlaceService {
 
     private void insertHotPlaceArticleImages(final HotPlaceArticle hotPlaceArticle) {
         final List<HotPlaceArticleImage> imageInfos = hotPlaceArticle.getImageUrl().stream()
-            .map(imageUrl -> HotPlaceArticleImage.builder()
-                .hotPlaceArticleId(hotPlaceArticle.getHotPlaceArticleId())
-                .imageUrl(imageUrl)
-                .build())
+            .map(imageUrl ->
+                HotPlaceArticleImage.builder()
+                    .hotPlaceArticleId(hotPlaceArticle.getHotPlaceArticleId())
+                    .imageUrl(imageUrl)
+                    .build())
             .collect(Collectors.toList());
 
         hotPlaceArticleImageRepository.insertFile(imageInfos);

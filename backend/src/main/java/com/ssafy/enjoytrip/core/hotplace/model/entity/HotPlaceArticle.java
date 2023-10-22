@@ -7,8 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class HotPlaceArticle {
 
     private Long hotPlaceArticleId;
@@ -42,7 +42,6 @@ public class HotPlaceArticle {
         if (imageUrl == null || imageUrl.isEmpty()) {
             throw new HotPlaceException("이미지 URL이 없습니다.");
         }
-
     }
 
     private void validateContent(final String content) {
@@ -66,7 +65,7 @@ public class HotPlaceArticle {
     private boolean isImageUrlsEmpty() {
         return imageUrl == null || imageUrl.isEmpty();
     }
-    
+
     public boolean isImageUrlsNotEmpty() {
         return !isImageUrlsEmpty();
     }

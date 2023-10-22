@@ -5,10 +5,10 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.ssafy.enjoytrip.core.media.ImageFiles;
 import com.ssafy.enjoytrip.core.media.service.ImageUploader;
 import com.ssafy.enjoytrip.core.media.util.FileUtil;
 import com.ssafy.enjoytrip.global.error.MediaException;
-import com.ssafy.enjoytrip.infra.model.ImageFiles;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,10 +33,7 @@ public class S3Service implements ImageUploader {
     }
 
     @Override
-    public List<String> uploadMedias(
-        final List<MultipartFile> files,
-        final String folderName
-    ) {
+    public List<String> uploadMedias(final List<MultipartFile> files, final String folderName) {
         final ImageFiles images = new ImageFiles(files);
 
         return images.getImages().stream()
@@ -50,6 +47,7 @@ public class S3Service implements ImageUploader {
         final ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(file.getContentType());
         metadata.setContentLength(file.getSize());
+
         try {
             amazonS3.putObject(
                 new PutObjectRequest(
@@ -63,7 +61,6 @@ public class S3Service implements ImageUploader {
 
         return amazonS3.getUrl(bucket, fullFileUrl).toString();
     }
-
 
     public void deleteMedias(final List<String> fileUrls) {
         fileUrls.forEach(this::deleteMediaFromS3);

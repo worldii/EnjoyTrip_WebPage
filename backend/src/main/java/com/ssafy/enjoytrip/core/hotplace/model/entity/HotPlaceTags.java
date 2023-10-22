@@ -19,12 +19,14 @@ public class HotPlaceTags {
         final List<String> tagName
     ) {
         this.hotPlaceTagMap = new HashMap<>();
+
         for (final HotPlaceTag tag : tagList) {
             hotPlaceTagMap.put(tag.getTagName(), tag);
         }
         increaseTagCount(hotPlaceId, tagName);
     }
 
+    // 각각의 tagname을 increase 하는 과정
     private void increaseTagCount(final String hotPlaceId, final List<String> tagName) {
         for (final String name : tagName) {
             final HotPlaceTag newHotPlaceTag = hotPlaceTagMap
@@ -34,6 +36,7 @@ public class HotPlaceTags {
         }
     }
 
+    // tagList를 unmodifiable하게 get함.
     public List<HotPlaceTag> getTagList() {
         return new ArrayList<>(hotPlaceTagMap.values());
     }

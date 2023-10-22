@@ -23,9 +23,7 @@ public class WebMVCConfig implements WebMvcConfigurer {
     public void addInterceptors(final InterceptorRegistry registry) {
         registry.addInterceptor(jwtInterceptor)
             .addPathPatterns("/**")
-            .excludePathPatterns("/swagger-ui/**", "/swagger-resources/**", "/v2/api-docs")
-            .excludePathPatterns("/webjars/**", "/error/**", "/api/**", "/h2-console/**",
-                "/favicon.ico");
+            .excludePathPatterns("/error/**", "/api/**", "/h2-console/**", "/favicon.ico");
     }
 
     @Override
