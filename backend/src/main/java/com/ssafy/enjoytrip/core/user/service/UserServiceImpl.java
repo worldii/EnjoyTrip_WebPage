@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
         final RefreshTokenResponse refreshToken = tokenService.generateRefreshToken(
             request.getUserId());
         final AccessTokenResponse accessToken = tokenService.generateAccessToken(
-            request.getUserId());
+            request.getUserId(), refreshToken.getTokenName());
 
         return TokenResponse.of(accessToken.getTokenName(), refreshToken.getTokenName());
     }

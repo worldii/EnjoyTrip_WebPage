@@ -60,10 +60,11 @@ class TokenServiceTest {
             .userId("jongha")
             .password("test")
             .build();
-        userService.login(userLoginRequest);
+        TokenResponse login = userService.login(userLoginRequest);
 
         // when
-        AccessTokenResponse accessToken = tokenService.generateAccessToken("jongha");
+        AccessTokenResponse accessToken = tokenService.generateAccessToken(
+            "jongha", login.getRefreshToken());
 
         // then
         assertThat(accessToken)
@@ -71,17 +72,43 @@ class TokenServiceTest {
             .isNotNull();
     }
 
-    // TODO : 이거 롤백 왜 안되는 거임? 트랜잭션 설정이 안되어있나?
     @Test
     @DisplayName("accessToken은 유저가 없을 때 저장하지 않는다.")
     void saveAccessTokenTestFailWithNoLoginUser() {
         // given
         String wrongUser = "wrongUser";
+        String refreshToken = "wrongRefreshToken";
 
         // when & then
-        assertThatCode(() -> tokenService.generateAccessToken(wrongUser))
+        assertThatCode(() -> tokenService.generateAccessToken(wrongUser, refreshToken))
             .isInstanceOf(UserException.class)
             .hasMessage("존재하지 않는 유저입니다.");
+    }
+
+    @Test
+    @DisplayName("accessToken은 refreshToken이 없을 때 저장하지 않는다.")
+    void saveAccessTokenTestFailWithNoRefreshToken() {
+        // given
+        UserAddRequest userAddRequest = UserAddRequest.builder()
+            .userId("jongha")
+            .name("jongha")
+            .address("test")
+            .password("test")
+            .email("test")
+            .authority(1)
+            .build();
+        userService.join(userAddRequest);
+        userService.login(UserLoginRequest.builder()
+            .userId("jongha")
+            .password("test")
+            .build());
+        String wrongRefreshToken = "wrongRefreshToken";
+
+        // when & then
+        assertThatCode(
+            () -> tokenService.generateAccessToken(userAddRequest.getUserId(), wrongRefreshToken))
+            .isInstanceOf(UserException.class)
+            .hasMessage("토큰이 유효하지 않습니다.");
     }
 
     @Test

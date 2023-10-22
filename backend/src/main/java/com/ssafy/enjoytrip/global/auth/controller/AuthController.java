@@ -1,12 +1,15 @@
 package com.ssafy.enjoytrip.global.auth.controller;
 
 import com.ssafy.enjoytrip.global.auth.model.dto.LoginUser;
+import com.ssafy.enjoytrip.global.auth.model.dto.NoAuth;
+import com.ssafy.enjoytrip.global.auth.model.dto.request.AccessTokenRequest;
 import com.ssafy.enjoytrip.global.auth.model.dto.response.AccessTokenResponse;
 import com.ssafy.enjoytrip.global.auth.model.dto.response.RefreshTokenResponse;
 import com.ssafy.enjoytrip.global.auth.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,9 +26,11 @@ public class AuthController {
         return ResponseEntity.ok(tokenService.generateRefreshToken(userId));
     }
 
-    // TODO : 로그인 유저 아니게 바꾸기.
+    @NoAuth
     @PostMapping("/access-token")
-    public ResponseEntity<AccessTokenResponse> generateAccessToken(@LoginUser final String userId) {
-        return ResponseEntity.ok(tokenService.generateAccessToken(userId));
+    public ResponseEntity<AccessTokenResponse> generateAccessToken(
+        @RequestBody final AccessTokenRequest request) {
+        return ResponseEntity.ok(
+            tokenService.generateAccessToken(request.getUserId(), request.getRefreshToken()));
     }
 }

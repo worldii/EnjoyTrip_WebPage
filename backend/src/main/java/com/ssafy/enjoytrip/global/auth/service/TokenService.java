@@ -32,9 +32,13 @@ public class TokenService {
     }
 
 
-    public AccessTokenResponse generateAccessToken(final String userId) {
+    public AccessTokenResponse generateAccessToken(final String userId, final String tokenName) {
         final RefreshToken refreshToken = tokenRepository.findRefreshTokenByUserId(userId)
             .orElseThrow(() -> new UserException("존재하지 않는 유저입니다."));
+        
+        if (!refreshToken.getTokenName().equals(tokenName)) {
+            throw new UserException("토큰이 유효하지 않습니다.");
+        }
 
         final Claims claims = Jwts.claims()
             .setSubject("accessToken")

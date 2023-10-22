@@ -6,6 +6,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import com.ssafy.enjoytrip.core.user.model.dto.request.UserAddRequest;
 import com.ssafy.enjoytrip.core.user.model.dto.request.UserLoginRequest;
+import com.ssafy.enjoytrip.global.auth.model.dto.request.AccessTokenRequest;
 import com.ssafy.enjoytrip.global.auth.model.dto.response.TokenResponse;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
@@ -104,7 +105,7 @@ class AuthAcceptanceTest extends AcceptanceTest {
             .build();
 
         // when
-        String accessToken = RestAssured
+        String refreshToken = RestAssured
             .given()
             .contentType(APPLICATION_JSON_VALUE)
             .body(userLoginRequest)
@@ -115,12 +116,18 @@ class AuthAcceptanceTest extends AcceptanceTest {
             .log().all()
             .extract()
             .as(TokenResponse.class)
-            .getAccessToken();
+            .getRefreshToken();
+
+        AccessTokenRequest accessTokenRequest = AccessTokenRequest.builder()
+            .userId("jongha")
+            .refreshToken(refreshToken)
+            .build();
 
         // when
         ExtractableResponse<Response> response = RestAssured
             .given()
-            .header("Authorization", accessToken)
+            .body(accessTokenRequest)
+            .contentType(APPLICATION_JSON_VALUE)
             .log().all()
             .when()
             .post("/auth/access-token")
