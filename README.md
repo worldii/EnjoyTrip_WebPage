@@ -2,8 +2,7 @@
 여행 관련 홈페이지를 제작.(리팩토링 후) 
 
 리팩토링 기록
-https://succinct-gymnast-a8b.notion.site/EnjoyTrip-Refactor-Now-3c8d730a17db442e832999eb860d64ea?pvs=4
-
+https://jonghadailywrite.notion.site/EnjoyTrip-Refactor-Now-3c8d730a17db442e832999eb860d64ea?pvs=4
 ## 기간
 2023.05-2023.05 (2인 프로젝트)
 
