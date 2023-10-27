@@ -25,4 +25,5 @@
     from hot_place_article
     where hot_place_article_id = #{hotPlaceArticleId}
   </select>
+  
 </mapper>

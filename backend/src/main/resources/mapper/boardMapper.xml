@@ -29,10 +29,12 @@
 
   <update id="updateBoard">
     update board
-    set subject = #{subject},
-        content = #{content}
+    set subject        = #{subject},
+        content        = #{content},
+        current_update = now()
     where board_id = #{boardId}
   </update>
+
 
   <delete id="deleteBoard" parameterType="long">
     delete
@@ -43,7 +45,8 @@
 
   <update id="updateHit" parameterType="long">
     update board
-    set hit = hit + 1
+    set hit            = hit + 1,
+        current_update = now()
     where board_id = #{boardId}
   </update>
 
@@ -66,5 +69,4 @@
     </trim>
     order by current_update desc
   </select>
-
 </mapper>

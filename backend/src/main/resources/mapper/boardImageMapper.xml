@@ -7,6 +7,7 @@
     <result column="image_url" property="imageUrl"/>
     <result column="board_id" property="boardId"/>
   </resultMap>
+
   <insert id="insertFile" parameterType="List">
     INSERT INTO board_image_info (board_id, image_url)
     VALUES
@@ -14,6 +15,7 @@
       (#{item.boardId}, #{item.imageUrl})
     </foreach>
   </insert>
+
   <select id="selectFile" resultMap="boardImageInfo">
     select *
     from board_image_info
@@ -25,4 +27,5 @@
     from board_image_info
     where board_id = #{boardId}
   </delete>
+  
 </mapper>

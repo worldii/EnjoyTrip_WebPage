@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.enjoytrip.core.hotplace.model.mapper.HotPlaceMapper">
+
   <resultMap id="hotPlace" type="com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlace">
     <id column="hot_place_id" property="hotPlaceId"/>
     <result column="hot_place_name" property="hotPlaceName"/>
@@ -37,14 +38,12 @@
     </collection>
   </resultMap>
 
-
   <insert id="insertHotPlace" parameterType="hotPlace">
     insert into hot_place (hot_place_id, hot_place_name, road_address_name, address_name, image_url,
                            x, y)
     values (#{hotPlaceId}, #{hotPlaceName}, #{roadAddressName}, #{addressName}, #{imageUrl}, #{x},
             #{y})
   </insert>
-
 
   <select id="selectAllHotPlace" resultMap="hotPlace">
     select hot_place_id, hot_place_name, image_url
@@ -56,6 +55,7 @@
     </where>
     order by vote desc
   </select>
+
   <select id="selectHotPlaceByHotPlaceId" resultType="hotPlace">
     select *
     from hot_place

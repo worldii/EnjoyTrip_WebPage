@@ -17,17 +17,5 @@
       (#{imageFile.hotPlaceArticleId}, #{imageFile.imageUrl})
     </foreach>
   </insert>
-
-  <!--  <select id="selectFile" resultMap="hotPlaceArticleImageInfo">-->
-  <!--    SELECT *-->
-  <!--    FROM hot_place_article_image-->
-  <!--    WHERE hot_place_article_id = #{hotPlaceArticleId}-->
-  <!--  </select>-->
-
-  <!--  <delete id="deleteFileByHotPlaceArticleId">-->
-  <!--    DELETE-->
-  <!--    FROM hot_place_article_image_info-->
-  <!--    WHERE hot_place_article_id = #{hotPlaceArticleId}-->
-  <!--  </delete>-->
-
+  
 </mapper>
