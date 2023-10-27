@@ -4,8 +4,8 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 import com.ssafy.enjoytrip.core.plan.model.dto.request.PlanBoardSaveRequest;
+import com.ssafy.enjoytrip.core.plan.model.dto.request.PlanSaveRequest;
 import com.ssafy.enjoytrip.core.plan.model.dto.response.PlanBoardResponse;
-import com.ssafy.enjoytrip.core.plan.model.entity.Plan;
 import com.ssafy.enjoytrip.core.plan.service.PlanService;
 import java.sql.Date;
 import java.sql.Time;
@@ -28,24 +28,24 @@ class PlanServiceTest {
     @Sql("/truncate.sql")
     void createPlanBoard() {
         // given
-        List<Plan> plans = List.of(
-            Plan.builder()
+        List<PlanSaveRequest> plans = List.of(
+            PlanSaveRequest.builder()
                 .planOrder(1)
                 .placeName("test")
                 .content("test")
-                .startTime(new Time(1, 1, 1))
-                .endTime(new Time(1, 1, 2))
+                .startTime(new Time(1, 1, 1).toString())
+                .endTime(new Time(1, 1, 2).toString())
                 .expectDuration(1L)
-                .expectDate(new Date(2021, 1, 1))
+                .expectDate(new Date(2021, 1, 1).toString())
                 .build(),
-            Plan.builder()
+            PlanSaveRequest.builder()
                 .planOrder(2)
                 .placeName("test")
                 .content("test")
-                .startTime(new Time(1, 1, 1))
-                .endTime(new Time(1, 1, 2))
+                .startTime(new Time(1, 1, 1).toString())
+                .endTime(new Time(1, 1, 2).toString())
                 .expectDuration(1L)
-                .expectDate(new Date(2021, 1, 1))
+                .expectDate(new Date(2021, 1, 1).toString())
                 .build()
         );
 
@@ -70,24 +70,24 @@ class PlanServiceTest {
     @Sql({"/truncate.sql", "/user.sql"})
     void planBoardDetail() {
         // given
-        List<Plan> plans = List.of(
-            Plan.builder()
+        List<PlanSaveRequest> plans = List.of(
+            PlanSaveRequest.builder()
                 .planOrder(1)
                 .placeName("test")
                 .content("test")
-                .startTime(new Time(1, 1, 1))
-                .endTime(new Time(1, 1, 2))
+                .startTime(new Time(1, 1, 1).toString())
+                .endTime(new Time(1, 1, 2).toString())
                 .expectDuration(1L)
-                .expectDate(new Date(2021, 1, 1))
+                .expectDate(new Date(2021, 1, 1).toString())
                 .build(),
-            Plan.builder()
+            PlanSaveRequest.builder()
                 .planOrder(2)
                 .placeName("test")
                 .content("test")
-                .startTime(new Time(1, 1, 1))
-                .endTime(new Time(1, 1, 2))
+                .startTime(new Time(1, 1, 1).toString())
+                .endTime(new Time(1, 1, 2).toString())
                 .expectDuration(1L)
-                .expectDate(new Date(2021, 1, 1))
+                .expectDate(new Date(2021, 1, 1).toString())
                 .build()
         );
 
@@ -119,24 +119,24 @@ class PlanServiceTest {
     @Sql({"/truncate.sql", "/user.sql"})
     void planBoardSelectAll() {
         // given
-        List<Plan> plans = List.of(
-            Plan.builder()
+        List<PlanSaveRequest> plans = List.of(
+            PlanSaveRequest.builder()
                 .planOrder(1)
                 .placeName("test")
                 .content("test")
-                .startTime(new Time(1, 1, 1))
-                .endTime(new Time(1, 1, 2))
+                .startTime(new Time(1, 1, 1).toString())
+                .endTime(new Time(1, 1, 2).toString())
                 .expectDuration(1L)
-                .expectDate(new Date(2021, 1, 1))
+                .expectDate(new Date(2021, 1, 1).toString())
                 .build(),
-            Plan.builder()
+            PlanSaveRequest.builder()
                 .planOrder(2)
                 .placeName("test")
                 .content("test")
-                .startTime(new Time(1, 1, 1))
-                .endTime(new Time(1, 1, 2))
+                .startTime(new Time(1, 1, 1).toString())
+                .endTime(new Time(1, 1, 2).toString())
                 .expectDuration(1L)
-                .expectDate(new Date(2021, 1, 1))
+                .expectDate(new Date(2021, 1, 1).toString())
                 .build()
         );
 

@@ -5,7 +5,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import com.ssafy.enjoytrip.core.plan.model.dto.request.PlanBoardSaveRequest;
-import com.ssafy.enjoytrip.core.plan.model.entity.Plan;
+import com.ssafy.enjoytrip.core.plan.model.dto.request.PlanSaveRequest;
 import com.ssafy.enjoytrip.core.user.model.dto.request.UserAddRequest;
 import com.ssafy.enjoytrip.core.user.model.dto.request.UserLoginRequest;
 import com.ssafy.enjoytrip.global.auth.model.dto.response.TokenResponse;
@@ -64,24 +64,24 @@ class PlanAcceptanceTest extends AcceptanceTest {
             .as(TokenResponse.class)
             .getAccessToken();
 
-        List<Plan> plans = List.of(
-            Plan.builder()
+        List<PlanSaveRequest> plans = List.of(
+            PlanSaveRequest.builder()
                 .planOrder(1)
                 .placeName("test")
                 .content("test")
-                .startTime(new Time(1, 1, 1))
-                .endTime(new Time(1, 1, 2))
+                .startTime(new Time(1, 1, 1).toString())
+                .endTime(new Time(1, 1, 2).toString())
                 .expectDuration(1L)
-                .expectDate(new Date(2021, 1, 1))
+                .expectDate(new Date(2021, 1, 1).toString())
                 .build(),
-            Plan.builder()
+            PlanSaveRequest.builder()
                 .planOrder(2)
                 .placeName("test")
                 .content("test")
-                .startTime(new Time(1, 1, 1))
-                .endTime(new Time(1, 1, 2))
+                .startTime(new Time(1, 1, 1).toString())
+                .endTime(new Time(1, 1, 2).toString())
                 .expectDuration(1L)
-                .expectDate(new Date(2021, 1, 1))
+                .expectDate(new Date(2021, 1, 1).toString())
                 .build()
         );
 
@@ -153,27 +153,27 @@ class PlanAcceptanceTest extends AcceptanceTest {
             .as(TokenResponse.class)
             .getAccessToken();
 
-        List<Plan> plans = List.of(
-            Plan.builder()
+        List<PlanSaveRequest> plans = List.of(
+            PlanSaveRequest.builder()
                 .planOrder(1)
                 .placeName("test")
                 .content("test")
-                .startTime(new Time(1, 1, 1))
-                .endTime(new Time(1, 1, 2))
+                .startTime(new Time(1, 1, 1).toString())
+                .endTime(new Time(1, 1, 2).toString())
                 .expectDuration(1L)
-                .expectDate(new Date(2021, 1, 1))
+                .expectDate(new Date(2021, 1, 1).toString())
                 .build(),
-            Plan.builder()
+            PlanSaveRequest.builder()
                 .planOrder(2)
                 .placeName("test")
                 .content("test")
-                .startTime(new Time(1, 1, 1))
-                .endTime(new Time(1, 1, 2))
+                .startTime(new Time(1, 1, 1).toString())
+                .endTime(new Time(1, 1, 2).toString())
                 .expectDuration(1L)
-                .expectDate(new Date(2021, 1, 1))
+                .expectDate(new Date(2021, 1, 1).toString())
                 .build()
         );
-
+        
         PlanBoardSaveRequest planBoardSaveRequest = PlanBoardSaveRequest.builder()
             .title("test")
             .startDate("2021-01-01")
@@ -252,24 +252,24 @@ class PlanAcceptanceTest extends AcceptanceTest {
             .as(TokenResponse.class)
             .getAccessToken();
 
-        List<Plan> plans = List.of(
-            Plan.builder()
+        List<PlanSaveRequest> plans = List.of(
+            PlanSaveRequest.builder()
                 .planOrder(1)
                 .placeName("test")
                 .content("test")
-                .startTime(new Time(1, 1, 1))
-                .endTime(new Time(1, 1, 2))
+                .startTime(new Time(1, 1, 1).toString())
+                .endTime(new Time(1, 1, 2).toString())
                 .expectDuration(1L)
-                .expectDate(new Date(2021, 1, 1))
+                .expectDate(new Date(2021, 1, 1).toString())
                 .build(),
-            Plan.builder()
+            PlanSaveRequest.builder()
                 .planOrder(2)
                 .placeName("test")
                 .content("test")
-                .startTime(new Time(1, 1, 1))
-                .endTime(new Time(1, 1, 2))
+                .startTime(new Time(1, 1, 1).toString())
+                .endTime(new Time(1, 1, 2).toString())
                 .expectDuration(1L)
-                .expectDate(new Date(2021, 1, 1))
+                .expectDate(new Date(2021, 1, 1).toString())
                 .build()
         );
 

@@ -11,6 +11,7 @@ import com.ssafy.enjoytrip.core.user.model.entity.User;
 import com.ssafy.enjoytrip.global.error.HotPlaceException;
 import com.ssafy.enjoytrip.global.error.PlanException;
 import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -42,10 +43,10 @@ public class PlanServiceImpl implements PlanService {
             .map(plan -> Plan.builder()
                 .planBoardId(planBoard.getPlanBoardId())
                 .planOrder(plan.getPlanOrder())
-                .expectDate(plan.getExpectDate())
+                .expectDate(Date.valueOf(plan.getExpectDate()))
                 .expectDuration(plan.getExpectDuration())
-                .startTime(plan.getStartTime())
-                .endTime(plan.getEndTime())
+                .startTime(Time.valueOf(plan.getStartTime()))
+                .endTime(Time.valueOf(plan.getEndTime()))
                 .placeName(plan.getPlaceName())
                 .content(plan.getContent())
                 .build()).collect(Collectors.toList());

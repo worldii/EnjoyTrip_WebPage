@@ -30,6 +30,7 @@ public class Plan {
         final Date expectDate,
         final Time startTime, final Time endTime
     ) {
+        validatePlanBoardId(planBoardId);
         validatePlaceName(placeName);
         validateContent(content);
         validatePlanOrder(planOrder);
@@ -47,7 +48,13 @@ public class Plan {
         this.endTime = endTime;
     }
 
-    private void validateTime(Time startTime, Time endTime) {
+    private void validatePlanBoardId(final Long planBoardId) {
+        if (planBoardId == null) {
+            throw new PlanException("plan의 planBoardId는 null이 될 수 없습니다.");
+        }
+    }
+
+    private void validateTime(final Time startTime, final Time endTime) {
         validateStartTime(startTime);
         validateEndTime(endTime);
         if (startTime.after(endTime)) {
@@ -55,43 +62,43 @@ public class Plan {
         }
     }
 
-    private void validatePlaceName(String placeName) {
+    private void validatePlaceName(final String placeName) {
         if (placeName == null) {
             throw new PlanException("plan의 placeName은 null이 될 수 없습니다.");
         }
     }
 
-    private void validateContent(String content) {
+    private void validateContent(final String content) {
         if (content == null) {
             throw new PlanException("plan의 content는 null이 될 수 없습니다.");
         }
     }
 
-    private void validatePlanOrder(int planOrder) {
+    private void validatePlanOrder(final int planOrder) {
         if (planOrder <= 0) {
             throw new PlanException("plan의 planOrder는 0보다 작을 수 없습니다.");
         }
     }
 
-    private void validateExpectDuration(Long expectDuration) {
+    private void validateExpectDuration(final Long expectDuration) {
         if (expectDuration < 0) {
             throw new PlanException("plan의 expectDuration은 0보다 작을 수 없습니다.");
         }
     }
 
-    private void validateExpectDate(Date expectDate) {
+    private void validateExpectDate(final Date expectDate) {
         if (expectDate == null) {
             throw new PlanException("plan의 expectDate는 null이 될 수 없습니다.");
         }
     }
 
-    private void validateStartTime(Time startTime) {
+    private void validateStartTime(final Time startTime) {
         if (startTime == null) {
             throw new PlanException("plan의 startTime은 null이 될 수 없습니다.");
         }
     }
 
-    private void validateEndTime(Time endTime) {
+    private void validateEndTime(final Time endTime) {
         if (endTime == null) {
             throw new PlanException("plan의 endTime은 null이 될 수 없습니다.");
         }

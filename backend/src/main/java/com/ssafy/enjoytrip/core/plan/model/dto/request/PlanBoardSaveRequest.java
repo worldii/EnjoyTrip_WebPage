@@ -1,7 +1,6 @@
 package com.ssafy.enjoytrip.core.plan.model.dto.request;
 
 
-import com.ssafy.enjoytrip.core.plan.model.entity.Plan;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,5 +17,5 @@ public class PlanBoardSaveRequest {
     private String title;
     private String startDate;
     private String endDate;
-    private List<Plan> planList;
+    private List<PlanSaveRequest> planList;
 }
