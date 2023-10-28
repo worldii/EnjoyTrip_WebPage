@@ -9,6 +9,7 @@ import com.ssafy.enjoytrip.global.auth.model.dto.LoginUser;
 import com.ssafy.enjoytrip.global.auth.model.dto.NoAuth;
 import com.ssafy.enjoytrip.global.dto.PageResponse;
 import java.net.URI;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,7 +31,7 @@ public class BoardController {
 
     @PostMapping
     public ResponseEntity<Long> save(
-        @RequestBody final BoardSaveRequest request,
+        @RequestBody @Valid final BoardSaveRequest request,
         @LoginUser final String userId
     ) {
         final Long boardId = boardService.saveBoard(request, userId);
@@ -49,7 +50,8 @@ public class BoardController {
     @NoAuth
     @GetMapping("/{boardId}")
     public ResponseEntity<BoardDetailResponse> getBoard(
-        @PathVariable("boardId") final Long boardId) {
+        @PathVariable("boardId") final Long boardId
+    ) {
         return ResponseEntity.ok(boardService.detail(boardId));
     }
 

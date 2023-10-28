@@ -39,7 +39,8 @@ class BoardServiceTest {
 
         // when & then
         assertThatCode(
-            () -> boardService.saveBoard(boardSaveRequest, userId)).doesNotThrowAnyException();
+            () -> boardService.saveBoard(boardSaveRequest, userId))
+            .doesNotThrowAnyException();
     }
 
 

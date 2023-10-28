@@ -1,4 +1,4 @@
-package com.ssafy.enjoytrip.core.board.model.dto.request;
+package com.ssafy.enjoytrip.core.board.model.dto.response;
 
 import com.ssafy.enjoytrip.core.board.model.entity.BoardImageInfo;
 import lombok.AllArgsConstructor;
