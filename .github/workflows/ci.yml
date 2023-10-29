@@ -17,16 +17,17 @@ jobs:
           distribution: 'adopt'
           
       - name: Grant execute permission for gradlew
-        run: chmod +x ./backend/gradlew 
+        run: chmod +x ./gradlew 
+        working-directory: ./backend
 
-      - name: Change directory to backend
-        run: cd backend
 
       - name: spotless check
         run: ./gradlew spotlessCheck
+        working-directory: ./backend
 
       - name: test and analyze
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: ./gradlew test sonar --info --stacktrace
+        working-directory: ./backend
