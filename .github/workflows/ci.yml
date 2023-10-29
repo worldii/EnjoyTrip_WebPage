@@ -19,11 +19,14 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x ./backend/gradlew 
 
+      - name: Change directory to backend
+        run: cd backend
+
       - name: spotless check
-        run: ./backend/gradlew spotlessCheck
+        run: ./gradlew spotlessCheck
 
       - name: test and analyze
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./backend/gradlew test sonar --info --stacktrace
+        run: ./gradlew test sonar --info --stacktrace
