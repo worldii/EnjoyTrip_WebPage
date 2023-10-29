@@ -23,14 +23,16 @@ class HotPlaceArticleTest {
         String content = "content";
 
         // when & then
-        assertThatCode(() -> HotPlaceArticle.builder()
-            .hotPlaceArticleId(hotPlaceArticleId)
-            .hotPlaceId(hotPlaceId)
-            .userId(userId)
-            .content(content)
-            .imageUrl(List.of("www.naver.com"))
-            .build())
-            .doesNotThrowAnyException();
+        assertThatCode(
+                        () ->
+                                HotPlaceArticle.builder()
+                                        .hotPlaceArticleId(hotPlaceArticleId)
+                                        .hotPlaceId(hotPlaceId)
+                                        .userId(userId)
+                                        .content(content)
+                                        .imageUrl(List.of("www.naver.com"))
+                                        .build())
+                .doesNotThrowAnyException();
     }
 
     @ParameterizedTest
@@ -43,15 +45,17 @@ class HotPlaceArticleTest {
         String content = "content";
 
         // when & then
-        assertThatCode(() -> HotPlaceArticle.builder()
-            .hotPlaceArticleId(hotPlaceArticleId)
-            .hotPlaceId(hotPlaceId)
-            .userId(userId)
-            .content(content)
-            .imageUrl(List.of("www.naver.com"))
-            .build())
-            .isInstanceOf(HotPlaceException.class)
-            .hasMessage("핫플레이스 아이디가 없습니다.");
+        assertThatCode(
+                        () ->
+                                HotPlaceArticle.builder()
+                                        .hotPlaceArticleId(hotPlaceArticleId)
+                                        .hotPlaceId(hotPlaceId)
+                                        .userId(userId)
+                                        .content(content)
+                                        .imageUrl(List.of("www.naver.com"))
+                                        .build())
+                .isInstanceOf(HotPlaceException.class)
+                .hasMessage("핫플레이스 아이디가 없습니다.");
     }
 
     @ParameterizedTest
@@ -64,15 +68,17 @@ class HotPlaceArticleTest {
         String content = "content";
 
         // when & then
-        assertThatCode(() -> HotPlaceArticle.builder()
-            .hotPlaceArticleId(hotPlaceArticleId)
-            .hotPlaceId(hotPlaceId)
-            .userId(userId)
-            .content(content)
-            .imageUrl(List.of("www.naver.com"))
-            .build())
-            .isInstanceOf(HotPlaceException.class)
-            .hasMessage("유저 아이디가 없습니다.");
+        assertThatCode(
+                        () ->
+                                HotPlaceArticle.builder()
+                                        .hotPlaceArticleId(hotPlaceArticleId)
+                                        .hotPlaceId(hotPlaceId)
+                                        .userId(userId)
+                                        .content(content)
+                                        .imageUrl(List.of("www.naver.com"))
+                                        .build())
+                .isInstanceOf(HotPlaceException.class)
+                .hasMessage("유저 아이디가 없습니다.");
     }
 
     @ParameterizedTest
@@ -85,14 +91,16 @@ class HotPlaceArticleTest {
         String userId = "1";
 
         // when & then
-        assertThatCode(() -> HotPlaceArticle.builder()
-            .hotPlaceArticleId(hotPlaceArticleId)
-            .hotPlaceId(hotPlaceId)
-            .userId(userId)
-            .content(content)
-            .imageUrl(List.of("www.naver.com"))
-            .build())
-            .isInstanceOf(HotPlaceException.class)
-            .hasMessage("내용이 없습니다.");
+        assertThatCode(
+                        () ->
+                                HotPlaceArticle.builder()
+                                        .hotPlaceArticleId(hotPlaceArticleId)
+                                        .hotPlaceId(hotPlaceId)
+                                        .userId(userId)
+                                        .content(content)
+                                        .imageUrl(List.of("www.naver.com"))
+                                        .build())
+                .isInstanceOf(HotPlaceException.class)
+                .hasMessage("내용이 없습니다.");
     }
 }

@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.board.model.mapper;
 
+
 import com.ssafy.enjoytrip.core.board.model.entity.Comment;
 import java.util.List;
 import java.util.Optional;

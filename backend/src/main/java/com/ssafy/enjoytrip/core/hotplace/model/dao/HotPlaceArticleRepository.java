@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.hotplace.model.dao;
 
+
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceArticle;
 import com.ssafy.enjoytrip.core.hotplace.model.mapper.HotPlaceArticleMapper;
 import java.util.Optional;
@@ -20,8 +21,7 @@ public class HotPlaceArticleRepository {
 
     @Transactional(readOnly = true)
     public Optional<HotPlaceArticle> selectHotPlaceArticleByArticleId(
-        final Long hotPlaceArticleId
-    ) {
+            final Long hotPlaceArticleId) {
         return hotPlaceArticleMapper.selectHotPlaceArticleByArticleId(hotPlaceArticleId);
     }
 

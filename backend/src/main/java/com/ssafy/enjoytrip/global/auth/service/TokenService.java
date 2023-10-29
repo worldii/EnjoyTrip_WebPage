@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.global.auth.service;
 
+
 import com.ssafy.enjoytrip.global.auth.dao.TokenRepository;
 import com.ssafy.enjoytrip.global.auth.model.dto.response.AccessTokenResponse;
 import com.ssafy.enjoytrip.global.auth.model.dto.response.RefreshTokenResponse;
@@ -22,49 +23,52 @@ public class TokenService {
     private final TokenRepository tokenRepository;
 
     public TokenService(
-        @Value("${jwt.salt}") final String secretKey,
-        @Value("${jwt.access-token-expmin}") final Long accessExpiredMinutes,
-        final TokenRepository tokenRepository
-    ) {
+            @Value("${jwt.salt}") final String secretKey,
+            @Value("${jwt.access-token-expmin}") final Long accessExpiredMinutes,
+            final TokenRepository tokenRepository) {
         this.secretKey = secretKey;
         this.accessExpiredMinutes = accessExpiredMinutes;
         this.tokenRepository = tokenRepository;
     }
 
-
     public AccessTokenResponse generateAccessToken(final String userId, final String tokenName) {
-        final RefreshToken refreshToken = tokenRepository.findRefreshTokenByUserId(userId)
-            .orElseThrow(() -> new UserException("존재하지 않는 유저입니다."));
-        
+        final RefreshToken refreshToken =
+                tokenRepository
+                        .findRefreshTokenByUserId(userId)
+                        .orElseThrow(() -> new UserException("존재하지 않는 유저입니다."));
+
         if (!refreshToken.getTokenName().equals(tokenName)) {
             throw new UserException("토큰이 유효하지 않습니다.");
         }
 
-        final Claims claims = Jwts.claims()
-            .setSubject("accessToken")
-            .setIssuedAt(new Date())
-            .setExpiration(new Date(System.currentTimeMillis() + accessExpiredMinutes));
+        final Claims claims =
+                Jwts.claims()
+                        .setSubject("accessToken")
+                        .setIssuedAt(new Date())
+                        .setExpiration(new Date(System.currentTimeMillis() + accessExpiredMinutes));
 
         claims.put(USER_ACCESS_TOKEN_KEY, refreshToken.getUserId());
 
-        final String accessToken = Jwts.builder()
-            .setHeaderParam("typ", "JWT")
-            .setClaims(claims)
-            .signWith(SignatureAlgorithm.HS256, secretKey.getBytes())
-            .compact();
+        final String accessToken =
+                Jwts.builder()
+                        .setHeaderParam("typ", "JWT")
+                        .setClaims(claims)
+                        .signWith(SignatureAlgorithm.HS256, secretKey.getBytes())
+                        .compact();
 
         return new AccessTokenResponse(accessToken);
     }
 
     public void registerBlackList(final String accessToken) {
-        final Date expiration = Jwts.parser()
-            .setSigningKey(secretKey.getBytes())
-            .parseClaimsJws(accessToken)
-            .getBody().getExpiration();
+        final Date expiration =
+                Jwts.parser()
+                        .setSigningKey(secretKey.getBytes())
+                        .parseClaimsJws(accessToken)
+                        .getBody()
+                        .getExpiration();
 
         tokenRepository.registerBlackList(accessToken, expiration.getTime());
     }
-
 
     public RefreshTokenResponse generateRefreshToken(final String userId) {
 
@@ -92,9 +96,9 @@ public class TokenService {
     public String parseToken(final String token) {
         validateAccessToken(token);
         return Jwts.parser()
-            .setSigningKey(secretKey.getBytes())
-            .parseClaimsJws(token)
-            .getBody()
-            .get(USER_ACCESS_TOKEN_KEY, String.class);
+                .setSigningKey(secretKey.getBytes())
+                .parseClaimsJws(token)
+                .getBody()
+                .get(USER_ACCESS_TOKEN_KEY, String.class);
     }
 }

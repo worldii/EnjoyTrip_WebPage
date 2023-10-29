@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.board.service;
 
+
 import com.ssafy.enjoytrip.core.board.dao.BoardRepository;
 import com.ssafy.enjoytrip.core.board.dao.CommentRepository;
 import com.ssafy.enjoytrip.core.board.model.dto.request.CommentModifyRequest;
@@ -28,18 +29,16 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public Long save(
-        final CommentSaveRequest commentSaveRequest,
-        final String userId,
-        final Long boardId
-    ) {
+            final CommentSaveRequest commentSaveRequest, final String userId, final Long boardId) {
         final Board board = findByBoardId(boardId);
         final User user = findByUserId(userId);
 
-        final Comment comment = Comment.builder()
-            .content(commentSaveRequest.getContent())
-            .boardId(board.getBoardId())
-            .userId(user.getUserId())
-            .build();
+        final Comment comment =
+                Comment.builder()
+                        .content(commentSaveRequest.getContent())
+                        .boardId(board.getBoardId())
+                        .userId(user.getUserId())
+                        .build();
 
         commentRepository.insertComment(comment);
         return comment.getCommentId();
@@ -50,8 +49,8 @@ public class CommentServiceImpl implements CommentService {
         final Board board = findByBoardId(boardId);
 
         return commentRepository.selectAll(board.getBoardId()).stream()
-            .map(CommentResponse::from)
-            .collect(Collectors.toList());
+                .map(CommentResponse::from)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -59,26 +58,23 @@ public class CommentServiceImpl implements CommentService {
         return findByCommentId(commentId);
     }
 
-
     @Override
     @Transactional
     public void modify(
-        final Long commentId,
-        final String userId,
-        final CommentModifyRequest request
-    ) {
+            final Long commentId, final String userId, final CommentModifyRequest request) {
         final Board board = findByBoardId(request.getBoardId());
         final User user = findByUserId(userId);
         final Comment comment = findByCommentId(commentId);
 
         validateSameUser(comment.getUserId(), user.getUserId());
 
-        final Comment newComment = Comment.builder()
-            .commentId(comment.getCommentId())
-            .content(request.getContent())
-            .boardId(board.getBoardId())
-            .userId(user.getUserId())
-            .build();
+        final Comment newComment =
+                Comment.builder()
+                        .commentId(comment.getCommentId())
+                        .content(request.getContent())
+                        .boardId(board.getBoardId())
+                        .userId(user.getUserId())
+                        .build();
 
         commentRepository.updateComment(newComment);
     }
@@ -104,18 +100,20 @@ public class CommentServiceImpl implements CommentService {
 
     private Comment findByCommentId(final Long commentId) {
         return commentRepository
-            .selectComment(commentId)
-            .orElseThrow(() -> new BoardException("해당 commentId에 해당하는 comment가 없습니다."));
+                .selectComment(commentId)
+                .orElseThrow(() -> new BoardException("해당 commentId에 해당하는 comment가 없습니다."));
     }
 
     private Board findByBoardId(final Long boardId) {
-        return boardRepository.selectBoard(boardId)
-            .orElseThrow(() -> new BoardException("해당 boardId에 해당하는 board가 없습니다."));
+        return boardRepository
+                .selectBoard(boardId)
+                .orElseThrow(() -> new BoardException("해당 boardId에 해당하는 board가 없습니다."));
     }
 
     private User findByUserId(final String userId) {
-        return userRepository.selectByUserId(userId)
-            .orElseThrow(() -> new BoardException("해당 userId에 해당하는 user가 없습니다."));
+        return userRepository
+                .selectByUserId(userId)
+                .orElseThrow(() -> new BoardException("해당 userId에 해당하는 user가 없습니다."));
     }
 
     private void validateSameUser(final String commentUserId, final String userId) {

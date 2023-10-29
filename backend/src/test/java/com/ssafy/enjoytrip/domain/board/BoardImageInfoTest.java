@@ -16,10 +16,13 @@ class BoardImageInfoTest {
     @DisplayName("imageInfo 정상적으로 생성")
     void fileInfoCreate() {
         // given
-        assertThatCode(() -> BoardImageInfo.builder()
-            .imageUrl("https://www.naver.com")
-            .boardId(1L)
-            .build()).doesNotThrowAnyException();
+        assertThatCode(
+                        () ->
+                                BoardImageInfo.builder()
+                                        .imageUrl("https://www.naver.com")
+                                        .boardId(1L)
+                                        .build())
+                .doesNotThrowAnyException();
     }
 
     @ParameterizedTest
@@ -27,11 +30,8 @@ class BoardImageInfoTest {
     @DisplayName("imageInfo 의 imageUrl이 null일 때 예외 발생")
     void fileInfoCreateFailWithFileUrlNull(String fileUrl) {
         // given
-        assertThatCode(() -> BoardImageInfo.builder()
-            .imageUrl(fileUrl)
-            .boardId(1L)
-            .build())
-            .hasMessage("image의 url은 null이거나 비어있을 수 없습니다.");
+        assertThatCode(() -> BoardImageInfo.builder().imageUrl(fileUrl).boardId(1L).build())
+                .hasMessage("image의 url은 null이거나 비어있을 수 없습니다.");
     }
 
     @ParameterizedTest
@@ -39,9 +39,12 @@ class BoardImageInfoTest {
     @DisplayName("imageInfo 의 boardId가 null일 때 예외 발생")
     void fileInfoCreateFailWithBoardIdNull(Long boardId) {
         // given
-        assertThatCode(() -> BoardImageInfo.builder()
-            .imageUrl("https://www.naver.com")
-            .boardId(boardId)
-            .build()).hasMessage("boardId는 null이 될 수 없습니다.");
+        assertThatCode(
+                        () ->
+                                BoardImageInfo.builder()
+                                        .imageUrl("https://www.naver.com")
+                                        .boardId(boardId)
+                                        .build())
+                .hasMessage("boardId는 null이 될 수 없습니다.");
     }
 }

@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.global.dto;
 
+
 import com.ssafy.enjoytrip.global.util.PaginationHelper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

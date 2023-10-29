@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.global.auth.model.dto.response;
 
+
 import com.ssafy.enjoytrip.global.auth.model.entity.RefreshToken;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,8 +14,6 @@ public class RefreshTokenResponse {
     private String tokenName;
 
     public static RefreshTokenResponse from(final RefreshToken refreshToken) {
-        return new RefreshTokenResponse(
-            refreshToken.getTokenName()
-        );
+        return new RefreshTokenResponse(refreshToken.getTokenName());
     }
 }

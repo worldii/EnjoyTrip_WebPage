@@ -20,21 +20,23 @@ import org.springframework.web.multipart.MultipartFile;
 @Import(UploadConfig.class)
 class ImageUploaderTest {
 
-    @Autowired
-    private ImageUploader imageUploader;
+    @Autowired private ImageUploader imageUploader;
 
     @Test
     @DisplayName("파일 업로드 테스트")
     void uploadFileSuccessTest() {
         // given
-        List<MultipartFile> imagesFiles = List.of(
-            new MockMultipartFile("image1", "image1.jpg", "image/jpeg", "image1".getBytes()),
-            new MockMultipartFile("image2", "image2.jpg", "image/jpeg", "image2".getBytes()),
-            new MockMultipartFile("image3", "image3.jpg", "image/jpeg", "image3".getBytes())
-        );
+        List<MultipartFile> imagesFiles =
+                List.of(
+                        new MockMultipartFile(
+                                "image1", "image1.jpg", "image/jpeg", "image1".getBytes()),
+                        new MockMultipartFile(
+                                "image2", "image2.jpg", "image/jpeg", "image2".getBytes()),
+                        new MockMultipartFile(
+                                "image3", "image3.jpg", "image/jpeg", "image3".getBytes()));
         String folderName = "test";
 
-        // when 
+        // when
         List<String> imageUrls = imageUploader.uploadMedias(imagesFiles, folderName);
 
         // then
@@ -50,7 +52,7 @@ class ImageUploaderTest {
 
         // when & then
         assertThatCode(() -> imageUploader.uploadMedias(imagesFiles, folderName))
-            .isInstanceOf(MediaException.class)
-            .hasMessage("imageFiles은 null이 될 수 없습니다.");
+                .isInstanceOf(MediaException.class)
+                .hasMessage("imageFiles은 null이 될 수 없습니다.");
     }
 }

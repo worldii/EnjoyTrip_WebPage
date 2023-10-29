@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.hotplace.controller;
 
+
 import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceImageSaveRequest;
 import com.ssafy.enjoytrip.core.hotplace.service.HotPlaceImageUploadService;
 import java.util.List;
@@ -21,21 +22,20 @@ public class HotPlaceImageController {
 
     @PostMapping("{hotPlaceId}")
     public ResponseEntity<List<String>> uploadHotPlaceImage(
-        @PathVariable final String hotPlaceId,
-        @RequestBody final HotPlaceImageSaveRequest request
-    ) {
+            @PathVariable final String hotPlaceId,
+            @RequestBody final HotPlaceImageSaveRequest request) {
         return ResponseEntity.ok(
-            hotPlaceImageService.uploadHotPlaceImage(request.getFiles(), hotPlaceId));
+                hotPlaceImageService.uploadHotPlaceImage(request.getFiles(), hotPlaceId));
     }
 
     @PostMapping("/article/{articleId}")
     public ResponseEntity<List<String>> uploadHotPlaceArticleImage(
-        @PathVariable final Long articleId,
-        @RequestBody final HotPlaceImageSaveRequest request,
-        @RequestParam final String userId
-    ) {
-        final List<String> imageUrls = hotPlaceImageService
-            .uploadHotPlaceArticleImage(request.getFiles(), articleId, userId);
+            @PathVariable final Long articleId,
+            @RequestBody final HotPlaceImageSaveRequest request,
+            @RequestParam final String userId) {
+        final List<String> imageUrls =
+                hotPlaceImageService.uploadHotPlaceArticleImage(
+                        request.getFiles(), articleId, userId);
 
         return ResponseEntity.ok(imageUrls);
     }

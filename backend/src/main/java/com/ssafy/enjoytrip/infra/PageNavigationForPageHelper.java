@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.infra;
 
+
 import com.github.pagehelper.Page;
 import com.ssafy.enjoytrip.global.util.PaginationHelper;
 import lombok.Getter;
@@ -40,23 +41,29 @@ public class PageNavigationForPageHelper implements PaginationHelper {
         StringBuilder str = new StringBuilder();
         str.append("<ul class='pagination  justify-content-center'>");
         str.append(
-            String.format("<li class='page-item'><a href='%s=%d' class='page-link'>최신</a></li>",
-                path, 1));
+                String.format(
+                        "<li class='page-item'><a href='%s=%d' class='page-link'>최신</a></li>",
+                        path, 1));
         str.append(
-            String.format("<li class='page-item'><a href='%s=%d' class='page-link'>이전</a></li>",
-                path, startRange ? 1 : startPage - 1));
+                String.format(
+                        "<li class='page-item'><a href='%s=%d' class='page-link'>이전</a></li>",
+                        path, startRange ? 1 : startPage - 1));
         for (int i = startPage; i <= endPage; i++) {
-            str.append(String.format("<li class='%s'>",
-                page.getPageNum() == i ? "page-item active" : "page-item"));
+            str.append(
+                    String.format(
+                            "<li class='%s'>",
+                            page.getPageNum() == i ? "page-item active" : "page-item"));
             str.append(String.format("<a href='%s=%d' class='page-link'>%d</a>", path, i, i));
             str.append("</li>");
         }
         str.append(
-            String.format("<li class='page-item'><a href='%s=%d' class='page-link'>다음</a></li>",
-                path, endRange ? endPage : (endPage + 1)));
+                String.format(
+                        "<li class='page-item'><a href='%s=%d' class='page-link'>다음</a></li>",
+                        path, endRange ? endPage : (endPage + 1)));
         str.append(
-            String.format("<li class='page-item'><a  href='%s=%d'   class='page-link'>마지막</a></li>",
-                path, page.getPages()));
+                String.format(
+                        "<li class='page-item'><a  href='%s=%d'   class='page-link'>마지막</a></li>",
+                        path, page.getPages()));
         str.append("</ul>");
         return str.toString();
     }

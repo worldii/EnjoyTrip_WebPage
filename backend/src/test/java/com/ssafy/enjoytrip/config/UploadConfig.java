@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.config;
 
+
 import com.ssafy.enjoytrip.core.media.service.ImageUploader;
 import com.ssafy.enjoytrip.fake.MockImageUploader;
 import org.springframework.boot.test.context.TestConfiguration;

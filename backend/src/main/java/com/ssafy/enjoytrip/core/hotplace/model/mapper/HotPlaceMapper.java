@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.hotplace.model.mapper;
 
+
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlace;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceArticle;
 import java.util.List;

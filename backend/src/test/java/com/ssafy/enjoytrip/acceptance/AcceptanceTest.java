@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.acceptance;
 
+
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +15,9 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 public abstract class AcceptanceTest {
 
-    @LocalServerPort
-    int port;
+    @LocalServerPort int port;
 
-    @Autowired
-    RedisConnectionFactory redisConnectionFactory;
+    @Autowired RedisConnectionFactory redisConnectionFactory;
 
     @BeforeEach
     void setUp() {

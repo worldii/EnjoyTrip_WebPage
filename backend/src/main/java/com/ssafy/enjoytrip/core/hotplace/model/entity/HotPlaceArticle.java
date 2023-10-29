@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.hotplace.model.entity;
 
+
 import com.ssafy.enjoytrip.global.error.HotPlaceException;
 import java.util.List;
 import lombok.AccessLevel;
@@ -21,10 +22,13 @@ public class HotPlaceArticle {
 
     @Builder
     public HotPlaceArticle(
-        final Long hotPlaceArticleId, final String hotPlaceId, final String hotPlaceName,
-        final String userId, final String content, final String createAt,
-        final List<String> imageUrl
-    ) {
+            final Long hotPlaceArticleId,
+            final String hotPlaceId,
+            final String hotPlaceName,
+            final String userId,
+            final String content,
+            final String createAt,
+            final List<String> imageUrl) {
         validateHotPlaceId(hotPlaceId);
         validateUserId(userId);
         validateContent(content);

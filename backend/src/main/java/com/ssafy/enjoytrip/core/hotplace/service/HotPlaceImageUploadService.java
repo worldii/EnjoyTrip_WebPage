@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.hotplace.service;
 
+
 import com.ssafy.enjoytrip.core.hotplace.model.dao.HotPlaceArticleRepository;
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceArticle;
 import com.ssafy.enjoytrip.core.media.service.ImageUploader;
@@ -21,9 +22,7 @@ public class HotPlaceImageUploadService {
     private final HotPlaceArticleRepository hotPlaceArticleRepository;
 
     public List<String> uploadHotPlaceImage(
-        final List<MultipartFile> files,
-        final String hotPlaceId
-    ) {
+            final List<MultipartFile> files, final String hotPlaceId) {
         if (files.size() != 1) {
             throw new HotPlaceException("핫플레이스 이미지 등록은 1개만 업로드 가능합니다.");
         }
@@ -31,28 +30,26 @@ public class HotPlaceImageUploadService {
     }
 
     public List<String> uploadHotPlaceArticleImage(
-        final List<MultipartFile> files,
-        final Long hotPlaceArticleId,
-        final String userId
-    ) {
+            final List<MultipartFile> files, final Long hotPlaceArticleId, final String userId) {
         final HotPlaceArticle hotPlaceArticle = findHotPlaceArticleById(hotPlaceArticleId);
         final User user = findUserByUserId(userId);
 
         validateUser(hotPlaceArticle.getUserId(), user.getUserId());
 
-        return imageUploader.uploadMedias(files,
-            "/hotplace/article/" + hotPlaceArticle.getHotPlaceId());
+        return imageUploader.uploadMedias(
+                files, "/hotplace/article/" + hotPlaceArticle.getHotPlaceId());
     }
 
     private HotPlaceArticle findHotPlaceArticleById(final Long hotPlaceArticleId) {
         return hotPlaceArticleRepository
-            .selectHotPlaceArticleByArticleId(hotPlaceArticleId)
-            .orElseThrow(() -> new HotPlaceException("존재하지 않는 게시글입니다."));
+                .selectHotPlaceArticleByArticleId(hotPlaceArticleId)
+                .orElseThrow(() -> new HotPlaceException("존재하지 않는 게시글입니다."));
     }
 
     private User findUserByUserId(final String userId) {
-        return userRepository.selectByUserId(userId)
-            .orElseThrow(() -> new BoardException("해당 userId에 해당하는 user가 없습니다."));
+        return userRepository
+                .selectByUserId(userId)
+                .orElseThrow(() -> new BoardException("해당 userId에 해당하는 user가 없습니다."));
     }
 
     private void validateUser(final String hotPlaceArticleUserId, final String userId) {

@@ -16,11 +16,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 @SpringBootTest
 class TokenRepositoryTest {
 
-    @Autowired
-    private TokenRepository tokenRepository;
+    @Autowired private TokenRepository tokenRepository;
 
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
+    @Autowired private RedisTemplate<String, String> redisTemplate;
 
     @Test
     @DisplayName("JwtRepository Bean 주입 테스트")
@@ -31,55 +29,51 @@ class TokenRepositoryTest {
     @Test
     @DisplayName("RefreshToken 저장 테스트")
     void 리프레시_토른_정상적으로_저장_테스트() {
-        //given
+        // given
         RefreshToken refreshToken = createRefreshTokenDto();
 
-        //when
+        // when
         tokenRepository.save(refreshToken);
 
-        //then
+        // then
         assertNotNull(redisTemplate.opsForValue().get(refreshToken.getUserId()));
         assertEquals(
-            refreshToken.getTokenName(),
-            redisTemplate.opsForValue().get(refreshToken.getUserId()
-            )
-        );
+                refreshToken.getTokenName(),
+                redisTemplate.opsForValue().get(refreshToken.getUserId()));
     }
 
     @Test
     @DisplayName("RefreshToken 조회 테스트")
     void 리프레시_토큰_정상적으로_조회_테스트() {
-        //given
+        // given
         RefreshToken refreshToken = createRefreshTokenDto();
         tokenRepository.save(refreshToken);
         String wrongUserId = "wrongUserId";
 
-        //when
-        RefreshToken existTokenDto = tokenRepository
-            .findRefreshTokenByUserId(refreshToken.getUserId())
-            .orElse(null);
-        RefreshToken notExistTokenDto = tokenRepository.findRefreshTokenByUserId(wrongUserId)
-            .orElse(null);
+        // when
+        RefreshToken existTokenDto =
+                tokenRepository.findRefreshTokenByUserId(refreshToken.getUserId()).orElse(null);
+        RefreshToken notExistTokenDto =
+                tokenRepository.findRefreshTokenByUserId(wrongUserId).orElse(null);
 
-        //then
+        // then
         assertAll(
-            () -> assertEquals(refreshToken.getTokenName(), existTokenDto.getTokenName()),
-            () -> assertEquals(refreshToken.getUserId(), existTokenDto.getUserId()),
-            () -> assertEquals(null, notExistTokenDto)
-        );
+                () -> assertEquals(refreshToken.getTokenName(), existTokenDto.getTokenName()),
+                () -> assertEquals(refreshToken.getUserId(), existTokenDto.getUserId()),
+                () -> assertEquals(null, notExistTokenDto));
     }
 
     @Test
     @DisplayName("RefreshToken 삭제 테스트")
     void 리프레시_토큰_정상적으로_삭제_테스트() {
-        //given
+        // given
         RefreshToken refreshToken = createRefreshTokenDto();
         tokenRepository.save(refreshToken);
 
-        //when
+        // when
         tokenRepository.delete(refreshToken.getUserId());
 
-        //then
+        // then
         assertEquals(null, redisTemplate.opsForValue().get(refreshToken.getUserId()));
     }
 
@@ -100,10 +94,6 @@ class TokenRepositoryTest {
     private RefreshToken createRefreshTokenDto() {
         String refreshToken = "TestToken";
         String userId = "test";
-        return RefreshToken
-            .builder()
-            .tokenName(refreshToken)
-            .userId(userId)
-            .build();
+        return RefreshToken.builder().tokenName(refreshToken).userId(userId).build();
     }
 }

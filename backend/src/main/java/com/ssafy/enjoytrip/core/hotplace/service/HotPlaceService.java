@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.hotplace.service;
 
+
 import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceArticleSaveRequest;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceSaveRequest;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceSearchRequest;
@@ -14,20 +15,16 @@ public interface HotPlaceService {
     String insertHotPlace(final HotPlaceSaveRequest hotPlace);
 
     Long insertHotPlaceArticle(
-        final String hotPlaceId,
-        final HotPlaceArticleSaveRequest hotPlaceArticle,
-        final String userId);
+            final String hotPlaceId,
+            final HotPlaceArticleSaveRequest hotPlaceArticle,
+            final String userId);
 
-    List<HotPlaceResponse> selectAllHotPlace(
-        final HotPlaceSearchRequest hotPlaceSearchRequest
-    );
+    List<HotPlaceResponse> selectAllHotPlace(final HotPlaceSearchRequest hotPlaceSearchRequest);
 
     HotPlaceDetailResponse selectAllByHotPlaceId(final String hotPlaceId);
 
     HotPlaceArticleResponse selectHotPlaceArticleByArticleId(
-        final String hotPlaceId,
-        final Long articleId
-    );
+            final String hotPlaceId, final Long articleId);
 
     void updateVoteCount(final String hotPlaceId, final HotPlaceVoteRequest voteRequest);
 }

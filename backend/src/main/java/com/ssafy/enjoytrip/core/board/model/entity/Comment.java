@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.board.model.entity;
 
+
 import com.ssafy.enjoytrip.global.error.BoardException;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -18,9 +19,7 @@ public class Comment {
 
     @Builder
     public Comment(
-        final Long commentId, final Long boardId,
-        final String userId, final String content
-    ) {
+            final Long commentId, final Long boardId, final String userId, final String content) {
         validateBoardId(boardId);
         validateUserId(userId);
         validateContent(content);

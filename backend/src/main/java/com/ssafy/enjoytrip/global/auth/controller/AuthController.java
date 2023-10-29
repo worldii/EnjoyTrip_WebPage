@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.global.auth.controller;
 
+
 import com.ssafy.enjoytrip.global.auth.model.dto.LoginUser;
 import com.ssafy.enjoytrip.global.auth.model.dto.NoAuth;
 import com.ssafy.enjoytrip.global.auth.model.dto.request.AccessTokenRequest;
@@ -21,16 +22,16 @@ public class AuthController {
     private final TokenService tokenService;
 
     @PostMapping("/refresh-token")
-    public ResponseEntity<RefreshTokenResponse> generateRefreshToken(@LoginUser final String userId
-    ) {
+    public ResponseEntity<RefreshTokenResponse> generateRefreshToken(
+            @LoginUser final String userId) {
         return ResponseEntity.ok(tokenService.generateRefreshToken(userId));
     }
 
     @NoAuth
     @PostMapping("/access-token")
     public ResponseEntity<AccessTokenResponse> generateAccessToken(
-        @RequestBody final AccessTokenRequest request) {
+            @RequestBody final AccessTokenRequest request) {
         return ResponseEntity.ok(
-            tokenService.generateAccessToken(request.getUserId(), request.getRefreshToken()));
+                tokenService.generateAccessToken(request.getUserId(), request.getRefreshToken()));
     }
 }

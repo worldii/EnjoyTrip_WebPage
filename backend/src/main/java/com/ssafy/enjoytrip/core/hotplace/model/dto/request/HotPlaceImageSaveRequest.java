@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.hotplace.model.dto.request;
 
+
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;

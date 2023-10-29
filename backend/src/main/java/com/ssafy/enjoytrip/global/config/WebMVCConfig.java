@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.global.config;
 
+
 import com.ssafy.enjoytrip.global.auth.interceptor.JwtArgumentResolver;
 import com.ssafy.enjoytrip.global.auth.interceptor.JwtInterceptor;
 import java.util.List;
@@ -22,15 +23,13 @@ public class WebMVCConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(final InterceptorRegistry registry) {
         registry.addInterceptor(jwtInterceptor)
-            .addPathPatterns("/**")
-            .excludePathPatterns("/error/**", "/api/**", "/h2-console/**", "/favicon.ico");
+                .addPathPatterns("/**")
+                .excludePathPatterns("/error/**", "/api/**", "/h2-console/**", "/favicon.ico");
     }
 
     @Override
     public void addCorsMappings(final CorsRegistry registry) {
-        registry.addMapping("/**")
-            .allowedOrigins("*")
-            .maxAge(1800);
+        registry.addMapping("/**").allowedOrigins("*").maxAge(1800);
     }
 
     @Override

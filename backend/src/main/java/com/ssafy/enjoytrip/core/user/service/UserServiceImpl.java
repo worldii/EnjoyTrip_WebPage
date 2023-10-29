@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.user.service;
 
+
 import com.ssafy.enjoytrip.core.user.dao.UserRepository;
 import com.ssafy.enjoytrip.core.user.model.dto.request.UserAddRequest;
 import com.ssafy.enjoytrip.core.user.model.dto.request.UserLoginRequest;
@@ -37,10 +38,10 @@ public class UserServiceImpl implements UserService {
             throw new UserException("비밀번호가 일치하지 않습니다.");
         }
 
-        final RefreshTokenResponse refreshToken = tokenService.generateRefreshToken(
-            request.getUserId());
-        final AccessTokenResponse accessToken = tokenService.generateAccessToken(
-            request.getUserId(), refreshToken.getTokenName());
+        final RefreshTokenResponse refreshToken =
+                tokenService.generateRefreshToken(request.getUserId());
+        final AccessTokenResponse accessToken =
+                tokenService.generateAccessToken(request.getUserId(), refreshToken.getTokenName());
 
         return TokenResponse.of(accessToken.getTokenName(), refreshToken.getTokenName());
     }
@@ -94,8 +95,9 @@ public class UserServiceImpl implements UserService {
     }
 
     private User findUserByUserId(final String userId) {
-        return userRepository.selectByUserId(userId)
-            .orElseThrow(() -> new UserException("해당 유저가 없습니다."));
+        return userRepository
+                .selectByUserId(userId)
+                .orElseThrow(() -> new UserException("해당 유저가 없습니다."));
     }
 
     private void validateEqualMember(final String userId, final String requestUserId) {
@@ -104,4 +106,3 @@ public class UserServiceImpl implements UserService {
         }
     }
 }
-

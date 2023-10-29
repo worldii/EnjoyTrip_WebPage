@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.hotplace.model.entity;
 
+
 import com.ssafy.enjoytrip.global.error.HotPlaceException;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,10 +14,9 @@ public class HotPlaceArticleImage {
 
     @Builder
     public HotPlaceArticleImage(
-        final Long hotPlaceArticleImageId,
-        final String imageUrl,
-        final Long hotPlaceArticleId
-    ) {
+            final Long hotPlaceArticleImageId,
+            final String imageUrl,
+            final Long hotPlaceArticleId) {
         validateImageUrl(imageUrl);
         validateHotPlaceArticleId(hotPlaceArticleId);
 

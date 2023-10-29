@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.board.service;
 
+
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.ssafy.enjoytrip.core.board.dao.BoardImageRepository;
@@ -39,13 +40,14 @@ public class BoardServiceImpl implements BoardService {
     public Long saveBoard(final BoardSaveRequest request, final String userId) {
         final User user = findUserByUserId(userId);
 
-        final Board board = Board.builder()
-            .boardType(request.getBoardType())
-            .subject(request.getSubject())
-            .content(request.getContent())
-            .userId(user.getUserId())
-            .imageUrls(request.getFileUrls())
-            .build();
+        final Board board =
+                Board.builder()
+                        .boardType(request.getBoardType())
+                        .subject(request.getSubject())
+                        .content(request.getContent())
+                        .userId(user.getUserId())
+                        .imageUrls(request.getFileUrls())
+                        .build();
 
         boardRepository.insertBoard(board);
         if (board.isImageUrlNotEmpty()) {
@@ -56,9 +58,10 @@ public class BoardServiceImpl implements BoardService {
     }
 
     private void insertImageUrls(final List<String> imageUrls, final Long boardId) {
-        final List<BoardImageInfo> boardImageInfos = imageUrls.stream()
-            .map(imageUrl -> BoardImageInfo.of(boardId, imageUrl))
-            .collect(Collectors.toList());
+        final List<BoardImageInfo> boardImageInfos =
+                imageUrls.stream()
+                        .map(imageUrl -> BoardImageInfo.of(boardId, imageUrl))
+                        .collect(Collectors.toList());
 
         boardImageRepository.insertFile(boardId, boardImageInfos);
     }
@@ -77,8 +80,9 @@ public class BoardServiceImpl implements BoardService {
     public BoardDetailResponse detail(final Long boardId) {
         final Board board = findBoardByBoardId(boardId);
 
-        final List<BoardImageInfo> boardImageInfos = boardImageRepository
-            .selectFileByBoardId(boardId).stream().collect(Collectors.toList());
+        final List<BoardImageInfo> boardImageInfos =
+                boardImageRepository.selectFileByBoardId(boardId).stream()
+                        .collect(Collectors.toList());
 
         final List<Comment> comments = commentRepository.selectAll(boardId);
 
@@ -88,21 +92,20 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional
     public void modify(
-        final Long boardId, final String userId,
-        final BoardModifyRequest boardModifyRequest
-    ) {
+            final Long boardId, final String userId, final BoardModifyRequest boardModifyRequest) {
         final User user = findUserByUserId(userId);
         final Board board = findBoardByBoardId(boardId);
 
         validateSameMember(userId, board.getUserId());
 
-        final Board modifyBoard = Board.builder()
-            .boardId(boardId)
-            .userId(user.getUserId())
-            .subject(boardModifyRequest.getSubject())
-            .content(boardModifyRequest.getContent())
-            .imageUrls(boardModifyRequest.getImageUrls())
-            .build();
+        final Board modifyBoard =
+                Board.builder()
+                        .boardId(boardId)
+                        .userId(user.getUserId())
+                        .subject(boardModifyRequest.getSubject())
+                        .content(boardModifyRequest.getContent())
+                        .imageUrls(boardModifyRequest.getImageUrls())
+                        .build();
 
         boardRepository.updateBoard(modifyBoard);
 
@@ -111,7 +114,6 @@ public class BoardServiceImpl implements BoardService {
             insertImageUrls(boardModifyRequest.getImageUrls(), board.getBoardId());
         }
     }
-
 
     @Override
     @Transactional
@@ -139,12 +141,14 @@ public class BoardServiceImpl implements BoardService {
     }
 
     private Board findBoardByBoardId(final Long boardId) {
-        return boardRepository.selectBoard(boardId)
-            .orElseThrow(() -> new BoardException("해당 boardId에 해당하는 Board가 없습니다."));
+        return boardRepository
+                .selectBoard(boardId)
+                .orElseThrow(() -> new BoardException("해당 boardId에 해당하는 Board가 없습니다."));
     }
 
     private User findUserByUserId(final String userId) {
-        return userRepository.selectByUserId(userId)
-            .orElseThrow(() -> new BoardException("해당 userId에 해당하는 user가 없습니다."));
+        return userRepository
+                .selectByUserId(userId)
+                .orElseThrow(() -> new BoardException("해당 userId에 해당하는 user가 없습니다."));
     }
 }

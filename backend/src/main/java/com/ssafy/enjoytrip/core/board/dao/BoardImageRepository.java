@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.board.dao;
 
+
 import com.ssafy.enjoytrip.core.board.model.entity.BoardImageInfo;
 import com.ssafy.enjoytrip.core.board.model.mapper.BoardImageMapper;
 import java.util.List;

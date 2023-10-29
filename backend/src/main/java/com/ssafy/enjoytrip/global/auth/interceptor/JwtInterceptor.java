@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.global.auth.interceptor;
 
+
 import com.ssafy.enjoytrip.global.auth.model.dto.NoAuth;
 import com.ssafy.enjoytrip.global.auth.service.TokenService;
 import javax.servlet.http.HttpServletRequest;
@@ -22,10 +23,9 @@ public class JwtInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(
-        final HttpServletRequest request,
-        final HttpServletResponse response,
-        final Object handler
-    ) {
+            final HttpServletRequest request,
+            final HttpServletResponse response,
+            final Object handler) {
 
         if (OPTIONS.equals(request.getMethod())) {
             return true;
@@ -42,9 +42,9 @@ public class JwtInterceptor implements HandlerInterceptor {
         }
         return true;
     }
-    
+
     private boolean checkNoAuthClass(final HandlerMethod handlerMethod) {
-        return handlerMethod.getMethodAnnotation(NoAuth.class) != null ||
-            handlerMethod.getBeanType().getAnnotation(NoAuth.class) != null;
+        return handlerMethod.getMethodAnnotation(NoAuth.class) != null
+                || handlerMethod.getBeanType().getAnnotation(NoAuth.class) != null;
     }
 }

@@ -21,16 +21,16 @@ class BCryptPasswordEncoderTest {
     @Test
     @DisplayName("salt 가 주어지면 hash 된 비밀번호를 반환한다.")
     void testHashPassword() {
-        //given
+        // given
         String salt = passwordEncoder.generateSalt();
         String raw1 = "test";
         String raw2 = "test";
 
-        //when
+        // when
         String hashed1 = passwordEncoder.hashPassword(raw1, salt);
         String hashed2 = passwordEncoder.hashPassword(raw2, salt);
 
-        //then
+        // then
         assertNotNull(hashed1);
         assertNotNull(hashed2);
         assertEquals(hashed1, hashed2);
@@ -39,15 +39,15 @@ class BCryptPasswordEncoderTest {
     @Test
     @DisplayName("raw 와 hashed 가 주어지면 같은 비밀번호인지 확인한다.")
     void testIsMatch() {
-        //given
+        // given
         String salt = passwordEncoder.generateSalt();
         String raw = "test";
         String hashed = passwordEncoder.hashPassword(raw, salt);
 
-        //when
+        // when
         boolean result = passwordEncoder.isMatch(raw, hashed, salt);
 
-        //then
+        // then
         assertEquals(true, result);
     }
 }

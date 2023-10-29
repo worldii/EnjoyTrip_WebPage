@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.user.model.dto.response;
 
+
 import com.ssafy.enjoytrip.core.user.model.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,10 +21,12 @@ public class UserResponse {
 
     public static UserResponse from(final User user) {
         return new UserResponse(
-            user.getUserId(), user.getName(),
-            user.getAddress(), user.getPassword(),
-            user.getEmail(), user.getAuthority(),
-            user.getSalt()
-        );
+                user.getUserId(),
+                user.getName(),
+                user.getAddress(),
+                user.getPassword(),
+                user.getEmail(),
+                user.getAuthority(),
+                user.getSalt());
     }
 }

@@ -20,8 +20,7 @@ import org.springframework.test.context.jdbc.Sql;
 @SpringBootTest
 class CommentServiceTest {
 
-    @Autowired
-    private CommentService commentService;
+    @Autowired private CommentService commentService;
 
     @Test
     @DisplayName("Comment를 정상적으로 생성하는 테스트")
@@ -29,9 +28,8 @@ class CommentServiceTest {
         // given
         Long boardId = 1L;
         String userId = "test";
-        CommentSaveRequest commentSaveRequest = CommentSaveRequest.builder()
-            .content("test")
-            .build();
+        CommentSaveRequest commentSaveRequest =
+                CommentSaveRequest.builder().content("test").build();
 
         // when
         Long commentId = commentService.save(commentSaveRequest, userId, boardId);
@@ -40,23 +38,20 @@ class CommentServiceTest {
         assertThat(commentId).isNotNull();
     }
 
-
     @Test
     @DisplayName("boardId가 없을 경우, 정상적으로 생성되지 않는다.")
     void createCommentWithoutBoardId() {
         // given
         Long wrongBoardId = null;
         String userId = "test";
-        CommentSaveRequest commentSaveRequest = CommentSaveRequest.builder()
-            .content("test")
-            .build();
+        CommentSaveRequest commentSaveRequest =
+                CommentSaveRequest.builder().content("test").build();
 
         // when & then
         assertThatCode(() -> commentService.save(commentSaveRequest, userId, wrongBoardId))
-            .isInstanceOf(BoardException.class)
-            .hasMessageContaining("해당 boardId에 해당하는 board가 없습니다.");
+                .isInstanceOf(BoardException.class)
+                .hasMessageContaining("해당 boardId에 해당하는 board가 없습니다.");
     }
-
 
     @Test
     @DisplayName("userId가 없을 경우, 정상적으로 생성되지 않는다.")
@@ -64,30 +59,24 @@ class CommentServiceTest {
         // given
         Long boardId = 1L;
         String wrongUserId = null;
-        CommentSaveRequest commentSaveRequest = CommentSaveRequest.builder()
-            .content("test")
-            .build();
+        CommentSaveRequest commentSaveRequest =
+                CommentSaveRequest.builder().content("test").build();
 
         // when & then
         assertThatCode(() -> commentService.save(commentSaveRequest, wrongUserId, boardId))
-            .isInstanceOf(BoardException.class)
-            .hasMessageContaining("해당 userId에 해당하는 user가 없습니다.");
+                .isInstanceOf(BoardException.class)
+                .hasMessageContaining("해당 userId에 해당하는 user가 없습니다.");
     }
 
     @Test
     @DisplayName("commentId를 통해 Comment를 정상적으로 조회하는 테스트")
-    @Sql(scripts = {
-        "/truncate.sql",
-        "/board.sql",
-        "/user.sql"
-    })
+    @Sql(scripts = {"/truncate.sql", "/board.sql", "/user.sql"})
     void getCommentDetail() {
         // given
         Long boardId = 1L;
         String userId = "test";
-        CommentSaveRequest commentSaveRequest = CommentSaveRequest.builder()
-            .content("test")
-            .build();
+        CommentSaveRequest commentSaveRequest =
+                CommentSaveRequest.builder().content("test").build();
         Long commentId = commentService.save(commentSaveRequest, userId, boardId);
 
         // when
@@ -105,31 +94,24 @@ class CommentServiceTest {
 
         // when & then
         assertThatCode(() -> commentService.detail(wrongCommentId))
-            .isInstanceOf(BoardException.class)
-            .hasMessageContaining("해당 commentId에 해당하는 comment가 없습니다.");
+                .isInstanceOf(BoardException.class)
+                .hasMessageContaining("해당 commentId에 해당하는 comment가 없습니다.");
     }
 
     @Test
     @DisplayName("Comment를 정상적으로 수정하는 테스트")
-    @Sql(scripts = {
-        "/truncate.sql",
-        "/board.sql",
-        "/user.sql"
-    })
+    @Sql(scripts = {"/truncate.sql", "/board.sql", "/user.sql"})
     void modifyComment() {
         // given
         Long boardId = 1L;
         String userId = "test";
-        CommentSaveRequest commentSaveRequest = CommentSaveRequest.builder()
-            .content("test")
-            .build();
+        CommentSaveRequest commentSaveRequest =
+                CommentSaveRequest.builder().content("test").build();
         Long commentId = commentService.save(commentSaveRequest, userId, boardId);
 
         // when
-        CommentModifyRequest commentModifyRequest = CommentModifyRequest.builder()
-            .content("test2")
-            .boardId(boardId)
-            .build();
+        CommentModifyRequest commentModifyRequest =
+                CommentModifyRequest.builder().content("test2").boardId(boardId).build();
         commentService.modify(commentId, userId, commentModifyRequest);
 
         // then
@@ -137,76 +119,56 @@ class CommentServiceTest {
         assertThat(detail.getContent()).isEqualTo("test2");
     }
 
-
     @Test
     @DisplayName("Comment의 유저와 수정하려는 유저가 다를 경우, 정상적으로 수정되지 않는다.")
-    @Sql(scripts = {
-        "/truncate.sql",
-        "/board.sql",
-        "/user.sql"
-    })
+    @Sql(scripts = {"/truncate.sql", "/board.sql", "/user.sql"})
     void modifyCommentWithDifferentUser() {
         // given
         Long boardId = 1L;
         String userId = "test";
-        CommentSaveRequest commentSaveRequest = CommentSaveRequest.builder()
-            .content("test")
-            .build();
+        CommentSaveRequest commentSaveRequest =
+                CommentSaveRequest.builder().content("test").build();
         Long commentId = commentService.save(commentSaveRequest, userId, boardId);
 
         // when
-        CommentModifyRequest commentModifyRequest = CommentModifyRequest.builder()
-            .content("test2")
-            .boardId(boardId)
-            .build();
+        CommentModifyRequest commentModifyRequest =
+                CommentModifyRequest.builder().content("test2").boardId(boardId).build();
         String wrongUserId = "wrong";
         // then
         assertThatCode(() -> commentService.modify(commentId, wrongUserId, commentModifyRequest))
-            .isInstanceOf(BoardException.class)
-            .hasMessageContaining("해당 userId에 해당하는 user가 없습니다.");
+                .isInstanceOf(BoardException.class)
+                .hasMessageContaining("해당 userId에 해당하는 user가 없습니다.");
     }
 
     @Test
     @DisplayName("수정하려는 BoardId가 없을 경우, 정상적으로 수정되지 않는다.")
-    @Sql(scripts = {
-        "/truncate.sql",
-        "/board.sql",
-        "/user.sql"
-    })
+    @Sql(scripts = {"/truncate.sql", "/board.sql", "/user.sql"})
     void modifyCommentWithoutBoardId() {
         // given
         Long boardId = 1L;
         String userId = "test";
-        CommentSaveRequest commentSaveRequest = CommentSaveRequest.builder()
-            .content("test")
-            .build();
+        CommentSaveRequest commentSaveRequest =
+                CommentSaveRequest.builder().content("test").build();
         Long commentId = commentService.save(commentSaveRequest, userId, boardId);
 
         // when
-        CommentModifyRequest commentModifyRequest = CommentModifyRequest.builder()
-            .content("test2")
-            .boardId(null)
-            .build();
+        CommentModifyRequest commentModifyRequest =
+                CommentModifyRequest.builder().content("test2").boardId(null).build();
         // then
         assertThatCode(() -> commentService.modify(commentId, userId, commentModifyRequest))
-            .isInstanceOf(BoardException.class)
-            .hasMessageContaining("해당 boardId에 해당하는 board가 없습니다.");
+                .isInstanceOf(BoardException.class)
+                .hasMessageContaining("해당 boardId에 해당하는 board가 없습니다.");
     }
 
     @Test
-    @Sql(scripts = {
-        "/truncate.sql",
-        "/board.sql",
-        "/user.sql"
-    })
+    @Sql(scripts = {"/truncate.sql", "/board.sql", "/user.sql"})
     @DisplayName("Comment를 정상적으로 삭제하는 테스트")
     void deleteComment() {
         // given
         Long boardId = 1L;
         String userId = "test";
-        CommentSaveRequest commentSaveRequest = CommentSaveRequest.builder()
-            .content("test")
-            .build();
+        CommentSaveRequest commentSaveRequest =
+                CommentSaveRequest.builder().content("test").build();
         Long commentId = commentService.save(commentSaveRequest, userId, boardId);
 
         // when
@@ -214,73 +176,57 @@ class CommentServiceTest {
 
         // then
         assertThatCode(() -> commentService.detail(commentId))
-            .isInstanceOf(BoardException.class)
-            .hasMessageContaining("해당 commentId에 해당하는 comment가 없습니다.");
+                .isInstanceOf(BoardException.class)
+                .hasMessageContaining("해당 commentId에 해당하는 comment가 없습니다.");
     }
 
     @Test
-    @Sql(scripts = {
-        "/truncate.sql",
-        "/board.sql",
-        "/user.sql"
-    })
+    @Sql(scripts = {"/truncate.sql", "/board.sql", "/user.sql"})
     @DisplayName("Comment의 유저와 삭제하려는 유저가 다를 경우, 정상적으로 삭제되지 않는다.")
     void deleteCommentWithDifferentUser() {
         // given
         Long boardId = 1L;
         String userId = "test";
-        CommentSaveRequest commentSaveRequest = CommentSaveRequest.builder()
-            .content("test")
-            .build();
+        CommentSaveRequest commentSaveRequest =
+                CommentSaveRequest.builder().content("test").build();
         Long commentId = commentService.save(commentSaveRequest, userId, boardId);
 
         // when
         String wrongUserId = "test2";
         // then
         assertThatCode(() -> commentService.delete(commentId, wrongUserId))
-            .isInstanceOf(BoardException.class)
-            .hasMessageContaining("유저 아이디가 다릅니다.");
+                .isInstanceOf(BoardException.class)
+                .hasMessageContaining("유저 아이디가 다릅니다.");
     }
 
     @Test
-    @Sql(scripts = {
-        "/truncate.sql",
-        "/board.sql",
-        "/user.sql"
-    })
+    @Sql(scripts = {"/truncate.sql", "/board.sql", "/user.sql"})
     @DisplayName("유저가 존재하지 않을 경우 정상적으로 삭제되지 않는다.")
     void deleteCommentWithNoExistUser() {
         // given
         Long boardId = 1L;
         String userId = "test";
-        CommentSaveRequest commentSaveRequest = CommentSaveRequest.builder()
-            .content("test")
-            .build();
+        CommentSaveRequest commentSaveRequest =
+                CommentSaveRequest.builder().content("test").build();
         Long commentId = commentService.save(commentSaveRequest, userId, boardId);
 
         // when
         String wrongUserId = "wrong";
         // then
         assertThatCode(() -> commentService.delete(commentId, wrongUserId))
-            .isInstanceOf(BoardException.class)
-            .hasMessageContaining("해당 userId에 해당하는 user가 없습니다.");
+                .isInstanceOf(BoardException.class)
+                .hasMessageContaining("해당 userId에 해당하는 user가 없습니다.");
     }
-
 
     @Test
     @DisplayName("BoardId 에 해당하는 댓글을 모두 삭제한다")
-    @Sql(scripts = {
-        "/truncate.sql",
-        "/board.sql",
-        "/user.sql"
-    })
+    @Sql(scripts = {"/truncate.sql", "/board.sql", "/user.sql"})
     void deleteAllByBoardId() {
         // given
         Long boardId = 1L;
         String userId = "test";
-        CommentSaveRequest commentSaveRequest = CommentSaveRequest.builder()
-            .content("test")
-            .build();
+        CommentSaveRequest commentSaveRequest =
+                CommentSaveRequest.builder().content("test").build();
         commentService.save(commentSaveRequest, userId, boardId);
 
         // when

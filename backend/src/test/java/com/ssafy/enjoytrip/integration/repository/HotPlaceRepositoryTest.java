@@ -17,27 +17,27 @@ import org.springframework.test.context.jdbc.Sql;
 @SpringBootTest
 class HotPlaceRepositoryTest {
 
-    @Autowired
-    private HotPlaceRepository hotPlaceRepository;
+    @Autowired private HotPlaceRepository hotPlaceRepository;
 
     @Test
     @DisplayName("HotPlace 를 생성 한다")
     @Sql({"/truncate.sql"})
     void createHotPlaceTest() {
         // given
-        HotPlace hotPlace = HotPlace.builder()
-            .hotPlaceId("1")
-            .hotPlaceName("서울")
-            .imageUrl("www.naver.com")
-            .x(1.0)
-            .y(1.0)
-            .roadAddressName("서울")
-            .addressName("서울")
-            .build();
+        HotPlace hotPlace =
+                HotPlace.builder()
+                        .hotPlaceId("1")
+                        .hotPlaceName("서울")
+                        .imageUrl("www.naver.com")
+                        .x(1.0)
+                        .y(1.0)
+                        .roadAddressName("서울")
+                        .addressName("서울")
+                        .build();
 
         // when & then
         assertThatCode(() -> hotPlaceRepository.insertHotPlace(hotPlace))
-            .doesNotThrowAnyException();
+                .doesNotThrowAnyException();
     }
 
     @Test
@@ -68,20 +68,21 @@ class HotPlaceRepositoryTest {
         assertThat(hotPlaces).isNotNull();
     }
 
-
     @Test
     @DisplayName("HotPlace Vote Count 를 업데이트 한다.")
     @Sql({"/truncate.sql"})
     void increaseVoteCount() {
         // given
-        HotPlace hotPlace = HotPlace.builder()
-            .hotPlaceId("1")
-            .hotPlaceName("서울")
-            .imageUrl("www.naver.com")
-            .x(1.0)
-            .y(1.0)
-            .roadAddressName("서울")
-            .addressName("서울").build();
+        HotPlace hotPlace =
+                HotPlace.builder()
+                        .hotPlaceId("1")
+                        .hotPlaceName("서울")
+                        .imageUrl("www.naver.com")
+                        .x(1.0)
+                        .y(1.0)
+                        .roadAddressName("서울")
+                        .addressName("서울")
+                        .build();
 
         hotPlaceRepository.insertHotPlace(hotPlace);
 

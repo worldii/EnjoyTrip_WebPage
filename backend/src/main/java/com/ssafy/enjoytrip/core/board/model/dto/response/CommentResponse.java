@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.board.model.dto.response;
 
+
 import com.ssafy.enjoytrip.core.board.model.entity.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,10 +18,9 @@ public class CommentResponse {
 
     public static CommentResponse from(final Comment comment) {
         return new CommentResponse(
-            comment.getCommentId(),
-            comment.getUserId(),
-            comment.getContent(),
-            comment.getCurrentUpdate()
-        );
+                comment.getCommentId(),
+                comment.getUserId(),
+                comment.getContent(),
+                comment.getCurrentUpdate());
     }
 }

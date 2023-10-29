@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.board.model.entity;
 
+
 import com.ssafy.enjoytrip.global.error.BoardException;
 import java.util.List;
 import lombok.AccessLevel;
@@ -23,10 +24,14 @@ public class Board {
 
     @Builder
     public Board(
-        final Long boardId, final String userId, final String subject,
-        final String content, final Long hit, final String currentUpdate,
-        final BoardType boardType, final List<String> imageUrls
-    ) {
+            final Long boardId,
+            final String userId,
+            final String subject,
+            final String content,
+            final Long hit,
+            final String currentUpdate,
+            final BoardType boardType,
+            final List<String> imageUrls) {
         validateUserId(userId);
         validateSubject(subject);
         validateContent(content);

@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.board.model.dto.response;
 
+
 import com.ssafy.enjoytrip.core.board.model.entity.BoardImageInfo;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,17 +17,16 @@ public class BoardImageInfoResponse {
 
     public static BoardImageInfoResponse from(final BoardImageInfo boardImageInfo) {
         return new BoardImageInfoResponse(
-            boardImageInfo.getImageInfoId(),
-            boardImageInfo.getBoardId(),
-            boardImageInfo.getImageUrl()
-        );
+                boardImageInfo.getImageInfoId(),
+                boardImageInfo.getBoardId(),
+                boardImageInfo.getImageUrl());
     }
 
     public BoardImageInfo toEntity() {
         return BoardImageInfo.builder()
-            .imageInfoId(fileInfoId)
-            .boardId(boardId)
-            .imageUrl(imageUrl)
-            .build();
+                .imageInfoId(fileInfoId)
+                .boardId(boardId)
+                .imageUrl(imageUrl)
+                .build();
     }
 }

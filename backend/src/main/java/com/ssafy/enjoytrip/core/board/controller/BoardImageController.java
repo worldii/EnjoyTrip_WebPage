@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.board.controller;
 
+
 import com.ssafy.enjoytrip.core.board.model.dto.request.BoardImageSaveRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.response.BoardImageUrlResponse;
 import com.ssafy.enjoytrip.core.board.service.BoardImageUploadService;
@@ -24,29 +25,25 @@ public class BoardImageController {
 
     @PostMapping("/{boardId}")
     public ResponseEntity<List<BoardImageUrlResponse>> uploadImage(
-        @PathVariable final Long boardId,
-        @RequestBody final BoardImageSaveRequest request,
-        @LoginUser final String userId
-    ) {
+            @PathVariable final Long boardId,
+            @RequestBody final BoardImageSaveRequest request,
+            @LoginUser final String userId) {
         return ResponseEntity.ok(
-            imageUploadService.uploadMedias(request.getFiles(), boardId, userId));
+                imageUploadService.uploadMedias(request.getFiles(), boardId, userId));
     }
 
     @PutMapping("/{boardId}")
     public ResponseEntity<List<BoardImageUrlResponse>> updateImage(
-        @PathVariable final Long boardId,
-        @RequestBody final BoardImageSaveRequest request,
-        @LoginUser final String userId
-    ) {
+            @PathVariable final Long boardId,
+            @RequestBody final BoardImageSaveRequest request,
+            @LoginUser final String userId) {
         return ResponseEntity.ok(
-            imageUploadService.modifyMedias(request.getFiles(), boardId, userId));
+                imageUploadService.modifyMedias(request.getFiles(), boardId, userId));
     }
 
     @DeleteMapping("/{boardId}")
     public ResponseEntity<Void> deleteImage(
-        @PathVariable final Long boardId,
-        @LoginUser final String userId
-    ) {
+            @PathVariable final Long boardId, @LoginUser final String userId) {
         imageUploadService.deleteMedias(boardId, userId);
         return ResponseEntity.noContent().build();
     }

@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.plan.model.dto.response;
 
+
 import com.ssafy.enjoytrip.core.plan.model.entity.Plan;
 import java.sql.Date;
 import java.sql.Time;
@@ -24,15 +25,14 @@ public class PlanResponse {
 
     public static PlanResponse from(final Plan plan) {
         return new PlanResponse(
-            plan.getPlanId(),
-            plan.getPlanBoardId(),
-            plan.getPlaceName(),
-            plan.getContent(),
-            plan.getPlanOrder(),
-            plan.getExpectDuration(),
-            plan.getExpectDate(),
-            plan.getStartTime(),
-            plan.getEndTime()
-        );
+                plan.getPlanId(),
+                plan.getPlanBoardId(),
+                plan.getPlaceName(),
+                plan.getContent(),
+                plan.getPlanOrder(),
+                plan.getExpectDuration(),
+                plan.getExpectDate(),
+                plan.getStartTime(),
+                plan.getEndTime());
     }
 }

@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.hotplace.model.dao;
 
+
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceTag;
 import com.ssafy.enjoytrip.core.hotplace.model.mapper.HotPlaceTagMapper;
 import java.util.List;
@@ -25,8 +26,7 @@ public class HotPlaceTagRepository {
     }
 
     public Optional<HotPlaceTag> selectByHotPlaceIdAndTagName(
-        final String hotPlaceId, final String tagName
-    ) {
+            final String hotPlaceId, final String tagName) {
         return hotPlaceTagMapper.selectByHotPlaceIdAndTagName(hotPlaceId, tagName);
     }
 }

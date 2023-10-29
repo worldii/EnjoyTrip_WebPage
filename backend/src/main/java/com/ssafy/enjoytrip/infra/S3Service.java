@@ -25,9 +25,7 @@ public class S3Service implements ImageUploader {
     private final String bucket;
 
     public S3Service(
-        @Value("${cloud.aws.s3.bucket}") final String bucket,
-        final AmazonS3 amazonS3
-    ) {
+            @Value("${cloud.aws.s3.bucket}") final String bucket, final AmazonS3 amazonS3) {
         this.bucket = bucket;
         this.amazonS3 = amazonS3;
     }
@@ -37,8 +35,8 @@ public class S3Service implements ImageUploader {
         final ImageFiles images = new ImageFiles(files);
 
         return images.getImages().stream()
-            .map(imageFile -> uploadMediaToS3(imageFile, folderName))
-            .collect(Collectors.toList());
+                .map(imageFile -> uploadMediaToS3(imageFile, folderName))
+                .collect(Collectors.toList());
     }
 
     private String uploadMediaToS3(final MultipartFile file, final String folderName) {
@@ -50,11 +48,8 @@ public class S3Service implements ImageUploader {
 
         try {
             amazonS3.putObject(
-                new PutObjectRequest(
-                    bucket, fullFileUrl,
-                    file.getInputStream(), metadata
-                ).withCannedAcl(CannedAccessControlList.PublicRead)
-            );
+                    new PutObjectRequest(bucket, fullFileUrl, file.getInputStream(), metadata)
+                            .withCannedAcl(CannedAccessControlList.PublicRead));
         } catch (IOException e) {
             throw new MediaException("파일 업로드에 실패했습니다.");
         }

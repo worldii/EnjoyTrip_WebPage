@@ -16,8 +16,7 @@ import org.springframework.test.context.jdbc.Sql;
 @DisplayName("HotPlaceArticleRepository 테스트")
 class HotPlaceArticleRepositoryTest {
 
-    @Autowired
-    private HotPlaceArticleRepository hotPlaceArticleRepository;
+    @Autowired private HotPlaceArticleRepository hotPlaceArticleRepository;
 
     @Test
     @DisplayName("HotPlaceArticle를 조회한다.")
@@ -27,8 +26,8 @@ class HotPlaceArticleRepositoryTest {
         Long hotPlaceArticleId = 1L;
 
         // when
-        Optional<HotPlaceArticle> hotPlace = hotPlaceArticleRepository
-            .selectHotPlaceArticleByArticleId(hotPlaceArticleId);
+        Optional<HotPlaceArticle> hotPlace =
+                hotPlaceArticleRepository.selectHotPlaceArticleByArticleId(hotPlaceArticleId);
 
         // then
         assertThat(hotPlace).isNotNull();
@@ -39,13 +38,14 @@ class HotPlaceArticleRepositoryTest {
     @Sql({"/truncate.sql"})
     void insertHotPlaceArticle() {
         // given
-        HotPlaceArticle hotPlaceArticle = HotPlaceArticle.builder()
-            .hotPlaceId("1")
-            .userId("1")
-            .hotPlaceName("서울")
-            .imageUrl(List.of("www.naver.com"))
-            .content("content")
-            .build();
+        HotPlaceArticle hotPlaceArticle =
+                HotPlaceArticle.builder()
+                        .hotPlaceId("1")
+                        .userId("1")
+                        .hotPlaceName("서울")
+                        .imageUrl(List.of("www.naver.com"))
+                        .content("content")
+                        .build();
 
         // when
         Long articleId = hotPlaceArticleRepository.insertHotPlaceArticle(hotPlaceArticle);

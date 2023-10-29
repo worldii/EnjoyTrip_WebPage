@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.hotplace.model.dto.response;
 
+
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceTag;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -19,9 +20,9 @@ public class HotPlaceTagResponse {
 
     public static HotPlaceTagResponse from(final HotPlaceTag hotPlaceTag) {
         return HotPlaceTagResponse.builder()
-            .tagName(hotPlaceTag.getTagName())
-            .hotPlaceId(hotPlaceTag.getHotPlaceId())
-            .count(hotPlaceTag.getCount())
-            .build();
+                .tagName(hotPlaceTag.getTagName())
+                .hotPlaceId(hotPlaceTag.getHotPlaceId())
+                .count(hotPlaceTag.getCount())
+                .build();
     }
 }

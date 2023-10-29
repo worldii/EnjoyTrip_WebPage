@@ -15,23 +15,24 @@ import org.springframework.test.context.jdbc.Sql;
 @DisplayName("HotPlaceArticleImageRepository 테스트")
 class HotPlaceArticleImageRepositoryTest {
 
-    @Autowired
-    private HotPlaceArticleImageRepository hotPlaceArticleImageRepository;
+    @Autowired private HotPlaceArticleImageRepository hotPlaceArticleImageRepository;
 
     @Test
     @DisplayName("HotPlaceArticleImage를 생성한다.")
     @Sql({"/truncate.sql"})
     void insertHotPlaceArticleImage() {
         // given
-        HotPlaceArticleImage hotPlaceArticleImageInfo = HotPlaceArticleImage.builder()
-            .hotPlaceArticleId(1L)
-            .imageUrl("www.naver.com")
-            .build();
+        HotPlaceArticleImage hotPlaceArticleImageInfo =
+                HotPlaceArticleImage.builder()
+                        .hotPlaceArticleId(1L)
+                        .imageUrl("www.naver.com")
+                        .build();
 
         // when & then
         assertThatCode(
-            () -> hotPlaceArticleImageRepository.insertFile(List.of(hotPlaceArticleImageInfo)))
-            .doesNotThrowAnyException();
+                        () ->
+                                hotPlaceArticleImageRepository.insertFile(
+                                        List.of(hotPlaceArticleImageInfo)))
+                .doesNotThrowAnyException();
     }
-
 }

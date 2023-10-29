@@ -18,8 +18,7 @@ import org.springframework.test.context.jdbc.Sql;
 @DisplayName("BoardRepository 통합 테스트")
 class BoardRepositoryTest {
 
-    @Autowired
-    private BoardRepository boardRepository;
+    @Autowired private BoardRepository boardRepository;
 
     @Test
     @Sql({"/truncate.sql", "/board.sql"})
@@ -33,34 +32,33 @@ class BoardRepositoryTest {
     @DisplayName("게시판 등록 테스트")
     void insertBoardTest() {
         // given
-        Board board = Board.builder()
-            .boardType(BoardType.COMMUNITY)
-            .subject("test")
-            .userId("test")
-            .content("test")
-            .build();
+        Board board =
+                Board.builder()
+                        .boardType(BoardType.COMMUNITY)
+                        .subject("test")
+                        .userId("test")
+                        .content("test")
+                        .build();
 
         // when & then
-        assertThatCode(() -> boardRepository.insertBoard(board))
-            .doesNotThrowAnyException();
+        assertThatCode(() -> boardRepository.insertBoard(board)).doesNotThrowAnyException();
     }
 
     @Test
     @DisplayName("게시판 필터링 조회 테스트")
     void selectBoardByFilterTest() {
         // given
-        Board board = Board.builder()
-            .boardType(BoardType.COMMUNITY)
-            .subject("test")
-            .userId("test")
-            .content("test")
-            .build();
+        Board board =
+                Board.builder()
+                        .boardType(BoardType.COMMUNITY)
+                        .subject("test")
+                        .userId("test")
+                        .content("test")
+                        .build();
         boardRepository.insertBoard(board);
 
-        BoardSearchRequest boardSearchRequest = BoardSearchRequest.builder()
-            .keyword("test")
-            .category("COMMUNITY")
-            .build();
+        BoardSearchRequest boardSearchRequest =
+                BoardSearchRequest.builder().keyword("test").category("COMMUNITY").build();
 
         // when
         Page<Board> boards = boardRepository.selectBoardList(boardSearchRequest);
@@ -73,29 +71,33 @@ class BoardRepositoryTest {
     @DisplayName("게시판 수정 테스트")
     void modifyBoardTest() {
         // given
-        Board board = Board.builder()
-            .boardType(BoardType.COMMUNITY)
-            .subject("test")
-            .userId("test")
-            .content("test")
-            .build();
+        Board board =
+                Board.builder()
+                        .boardType(BoardType.COMMUNITY)
+                        .subject("test")
+                        .userId("test")
+                        .content("test")
+                        .build();
         boardRepository.insertBoard(board);
 
         // when
-        Board modifiedBoard = Board.builder()
-            .boardType(BoardType.COMMUNITY)
-            .boardId(board.getBoardId())
-            .subject("test2")
-            .userId("test2")
-            .content("test2")
-            .build();
+        Board modifiedBoard =
+                Board.builder()
+                        .boardType(BoardType.COMMUNITY)
+                        .boardId(board.getBoardId())
+                        .subject("test2")
+                        .userId("test2")
+                        .content("test2")
+                        .build();
 
         // when
         boardRepository.updateBoard(modifiedBoard);
 
         // then
-        Board newBoard = boardRepository.selectBoard(board.getBoardId())
-            .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+        Board newBoard =
+                boardRepository
+                        .selectBoard(board.getBoardId())
+                        .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
         assertThat(newBoard.getSubject()).isEqualTo(modifiedBoard.getSubject());
     }
 
@@ -103,12 +105,13 @@ class BoardRepositoryTest {
     @DisplayName("게시판 삭제 테스트")
     void deleteBoardTest() {
         // given
-        Board board = Board.builder()
-            .boardType(BoardType.COMMUNITY)
-            .subject("test")
-            .userId("test")
-            .content("test")
-            .build();
+        Board board =
+                Board.builder()
+                        .boardType(BoardType.COMMUNITY)
+                        .subject("test")
+                        .userId("test")
+                        .content("test")
+                        .build();
         boardRepository.insertBoard(board);
 
         // when & then
@@ -118,25 +121,27 @@ class BoardRepositoryTest {
         assertThat(boardRepository.selectBoard(board.getBoardId())).isEmpty();
     }
 
-
     @Test
     @DisplayName("게시판 조회수 증가 테스트")
     void updateHitTest() {
         // given
-        Board board = Board.builder()
-            .boardType(BoardType.COMMUNITY)
-            .subject("test")
-            .userId("test")
-            .content("test")
-            .build();
+        Board board =
+                Board.builder()
+                        .boardType(BoardType.COMMUNITY)
+                        .subject("test")
+                        .userId("test")
+                        .content("test")
+                        .build();
         boardRepository.insertBoard(board);
 
         // when & then
         boardRepository.updateHit(board.getBoardId());
 
         // then
-        Board newBoard = boardRepository.selectBoard(board.getBoardId())
-            .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+        Board newBoard =
+                boardRepository
+                        .selectBoard(board.getBoardId())
+                        .orElseThrow(() -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
         assertThat(newBoard).extracting("hit").isEqualTo(1L);
     }
 }
