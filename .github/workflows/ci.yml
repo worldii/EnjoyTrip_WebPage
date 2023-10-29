@@ -17,7 +17,7 @@ jobs:
           distribution: 'adopt'
 
       - name: Change to Backend Directory
-        working-directory: backend/  # backend 디렉토리로 이동
+        working-directory: ~/backend/  # backend 디렉토리로 이동
         run: cd backend/
         
       - name: Gradle Caching
