@@ -5,6 +5,8 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id 'jacoco'
     id 'org.sonarqube' version '4.2.1.3168'
+    id 'com.diffplug.spotless' version '6.11.0'
+
 }
 
 
@@ -90,6 +92,7 @@ jacocoTestReport {
     }
 }
 
+
 spotless {
     java {
         target("**/*.java")
@@ -100,4 +103,3 @@ spotless {
         endWithNewline()
     }
 }
-
