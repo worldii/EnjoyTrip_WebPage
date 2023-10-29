@@ -70,8 +70,8 @@ targetCompatibility = JavaVersion.VERSION_11
 sonar {
     properties {
         property 'sonar.host.url', 'https://sonarcloud.io'
-        property 'sonar.organization', 'organizationKey'
-        property 'sonar.projectKey', 'projectKey'
+        property 'sonar.organization', 'worldii_EnjoyTrip_WebPage'
+        property 'sonar.projectKey', 'worldii'
         property 'sonar.coverage.jacoco.xmlReportPaths', 'build/reports/jacoco/test/jacocoTestReport.xml'
     }
 }
