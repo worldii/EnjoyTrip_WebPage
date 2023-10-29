@@ -2,9 +2,10 @@ name: EnjoyTrip CI
 on:
   push:
      branches:
-      - release
+      - master
       - develop
   pull_request:
+      branches: [ "master" , "develop"]
 jobs:
  sonarcloud:
     name: SonarCloud
