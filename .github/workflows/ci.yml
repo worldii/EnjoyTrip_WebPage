@@ -20,19 +20,19 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            ~/backend/.gradle/caches
-            ~/backend/.gradle/wrapper
+            ~/backend/gradle/caches
+            ~/backend/gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
       - name: Grant execute permission for gradlew
-        run: chmod +x /backend/.gradlew
+        run: chmod +x ./backend/gradlew
 
       - name: spotless check
-        run: /backend/.gradlew spotlessCheck
+        run: ./backend/gradlew spotlessCheck
 
       - name: test and analyze
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: /backend/.gradlew test sonar --info --stacktrace
+        run: ./backend/gradlew test sonar --info --stacktrace
