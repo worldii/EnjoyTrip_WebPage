@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.board.model.entity;
 
+
 import com.ssafy.enjoytrip.global.error.BoardException;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -36,9 +37,6 @@ public class BoardImageInfo {
     }
 
     public static BoardImageInfo of(final Long boardId, final String imageUrl) {
-        return BoardImageInfo.builder()
-            .boardId(boardId)
-            .imageUrl(imageUrl)
-            .build();
+        return BoardImageInfo.builder().boardId(boardId).imageUrl(imageUrl).build();
     }
 }

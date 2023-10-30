@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.global.auth.dao;
 
+
 import com.ssafy.enjoytrip.global.auth.model.entity.RefreshToken;
 import java.util.Objects;
 import java.util.Optional;
@@ -18,9 +19,8 @@ public class TokenRepository {
     private final RedisTemplate<String, String> redisTemplate;
 
     public TokenRepository(
-        final RedisTemplate<String, String> redisTemplate,
-        @Value("${refreshtoken.timeout.days}") final Long TIME_OUT_DAY
-    ) {
+            final RedisTemplate<String, String> redisTemplate,
+            @Value("${refreshtoken.timeout.days}") final Long TIME_OUT_DAY) {
         this.redisTemplate = redisTemplate;
         this.timeOutDay = TIME_OUT_DAY;
     }
@@ -29,21 +29,12 @@ public class TokenRepository {
         final ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
 
         valueOperations.set(
-            refreshToken.getUserId(),
-            refreshToken.getTokenName(),
-            timeOutDay,
-            TimeUnit.DAYS
-        );
+                refreshToken.getUserId(), refreshToken.getTokenName(), timeOutDay, TimeUnit.DAYS);
     }
 
     public void registerBlackList(final String accessToken, final Long timeOutSecond) {
         final ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-        valueOperations.set(
-            accessToken,
-            "logout",
-            timeOutSecond,
-            TimeUnit.SECONDS
-        );
+        valueOperations.set(accessToken, "logout", timeOutSecond, TimeUnit.SECONDS);
     }
 
     public Optional<RefreshToken> findRefreshTokenByUserId(final String userId) {

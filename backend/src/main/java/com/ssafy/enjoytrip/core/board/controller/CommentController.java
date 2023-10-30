@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.board.controller;
 
+
 import com.ssafy.enjoytrip.core.board.model.dto.request.CommentModifyRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.request.CommentSaveRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.response.CommentResponse;
@@ -28,10 +29,9 @@ public class CommentController {
 
     @PostMapping("/{boardId}")
     public ResponseEntity<Long> registerComment(
-        @PathVariable final Long boardId,
-        @RequestBody final CommentSaveRequest commentSaveRequest,
-        @LoginUser final String userId
-    ) {
+            @PathVariable final Long boardId,
+            @RequestBody final CommentSaveRequest commentSaveRequest,
+            @LoginUser final String userId) {
         final Long commentId = commentService.save(commentSaveRequest, userId, boardId);
 
         return ResponseEntity.created(URI.create("/comment/" + commentId)).body(commentId);
@@ -45,10 +45,9 @@ public class CommentController {
 
     @PutMapping("/{commentId}")
     public ResponseEntity<Void> modifyComment(
-        @PathVariable final Long commentId,
-        @LoginUser final String userId,
-        @RequestBody final CommentModifyRequest request
-    ) {
+            @PathVariable final Long commentId,
+            @LoginUser final String userId,
+            @RequestBody final CommentModifyRequest request) {
         commentService.modify(commentId, userId, request);
 
         return ResponseEntity.ok().build();
@@ -56,9 +55,7 @@ public class CommentController {
 
     @DeleteMapping("/{commentId}")
     public ResponseEntity<Void> deleteComment(
-        @LoginUser final String userId,
-        @PathVariable final Long commentId
-    ) {
+            @LoginUser final String userId, @PathVariable final Long commentId) {
         commentService.delete(commentId, userId);
 
         return ResponseEntity.noContent().build();

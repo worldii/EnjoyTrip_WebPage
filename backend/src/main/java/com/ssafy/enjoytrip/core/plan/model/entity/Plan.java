@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.plan.model.entity;
 
+
 import com.ssafy.enjoytrip.global.error.PlanException;
 import java.sql.Date;
 import java.sql.Time;
@@ -24,12 +25,15 @@ public class Plan {
 
     @Builder
     public Plan(
-        final Long planId, final Long planBoardId,
-        final String placeName, final String content,
-        final int planOrder, final Long expectDuration,
-        final Date expectDate,
-        final Time startTime, final Time endTime
-    ) {
+            final Long planId,
+            final Long planBoardId,
+            final String placeName,
+            final String content,
+            final int planOrder,
+            final Long expectDuration,
+            final Date expectDate,
+            final Time startTime,
+            final Time endTime) {
         validatePlanBoardId(planBoardId);
         validatePlaceName(placeName);
         validateContent(content);

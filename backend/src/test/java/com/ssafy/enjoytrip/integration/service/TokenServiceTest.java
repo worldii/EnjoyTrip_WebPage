@@ -3,6 +3,7 @@ package com.ssafy.enjoytrip.integration.service;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
+import com.ssafy.enjoytrip.config.RedisTestConfig;
 import com.ssafy.enjoytrip.core.user.model.dto.request.UserAddRequest;
 import com.ssafy.enjoytrip.core.user.model.dto.request.UserLoginRequest;
 import com.ssafy.enjoytrip.core.user.service.UserService;
@@ -20,12 +21,14 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.jdbc.Sql;
 
 @DisplayName("Token Service 통합 테스트")
 @SpringBootTest
 @Sql({"/truncate.sql", "/user.sql"})
+@Import(RedisTestConfig.class)
 class TokenServiceTest {
 
     @Autowired
@@ -46,30 +49,27 @@ class TokenServiceTest {
     @DisplayName("accessToken을 정상 저장한다.")
     void saveAccessTokenTest() {
         // given
-        UserAddRequest userAddRequest = UserAddRequest.builder()
-            .userId("jongha")
-            .name("jongha")
-            .address("test")
-            .password("test")
-            .email("test")
-            .authority(1)
-            .build();
+        UserAddRequest userAddRequest =
+            UserAddRequest.builder()
+                .userId("jongha")
+                .name("jongha")
+                .address("test")
+                .password("test")
+                .email("test")
+                .authority(1)
+                .build();
         userService.join(userAddRequest);
 
-        UserLoginRequest userLoginRequest = UserLoginRequest.builder()
-            .userId("jongha")
-            .password("test")
-            .build();
+        UserLoginRequest userLoginRequest =
+            UserLoginRequest.builder().userId("jongha").password("test").build();
         TokenResponse login = userService.login(userLoginRequest);
 
         // when
-        AccessTokenResponse accessToken = tokenService.generateAccessToken(
-            "jongha", login.getRefreshToken());
+        AccessTokenResponse accessToken =
+            tokenService.generateAccessToken("jongha", login.getRefreshToken());
 
         // then
-        assertThat(accessToken)
-            .extracting("tokenName")
-            .isNotNull();
+        assertThat(accessToken).extracting("tokenName").isNotNull();
     }
 
     @Test
@@ -89,24 +89,24 @@ class TokenServiceTest {
     @DisplayName("accessToken은 refreshToken이 없을 때 저장하지 않는다.")
     void saveAccessTokenTestFailWithNoRefreshToken() {
         // given
-        UserAddRequest userAddRequest = UserAddRequest.builder()
-            .userId("jongha")
-            .name("jongha")
-            .address("test")
-            .password("test")
-            .email("test")
-            .authority(1)
-            .build();
+        UserAddRequest userAddRequest =
+            UserAddRequest.builder()
+                .userId("jongha")
+                .name("jongha")
+                .address("test")
+                .password("test")
+                .email("test")
+                .authority(1)
+                .build();
         userService.join(userAddRequest);
-        userService.login(UserLoginRequest.builder()
-            .userId("jongha")
-            .password("test")
-            .build());
+        userService.login(UserLoginRequest.builder().userId("jongha").password("test").build());
         String wrongRefreshToken = "wrongRefreshToken";
 
         // when & then
         assertThatCode(
-            () -> tokenService.generateAccessToken(userAddRequest.getUserId(), wrongRefreshToken))
+            () ->
+                tokenService.generateAccessToken(
+                    userAddRequest.getUserId(), wrongRefreshToken))
             .isInstanceOf(UserException.class)
             .hasMessage("토큰이 유효하지 않습니다.");
     }
@@ -115,19 +115,18 @@ class TokenServiceTest {
     @DisplayName("accessToken을 정상적으로 검증한다.")
     void validateAccessTokenTest() {
         // given
-        UserAddRequest userAddRequest = UserAddRequest.builder()
-            .userId("jongha")
-            .name("jongha")
-            .address("test")
-            .password("test")
-            .email("test")
-            .authority(1)
-            .build();
+        UserAddRequest userAddRequest =
+            UserAddRequest.builder()
+                .userId("jongha")
+                .name("jongha")
+                .address("test")
+                .password("test")
+                .email("test")
+                .authority(1)
+                .build();
         userService.join(userAddRequest);
-        UserLoginRequest userLoginRequest = UserLoginRequest.builder()
-            .userId("jongha")
-            .password("test")
-            .build();
+        UserLoginRequest userLoginRequest =
+            UserLoginRequest.builder().userId("jongha").password("test").build();
         TokenResponse loginToken = userService.login(userLoginRequest);
 
         // when & then
@@ -149,7 +148,8 @@ class TokenServiceTest {
     @DisplayName("accessToken이 만료되면 검증에 실패한다.")
     void validateAccessTokenTestFailWithExpiredToken() {
         // given
-        String expiredAccessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhY2Nlc3NUb2tlbiIsImlhdCI6MTY5NjA3NzA3MCwiZXhwIjoxNjk2MDc3MDcwLCJ1c2VySWQiOiJqb25naGEifQ.vQ584QrR8PedldokCyfzzuX82AJ-2nCqWPwc90SOFBM";
+        String expiredAccessToken =
+            "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhY2Nlc3NUb2tlbiIsImlhdCI6MTY5NjA3NzA3MCwiZXhwIjoxNjk2MDc3MDcwLCJ1c2VySWQiOiJqb25naGEifQ.vQ584QrR8PedldokCyfzzuX82AJ-2nCqWPwc90SOFBM";
 
         // when & then
         assertThatCode(() -> tokenService.validateAccessToken(expiredAccessToken))
@@ -161,21 +161,20 @@ class TokenServiceTest {
     @DisplayName("token을 정상적으로 파싱한다")
     void parseTokenTestWithSuccess() {
         // given
-        UserAddRequest userAddRequest = UserAddRequest.builder()
-            .userId("jongha")
-            .name("jongha")
-            .address("test")
-            .password("test")
-            .email("test")
-            .authority(1)
-            .build();
+        UserAddRequest userAddRequest =
+            UserAddRequest.builder()
+                .userId("jongha")
+                .name("jongha")
+                .address("test")
+                .password("test")
+                .email("test")
+                .authority(1)
+                .build();
 
         userService.join(userAddRequest);
 
-        UserLoginRequest userLoginRequest = UserLoginRequest.builder()
-            .userId("jongha")
-            .password("test")
-            .build();
+        UserLoginRequest userLoginRequest =
+            UserLoginRequest.builder().userId("jongha").password("test").build();
         TokenResponse loginToken = userService.login(userLoginRequest);
 
         // when
@@ -199,51 +198,46 @@ class TokenServiceTest {
     @DisplayName("refreshToken을 정상 저장한다.")
     void saveRefreshTokenTest() {
         // given
-        UserAddRequest userAddRequest = UserAddRequest.builder()
-            .userId("jongha")
-            .name("jongha")
-            .address("test")
-            .password("test")
-            .email("test")
-            .authority(1)
-            .build();
+        UserAddRequest userAddRequest =
+            UserAddRequest.builder()
+                .userId("jongha")
+                .name("jongha")
+                .address("test")
+                .password("test")
+                .email("test")
+                .authority(1)
+                .build();
         userService.join(userAddRequest);
 
-        UserLoginRequest userLoginRequest = UserLoginRequest.builder()
-            .userId("jongha")
-            .password("test")
-            .build();
+        UserLoginRequest userLoginRequest =
+            UserLoginRequest.builder().userId("jongha").password("test").build();
         userService.login(userLoginRequest);
 
         // when
         RefreshTokenResponse refreshToken = tokenService.generateRefreshToken("jongha");
 
         // then
-        assertThat(refreshToken)
-            .extracting("tokenName")
-            .isNotNull();
+        assertThat(refreshToken).extracting("tokenName").isNotNull();
     }
-
 
     @Test
     @DisplayName("refreshToken을 정상적으로 삭제한다")
     void deleteRefreshToken() {
         // given
-        UserAddRequest userAddRequest = UserAddRequest.builder()
-            .userId("jongha")
-            .name("jongha")
-            .address("test")
-            .password("test")
-            .email("test")
-            .authority(1)
-            .build();
+        UserAddRequest userAddRequest =
+            UserAddRequest.builder()
+                .userId("jongha")
+                .name("jongha")
+                .address("test")
+                .password("test")
+                .email("test")
+                .authority(1)
+                .build();
 
         userService.join(userAddRequest);
 
-        UserLoginRequest userLoginRequest = UserLoginRequest.builder()
-            .userId("jongha")
-            .password("test")
-            .build();
+        UserLoginRequest userLoginRequest =
+            UserLoginRequest.builder().userId("jongha").password("test").build();
         userService.login(userLoginRequest);
 
         // when
@@ -258,32 +252,27 @@ class TokenServiceTest {
     @DisplayName("유저가 로그아웃 하면 blackList에 정상적으로 액세스 토큰을 등록한다.")
     void registerBlackListTest() {
         // given
-        UserAddRequest userAddRequest = UserAddRequest.builder()
-            .userId("jongha")
-            .name("jongha")
-            .address("test")
-            .password("test")
-            .email("test")
-            .authority(1)
-            .build();
+        UserAddRequest userAddRequest =
+            UserAddRequest.builder()
+                .userId("jongha")
+                .name("jongha")
+                .address("test")
+                .password("test")
+                .email("test")
+                .authority(1)
+                .build();
         userService.join(userAddRequest);
 
-        UserLoginRequest userLoginRequest = UserLoginRequest.builder()
-            .userId("jongha")
-            .password("test")
-            .build();
+        UserLoginRequest userLoginRequest =
+            UserLoginRequest.builder().userId("jongha").password("test").build();
         TokenResponse loginToken = userService.login(userLoginRequest);
 
         // when
         userService.logout(
             userLoginRequest.getUserId(),
-            LogoutRequest.builder()
-                .accessToken(loginToken.getAccessToken())
-                .build()
-        );
+            LogoutRequest.builder().accessToken(loginToken.getAccessToken()).build());
 
         // then
-        assertThat(redisTemplate.opsForValue().get(loginToken.getAccessToken()))
-            .isNotNull();
+        assertThat(redisTemplate.opsForValue().get(loginToken.getAccessToken())).isNotNull();
     }
 }

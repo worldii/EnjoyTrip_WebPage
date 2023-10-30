@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.user.model.entity;
 
+
 import com.ssafy.enjoytrip.global.error.UserException;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -20,11 +21,13 @@ public class User {
 
     @Builder
     public User(
-        final String userId, final String name,
-        final String address, final String password,
-        final String email, final int authority,
-        final String salt
-    ) {
+            final String userId,
+            final String name,
+            final String address,
+            final String password,
+            final String email,
+            final int authority,
+            final String salt) {
         validateId(userId);
         validateName(name);
         validateAddress(address);

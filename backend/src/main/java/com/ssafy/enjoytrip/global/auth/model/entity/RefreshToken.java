@@ -1,8 +1,8 @@
 package com.ssafy.enjoytrip.global.auth.model.entity;
 
+
 import lombok.Builder;
 import lombok.Getter;
-
 
 @Getter
 @Builder

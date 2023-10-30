@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.global.auth.interceptor;
 
+
 import com.ssafy.enjoytrip.global.auth.model.dto.LoginUser;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -16,17 +17,16 @@ public class JwtArgumentResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public boolean supportsParameter(final MethodParameter parameter) {
-        return parameter.hasParameterAnnotation(LoginUser.class) &&
-            parameter.getParameterType().equals(String.class);
+        return parameter.hasParameterAnnotation(LoginUser.class)
+                && parameter.getParameterType().equals(String.class);
     }
 
     @Override
     public Object resolveArgument(
-        final MethodParameter parameter,
-        final ModelAndViewContainer mavContainer,
-        final NativeWebRequest webRequest,
-        final WebDataBinderFactory binderFactory
-    ) {
+            final MethodParameter parameter,
+            final ModelAndViewContainer mavContainer,
+            final NativeWebRequest webRequest,
+            final WebDataBinderFactory binderFactory) {
         final HttpServletRequest request = (HttpServletRequest) webRequest.getNativeRequest();
         return request.getAttribute("userId");
     }

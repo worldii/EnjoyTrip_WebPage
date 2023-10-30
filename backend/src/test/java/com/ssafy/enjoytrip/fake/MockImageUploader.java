@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.fake;
 
+
 import com.ssafy.enjoytrip.core.media.ImageFiles;
 import com.ssafy.enjoytrip.core.media.service.ImageUploader;
 import com.ssafy.enjoytrip.core.media.util.FileUtil;
@@ -15,9 +16,7 @@ public class MockImageUploader implements ImageUploader {
 
     @Override
     public List<String> uploadMedias(
-        final List<MultipartFile> multipartFiles,
-        final String folderName
-    ) {
+            final List<MultipartFile> multipartFiles, final String folderName) {
         final ImageFiles images = new ImageFiles(multipartFiles);
 
         return getFileUrls(folderName, images);
@@ -25,12 +24,13 @@ public class MockImageUploader implements ImageUploader {
 
     private List<String> getFileUrls(final String folderName, final ImageFiles images) {
         return images.getImages().stream()
-            .map(imageFile -> FileUtil.getFullFileUrl(folderName, imageFile.getOriginalFilename()))
-            .collect(Collectors.toList());
+                .map(
+                        imageFile ->
+                                FileUtil.getFullFileUrl(
+                                        folderName, imageFile.getOriginalFilename()))
+                .collect(Collectors.toList());
     }
 
     @Override
-    public void deleteMedias(List<String> fileUrls) {
-
-    }
+    public void deleteMedias(List<String> fileUrls) {}
 }

@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.media.service;
 
+
 import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 

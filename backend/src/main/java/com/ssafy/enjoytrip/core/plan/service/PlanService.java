@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.plan.service;
 
+
 import com.ssafy.enjoytrip.core.plan.model.dto.request.PlanBoardSaveRequest;
 import com.ssafy.enjoytrip.core.plan.model.dto.response.PlanBoardResponse;
 import java.util.List;

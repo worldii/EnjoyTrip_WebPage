@@ -16,12 +16,16 @@ public class PlanBoardSaveRequest {
 
     @NotBlank(message = "유저 아이디는 필수 입력 값입니다.")
     private String userId;
+
     @NotBlank(message = "제목은 필수 입력 값입니다.")
     private String title;
+
     @NotBlank(message = "여행 시작 날짜는 필수 입력 값입니다.")
     private String startDate;
+
     @NotBlank(message = "여행 종료 날짜는 필수 입력 값입니다.")
     private String endDate;
+
     @NotBlank(message = "여행지는 필수 입력 값입니다.")
     private List<PlanSaveRequest> planList;
 }

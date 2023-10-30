@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.board.service;
 
+
 import com.ssafy.enjoytrip.core.board.model.dto.request.BoardModifyRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.request.BoardSaveRequest;
 import com.ssafy.enjoytrip.core.board.model.dto.request.BoardSearchRequest;
@@ -15,9 +16,7 @@ public interface BoardService {
     PageResponse getBoardList(final BoardSearchRequest boardSearchRequest);
 
     void modify(
-        final Long boardId, final String userId,
-        final BoardModifyRequest boardModifyRequest
-    );
+            final Long boardId, final String userId, final BoardModifyRequest boardModifyRequest);
 
     void updateHit(final Long boardId);
 

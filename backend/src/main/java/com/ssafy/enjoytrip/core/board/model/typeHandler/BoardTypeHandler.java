@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.board.model.typeHandler;
 
+
 import com.ssafy.enjoytrip.core.board.model.entity.BoardType;
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
@@ -14,9 +15,11 @@ public class BoardTypeHandler implements TypeHandler<BoardType> {
 
     @Override
     public void setParameter(
-        final PreparedStatement ps, final int parameterIndex,
-        final BoardType parameter, final JdbcType jdbcType
-    ) throws java.sql.SQLException {
+            final PreparedStatement ps,
+            final int parameterIndex,
+            final BoardType parameter,
+            final JdbcType jdbcType)
+            throws java.sql.SQLException {
         ps.setString(parameterIndex, parameter.getType());
     }
 
@@ -32,7 +35,7 @@ public class BoardTypeHandler implements TypeHandler<BoardType> {
 
     @Override
     public BoardType getResult(final CallableStatement cs, final int columnIndex)
-        throws SQLException {
+            throws SQLException {
         return getBoardType(cs.getString(columnIndex));
     }
 

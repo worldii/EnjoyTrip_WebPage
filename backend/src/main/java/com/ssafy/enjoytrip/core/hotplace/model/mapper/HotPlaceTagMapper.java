@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.hotplace.model.mapper;
 
+
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceTag;
 import java.util.List;
 import java.util.Optional;
@@ -13,9 +14,7 @@ public interface HotPlaceTagMapper {
     Optional<HotPlaceTag> findById(final Long hotPlaceTagId);
 
     Optional<HotPlaceTag> selectByHotPlaceIdAndTagName(
-        final String hotPlaceId,
-        final String tagName
-    );
+            final String hotPlaceId, final String tagName);
 
     int increaseTagCount(final Long hotPlaceTagId);
 }

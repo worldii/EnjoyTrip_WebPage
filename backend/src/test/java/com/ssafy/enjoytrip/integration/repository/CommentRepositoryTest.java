@@ -15,34 +15,25 @@ import org.springframework.test.context.jdbc.Sql;
 @SpringBootTest
 class CommentRepositoryTest {
 
-    @Autowired
-    private CommentRepository commentRepository;
+    @Autowired private CommentRepository commentRepository;
 
     @Test
     @DisplayName("Comment를 정상적으로 생성하는 테스트")
     void createComment() {
         // given
-        Comment comment = Comment.builder()
-            .boardId(1L)
-            .userId("test")
-            .content("test")
-            .build();
+        Comment comment = Comment.builder().boardId(1L).userId("test").content("test").build();
 
         // when
         Long commentId = commentRepository.insertComment(comment);
 
         // then
-        Comment createdComment = commentRepository
-            .selectComment(commentId)
-            .orElseThrow(RuntimeException::new);
+        Comment createdComment =
+                commentRepository.selectComment(commentId).orElseThrow(RuntimeException::new);
         assertThat(createdComment.getCommentId()).isEqualTo(commentId);
     }
 
     @Test
-    @Sql(scripts = {
-        "/truncate.sql",
-        "/comment.sql"
-    })
+    @Sql(scripts = {"/truncate.sql", "/comment.sql"})
     @DisplayName("BoardId를 통해 Comment를 정상적으로 조회하는 테스트")
     void selectComment() {
         // given
@@ -62,9 +53,8 @@ class CommentRepositoryTest {
         Long commentId = 1L;
 
         // when
-        Comment comment = commentRepository
-            .selectComment(commentId)
-            .orElseThrow(RuntimeException::new);
+        Comment comment =
+                commentRepository.selectComment(commentId).orElseThrow(RuntimeException::new);
 
         // then
         assertThat(comment.getCommentId()).isEqualTo(commentId);
@@ -89,20 +79,20 @@ class CommentRepositoryTest {
         // given
         Long commentId = 1L;
         String content = "update";
-        Comment updateComment = Comment.builder()
-            .commentId(commentId)
-            .boardId(1L)
-            .userId("test")
-            .content(content)
-            .build();
+        Comment updateComment =
+                Comment.builder()
+                        .commentId(commentId)
+                        .boardId(1L)
+                        .userId("test")
+                        .content(content)
+                        .build();
 
         // when
         commentRepository.updateComment(updateComment);
 
         // then
-        Comment newComment = commentRepository
-            .selectComment(commentId)
-            .orElseThrow(RuntimeException::new);
+        Comment newComment =
+                commentRepository.selectComment(commentId).orElseThrow(RuntimeException::new);
         assertThat(newComment).extracting("content").isEqualTo(content);
     }
 

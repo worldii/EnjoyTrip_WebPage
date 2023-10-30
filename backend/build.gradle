@@ -3,7 +3,12 @@ plugins {
     id 'war'
     id 'org.springframework.boot' version '2.7.11'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'jacoco'
+    id 'org.sonarqube' version '4.2.1.3168'
+    id 'com.diffplug.spotless' version '6.11.0'
+
 }
+
 
 group = 'com.ssafy'
 version = '0.0.1-SNAPSHOT'
@@ -19,7 +24,6 @@ repositories {
     mavenCentral()
 }
 
-
 ext {
     set('springCloudVersion', "2021.0.5")
 }
@@ -30,8 +34,9 @@ dependencies {
 
     compileOnly group: 'org.springframework.cloud', name: 'spring-cloud-aws', version: '2.2.1.RELEASE', ext: 'pom'
     compileOnly 'org.projectlombok:lombok'
-    implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
 
+    implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.3.1'
+    implementation 'com.h2database:h2' // h2 : implementation
     implementation group: 'com.github.pagehelper', name: 'pagehelper-spring-boot-starter', version: '1.4.1'
     implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
     implementation group: 'org.mindrot', name: 'jbcrypt', version: '0.4'
@@ -45,11 +50,11 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.mysql:mysql-connector-j'
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
-
+    testImplementation "org.junit.jupiter:junit-jupiter:5.8.1"
     testImplementation 'org.projectlombok:lombok:1.18.26'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.rest-assured:rest-assured:4.4.0'
-
+    testImplementation group: 'org.testcontainers', name: 'testcontainers', version: '1.17.2'
 }
 
 tasks.named('test') {
@@ -62,3 +67,43 @@ dependencyManagement {
     }
 }
 targetCompatibility = JavaVersion.VERSION_11
+
+
+sonar {
+    properties {
+        property 'sonar.host.url', 'https://sonarcloud.io'
+        property 'sonar.organization', 'worldii'
+        property 'sonar.projectKey', 'worldii_EnjoyTrip_WebPage'
+        property 'sonar.coverage.jacoco.xmlReportPaths', 'build/reports/jacoco/test/jacocoTestReport.xml'
+        property 'sonar.sources', 'src'
+        property 'sonar.language', 'java'
+        property 'sonar.sourceEncoding', 'UTF-8'
+        property 'sonar.test.inclusions', '**/*Test.java'
+        property 'sonar.exclusions', '**/test/**, **/Q*.java, **/*Doc*.java, **/resources/** ,**/*Application*.java , **/*Config*.java,' +
+                '**/*Dto*.java, **/*Request*.java, **/*Response*.java ,**/*Exception*.java ,**/*ErrorCode*.java'
+        property 'sonar.java.coveragePlugin', 'jacoco'
+    }
+}
+
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+    }
+}
+
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+
+spotless {
+    java {
+        target("**/*.java")
+        googleJavaFormat().aosp()
+        importOrder()
+        removeUnusedImports()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+}

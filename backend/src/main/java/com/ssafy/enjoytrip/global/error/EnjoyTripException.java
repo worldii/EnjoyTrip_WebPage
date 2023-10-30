@@ -1,6 +1,6 @@
 package com.ssafy.enjoytrip.global.error;
 
-public class EnjoyTripException extends RuntimeException{
+public class EnjoyTripException extends RuntimeException {
 
     public EnjoyTripException() {
         super();

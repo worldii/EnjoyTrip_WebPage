@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.infra;
 
+
 import com.ssafy.enjoytrip.global.auth.service.PasswordEncoder;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Component;

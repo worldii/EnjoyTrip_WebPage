@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.hotplace.model.mapper;
 
+
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceArticleImage;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;

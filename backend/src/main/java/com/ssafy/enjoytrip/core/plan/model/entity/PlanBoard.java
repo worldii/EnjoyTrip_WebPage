@@ -20,12 +20,11 @@ public class PlanBoard {
 
     @Builder
     public PlanBoard(
-        final Long planBoardId,
-        final String userId,
-        final String title,
-        final Date startDate,
-        final Date endDate
-    ) {
+            final Long planBoardId,
+            final String userId,
+            final String title,
+            final Date startDate,
+            final Date endDate) {
         validateUserId(userId);
         validateTitle(title);
         validateDate(startDate, endDate);

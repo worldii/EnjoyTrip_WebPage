@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.hotplace.model.dto.response;
 
+
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlaceArticle;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -21,13 +22,12 @@ public class HotPlaceArticleResponse {
 
     public static HotPlaceArticleResponse from(final HotPlaceArticle hotPlaceArticle) {
         return new HotPlaceArticleResponse(
-            hotPlaceArticle.getHotPlaceArticleId(),
-            hotPlaceArticle.getHotPlaceId(),
-            hotPlaceArticle.getHotPlaceName(),
-            hotPlaceArticle.getUserId(),
-            hotPlaceArticle.getContent(),
-            hotPlaceArticle.getCreateAt(),
-            hotPlaceArticle.getImageUrl()
-        );
+                hotPlaceArticle.getHotPlaceArticleId(),
+                hotPlaceArticle.getHotPlaceId(),
+                hotPlaceArticle.getHotPlaceName(),
+                hotPlaceArticle.getUserId(),
+                hotPlaceArticle.getContent(),
+                hotPlaceArticle.getCreateAt(),
+                hotPlaceArticle.getImageUrl());
     }
 }

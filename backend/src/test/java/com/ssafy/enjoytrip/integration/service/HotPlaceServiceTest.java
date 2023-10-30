@@ -22,22 +22,22 @@ import org.springframework.test.context.jdbc.Sql;
 @DisplayName("HotPlaceService 통합 테스트")
 class HotPlaceServiceTest {
 
-    @Autowired
-    private HotPlaceService hotPlaceService;
+    @Autowired private HotPlaceService hotPlaceService;
 
     @Test
     @DisplayName("HotPlace를 정상적으로 생성한다.")
     void HotPlaceServiceSuccess() {
         // given
-        HotPlaceSaveRequest hotPlaceSaveRequest = HotPlaceSaveRequest.builder()
-            .hotPlaceId("1")
-            .hotPlaceName("test")
-            .roadAddressName("test")
-            .addressName("test")
-            .imageUrl("abc")
-            .x(1.0)
-            .y(1.0)
-            .build();
+        HotPlaceSaveRequest hotPlaceSaveRequest =
+                HotPlaceSaveRequest.builder()
+                        .hotPlaceId("1")
+                        .hotPlaceName("test")
+                        .roadAddressName("test")
+                        .addressName("test")
+                        .imageUrl("abc")
+                        .x(1.0)
+                        .y(1.0)
+                        .build();
         // when
         String hotPlaceId = hotPlaceService.insertHotPlace(hotPlaceSaveRequest);
 
@@ -47,18 +47,19 @@ class HotPlaceServiceTest {
 
     @Test
     @DisplayName("HotPlace Article을 정상적으로 생성한다.")
-    @Sql({"/truncate.sql", "/user.sql", "/hotplace.sql"})
+    @Sql({"/truncate.sql", "/user.sql", "/hotPlace.sql"})
     void HotPlaceArticleServiceSuccess() {
         // given
         String hotPlaceId = "1";
         String user = "test";
         List<String> tags = List.of("test", "test2");
-        HotPlaceArticleSaveRequest hotPlaceArticle = HotPlaceArticleSaveRequest.builder()
-            .content("test")
-            .imageUrl(List.of("www.naver.com"))
-            .hotPlaceName("test")
-            .tagName(tags)
-            .build();
+        HotPlaceArticleSaveRequest hotPlaceArticle =
+                HotPlaceArticleSaveRequest.builder()
+                        .content("test")
+                        .imageUrl(List.of("www.naver.com"))
+                        .hotPlaceName("test")
+                        .tagName(tags)
+                        .build();
 
         // when
         Long articleId = hotPlaceService.insertHotPlaceArticle(hotPlaceId, hotPlaceArticle, user);
@@ -67,7 +68,6 @@ class HotPlaceServiceTest {
         assertThat(articleId).isEqualTo(1L);
     }
 
-
     @Test
     @DisplayName("hotPlaceId가 존재하지 않는 경우 HotPlaceArticle을 생성할 수 없다.")
     @Sql({"/truncate.sql", "/user.sql"})
@@ -75,52 +75,57 @@ class HotPlaceServiceTest {
         String wrongHotPlaceId = "2";
         String user = "test";
         List<String> tags = List.of("test", "test2");
-        HotPlaceArticleSaveRequest hotPlaceArticle = HotPlaceArticleSaveRequest.builder()
-            .content("test")
-            .imageUrl(List.of("www.naver.com"))
-            .hotPlaceName("test")
-            .tagName(tags)
-            .build();
+        HotPlaceArticleSaveRequest hotPlaceArticle =
+                HotPlaceArticleSaveRequest.builder()
+                        .content("test")
+                        .imageUrl(List.of("www.naver.com"))
+                        .hotPlaceName("test")
+                        .tagName(tags)
+                        .build();
 
         // when & then
         assertThatCode(
-            () -> hotPlaceService.insertHotPlaceArticle(wrongHotPlaceId, hotPlaceArticle, user))
-            .isInstanceOf(HotPlaceException.class)
-            .hasMessage("존재하지 않는 핫플레이스입니다.");
+                        () ->
+                                hotPlaceService.insertHotPlaceArticle(
+                                        wrongHotPlaceId, hotPlaceArticle, user))
+                .isInstanceOf(HotPlaceException.class)
+                .hasMessage("존재하지 않는 핫플레이스입니다.");
     }
 
     @Test
     @DisplayName("유저가 존재하지 않는 경우 HotPlaceArticle을 생성할 수 없다.")
-    @Sql({"/truncate.sql", "/hotplace.sql"})
+    @Sql({"/truncate.sql", "/hotPlace.sql"})
     void hotPlaceArticleFailWithDifferentUser() {
         String hotPlaceId = "1";
         String wrongUser = "wrongUser";
         List<String> tags = List.of("test", "test2");
-        HotPlaceArticleSaveRequest hotPlaceArticle = HotPlaceArticleSaveRequest.builder()
-            .content("test")
-            .imageUrl(List.of("www.naver.com"))
-            .hotPlaceName("test")
-            .tagName(tags)
-            .build();
+        HotPlaceArticleSaveRequest hotPlaceArticle =
+                HotPlaceArticleSaveRequest.builder()
+                        .content("test")
+                        .imageUrl(List.of("www.naver.com"))
+                        .hotPlaceName("test")
+                        .tagName(tags)
+                        .build();
 
         // when & then
         assertThatCode(
-            () -> hotPlaceService.insertHotPlaceArticle(hotPlaceId, hotPlaceArticle, wrongUser))
-            .isInstanceOf(HotPlaceException.class)
-            .hasMessage("존재하지 않는 유저입니다.");
+                        () ->
+                                hotPlaceService.insertHotPlaceArticle(
+                                        hotPlaceId, hotPlaceArticle, wrongUser))
+                .isInstanceOf(HotPlaceException.class)
+                .hasMessage("존재하지 않는 유저입니다.");
     }
 
     @Test
     @DisplayName("HotPlace 목록을 정상적으로 조회한다.")
-    @Sql({"/truncate.sql", "/user.sql", "/hotplace.sql"})
+    @Sql({"/truncate.sql", "/user.sql", "/hotPlace.sql"})
     void getHotPlaceListSuccess() {
         // given
-        HotPlaceSearchRequest hotPlaceSearchRequest = HotPlaceSearchRequest.builder()
-            .keyword("Example")
-            .build();
+        HotPlaceSearchRequest hotPlaceSearchRequest =
+                HotPlaceSearchRequest.builder().keyword("Example").build();
         // when
-        List<HotPlaceResponse> hotPlaceResponses = hotPlaceService.selectAllHotPlace(
-            hotPlaceSearchRequest);
+        List<HotPlaceResponse> hotPlaceResponses =
+                hotPlaceService.selectAllHotPlace(hotPlaceSearchRequest);
 
         // then
         assertThat(hotPlaceResponses.size()).isEqualTo(2);
@@ -128,7 +133,7 @@ class HotPlaceServiceTest {
 
     @Test
     @DisplayName("HotPlace 상세 정보를 정상적으로 조회한다.")
-    @Sql({"/truncate.sql", "/user.sql", "/hotplace.sql", "/hotplaceArticle.sql"})
+    @Sql({"/truncate.sql", "/user.sql", "/hotPlace.sql", "/hotPlaceArticle.sql"})
     void getHotPlaceDetailSuccess() {
         // given
         String hotPlaceId = "1";
@@ -137,12 +142,12 @@ class HotPlaceServiceTest {
 
         // then
         assertAll(
-            () -> assertThat(hotPlaceResponse).extracting("hotPlaceId").isEqualTo("1"),
-            () -> assertThat(hotPlaceResponse).extracting("hotPlaceName")
-                .isEqualTo("Example Place"),
-            () -> assertThat(hotPlaceResponse.getHotPlaceArticles().size()).isEqualTo(1),
-            () -> assertThat(hotPlaceResponse.getHotPlaceTagResponses().size()).isEqualTo(1)
-        );
+                () -> assertThat(hotPlaceResponse).extracting("hotPlaceId").isEqualTo("1"),
+                () ->
+                        assertThat(hotPlaceResponse)
+                                .extracting("hotPlaceName")
+                                .isEqualTo("Example Place"),
+                () -> assertThat(hotPlaceResponse.getHotPlaceArticles().size()).isEqualTo(1),
+                () -> assertThat(hotPlaceResponse.getHotPlaceTagResponses().size()).isEqualTo(1));
     }
-
 }

@@ -19,28 +19,28 @@ import org.springframework.test.context.jdbc.Sql;
 @SpringBootTest
 class PlanRepositoryTest {
 
-    @Autowired
-    private PlanRepository planRepository;
+    @Autowired private PlanRepository planRepository;
 
     @Test
     @DisplayName("Plan 생성 테스트")
     @Sql("/truncate.sql")
     void createPlan() {
         // given
-        Plan plan = Plan.builder()
-            .planBoardId(1L)
-            .placeName("test")
-            .planOrder(1)
-            .content("test")
-            .startTime(new Time(1, 1, 1))
-            .endTime(new Time(1, 1, 2))
-            .expectDuration(1L)
-            .expectDate(new Date(2021, 1, 1))
-            .build();
+        Plan plan =
+                Plan.builder()
+                        .planBoardId(1L)
+                        .placeName("test")
+                        .planOrder(1)
+                        .content("test")
+                        .startTime(new Time(1, 1, 1))
+                        .endTime(new Time(1, 1, 2))
+                        .expectDuration(1L)
+                        .expectDate(new Date(2021, 1, 1))
+                        .build();
 
         // when // then
         assertThatCode(() -> planRepository.insertPlanList(List.of(plan)))
-            .doesNotThrowAnyException();
+                .doesNotThrowAnyException();
     }
 
     @Test
@@ -50,16 +50,16 @@ class PlanRepositoryTest {
         // given
         String userId = "test";
         String title = "test";
-        PlanBoard planBoard = PlanBoard.builder()
-            .userId(userId)
-            .startDate(new Date(2021, 1, 1))
-            .endDate(new Date(2021, 1, 2))
-            .title(title)
-            .build();
+        PlanBoard planBoard =
+                PlanBoard.builder()
+                        .userId(userId)
+                        .startDate(new Date(2021, 1, 1))
+                        .endDate(new Date(2021, 1, 2))
+                        .title(title)
+                        .build();
 
         // when // then
-        assertThatCode(() -> planRepository.insertPlanBoard(planBoard))
-            .doesNotThrowAnyException();
+        assertThatCode(() -> planRepository.insertPlanBoard(planBoard)).doesNotThrowAnyException();
     }
 
     @Test
@@ -68,7 +68,6 @@ class PlanRepositoryTest {
     void selectPlanBoard() {
         // given // when // then
         assertThat(planRepository.selectPlanBoardByPlanBoardId(1L)).isNotNull();
-
     }
 
     @Test

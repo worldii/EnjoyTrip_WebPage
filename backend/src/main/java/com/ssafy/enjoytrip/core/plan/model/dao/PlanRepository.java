@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.plan.model.dao;
 
+
 import com.ssafy.enjoytrip.core.plan.model.entity.Plan;
 import com.ssafy.enjoytrip.core.plan.model.entity.PlanBoard;
 import com.ssafy.enjoytrip.core.plan.model.mapper.PlanMapper;

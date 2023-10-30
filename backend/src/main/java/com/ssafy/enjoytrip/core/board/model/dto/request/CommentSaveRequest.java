@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.board.model.dto.request;
 
+
 import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

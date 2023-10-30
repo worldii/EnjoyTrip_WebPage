@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.hotplace.model.dto.response;
 
+
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlace;
 import java.util.Collections;
 import java.util.List;
@@ -30,16 +31,16 @@ public class HotPlaceDetailResponse {
         final List<HotPlaceTagResponse> hotPlaceTagResponses = getTagResponses(hotPlace);
 
         return new HotPlaceDetailResponse(
-            hotPlace.getHotPlaceId(),
-            hotPlace.getHotPlaceName(),
-            hotPlace.getX(),
-            hotPlace.getY(),
-            hotPlace.getVote(),
-            hotPlace.getImageUrl(),
-            hotPlace.getRoadAddressName(),
-            hotPlace.getAddressName(),
-            hotPlaceArticles,
-            hotPlaceTagResponses);
+                hotPlace.getHotPlaceId(),
+                hotPlace.getHotPlaceName(),
+                hotPlace.getX(),
+                hotPlace.getY(),
+                hotPlace.getVote(),
+                hotPlace.getImageUrl(),
+                hotPlace.getRoadAddressName(),
+                hotPlace.getAddressName(),
+                hotPlaceArticles,
+                hotPlaceTagResponses);
     }
 
     private static List<HotPlaceArticleResponse> getArticleResponses(final HotPlace hotPlace) {
@@ -47,10 +48,9 @@ public class HotPlaceDetailResponse {
             return Collections.emptyList();
         }
 
-        return hotPlace.getHotPlaceArticles()
-            .stream()
-            .map(HotPlaceArticleResponse::from)
-            .collect(Collectors.toList());
+        return hotPlace.getHotPlaceArticles().stream()
+                .map(HotPlaceArticleResponse::from)
+                .collect(Collectors.toList());
     }
 
     private static List<HotPlaceTagResponse> getTagResponses(final HotPlace hotPlace) {
@@ -58,9 +58,8 @@ public class HotPlaceDetailResponse {
             return Collections.emptyList();
         }
 
-        return hotPlace.getHotPlaceTags()
-            .stream()
-            .map(HotPlaceTagResponse::from)
-            .collect(Collectors.toList());
+        return hotPlace.getHotPlaceTags().stream()
+                .map(HotPlaceTagResponse::from)
+                .collect(Collectors.toList());
     }
 }

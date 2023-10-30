@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.board.dao;
 
+
 import com.github.pagehelper.Page;
 import com.ssafy.enjoytrip.core.board.model.dto.request.BoardSearchRequest;
 import com.ssafy.enjoytrip.core.board.model.entity.Board;

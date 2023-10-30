@@ -17,41 +17,41 @@ import org.springframework.test.context.jdbc.Sql;
 @Sql({"/truncate.sql", "/user.sql"})
 class UserRepositoryTest {
 
-    @Autowired
-    private UserRepository userRepository;
+    @Autowired private UserRepository userRepository;
 
     @Test
     @DisplayName("정상적으로 유저가 회원가입할 수 있다.")
     void 유저_정상적으로_생성() {
-        //given
-        User user = User.builder()
-            .userId("jongha")
-            .name("jongha")
-            .address("test")
-            .password("test")
-            .email("test")
-            .authority(1)
-            .salt("test")
-            .build();
+        // given
+        User user =
+                User.builder()
+                        .userId("jongha")
+                        .name("jongha")
+                        .address("test")
+                        .password("test")
+                        .email("test")
+                        .authority(1)
+                        .salt("test")
+                        .build();
 
-        //when & then
-        assertThatCode(() -> userRepository.insertByUser(user))
-            .doesNotThrowAnyException();
+        // when & then
+        assertThatCode(() -> userRepository.insertByUser(user)).doesNotThrowAnyException();
     }
 
     @Test
     @DisplayName("유저를 selectById로 조회할 수 있다.")
     void 유저_정상적으로_조회() {
-        //given
+        // given
         String userId = "test";
 
-        //when
-        User user = userRepository.selectByUserId(userId)
-            .orElseThrow(() -> new UserException("해당 유저가 없습니다."));
+        // when
+        User user =
+                userRepository
+                        .selectByUserId(userId)
+                        .orElseThrow(() -> new UserException("해당 유저가 없습니다."));
 
-        //then
-        assertThatCode(() -> user.getUserId().equals(userId))
-            .doesNotThrowAnyException();
+        // then
+        assertThatCode(() -> user.getUserId().equals(userId)).doesNotThrowAnyException();
     }
 
     @Test

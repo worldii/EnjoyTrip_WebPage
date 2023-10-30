@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.hotplace.model.dto.response;
 
+
 import com.ssafy.enjoytrip.core.hotplace.model.entity.HotPlace;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,9 +17,6 @@ public class HotPlaceResponse {
 
     public static HotPlaceResponse from(final HotPlace hotPlace) {
         return new HotPlaceResponse(
-            hotPlace.getHotPlaceId(),
-            hotPlace.getHotPlaceName(),
-            hotPlace.getImageUrl()
-        );
+                hotPlace.getHotPlaceId(), hotPlace.getHotPlaceName(), hotPlace.getImageUrl());
     }
 }

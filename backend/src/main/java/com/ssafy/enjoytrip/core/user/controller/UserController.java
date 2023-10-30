@@ -40,7 +40,6 @@ public class UserController {
         return ResponseEntity.ok(userService.login(request));
     }
 
-
     @GetMapping("/info/{userId}")
     public ResponseEntity<UserResponse> getInfo(@PathVariable final String userId) {
         return ResponseEntity.ok(userService.getInformation(userId));
@@ -48,27 +47,21 @@ public class UserController {
 
     @PostMapping("/logout")
     public ResponseEntity<Void> logout(
-        @LoginUser final String loginUser,
-        @RequestBody final LogoutRequest request
-    ) {
+            @LoginUser final String loginUser, @RequestBody final LogoutRequest request) {
         userService.logout(loginUser, request);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping
     public ResponseEntity<Void> modify(
-        @RequestBody final UserModifyRequest request,
-        @LoginUser final String userId
-    ) {
+            @RequestBody final UserModifyRequest request, @LoginUser final String userId) {
         userService.modify(request, userId);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<Void> delete(
-        @PathVariable final String userId,
-        @LoginUser final String loginUser
-    ) {
+            @PathVariable final String userId, @LoginUser final String loginUser) {
         userService.delete(userId, loginUser);
         return ResponseEntity.noContent().build();
     }

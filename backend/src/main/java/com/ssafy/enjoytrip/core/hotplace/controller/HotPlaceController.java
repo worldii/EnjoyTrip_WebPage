@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.hotplace.controller;
 
+
 import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceArticleSaveRequest;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceSaveRequest;
 import com.ssafy.enjoytrip.core.hotplace.model.dto.request.HotPlaceSearchRequest;
@@ -23,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/hotplace")
@@ -32,9 +32,7 @@ public class HotPlaceController {
     private final HotPlaceService hotPlaceService;
 
     @PostMapping
-    public ResponseEntity<String> insertHotPlace(
-        @RequestBody final HotPlaceSaveRequest request
-    ) {
+    public ResponseEntity<String> insertHotPlace(@RequestBody final HotPlaceSaveRequest request) {
         final String hotPlaceId = hotPlaceService.insertHotPlace(request);
 
         return ResponseEntity.created(URI.create("/hotplace" + hotPlaceId)).body(hotPlaceId);
@@ -42,47 +40,41 @@ public class HotPlaceController {
 
     @PostMapping("/{hotPlaceId}")
     public ResponseEntity<Long> insertHotPlaceArticle(
-        @PathVariable final String hotPlaceId,
-        @RequestBody final HotPlaceArticleSaveRequest request,
-        @LoginUser final String userId
-    ) {
+            @PathVariable final String hotPlaceId,
+            @RequestBody final HotPlaceArticleSaveRequest request,
+            @LoginUser final String userId) {
         final Long articleId = hotPlaceService.insertHotPlaceArticle(hotPlaceId, request, userId);
 
         return ResponseEntity.created(URI.create("/hotplace/" + hotPlaceId + articleId))
-            .body(articleId);
+                .body(articleId);
     }
 
     @NoAuth
     @GetMapping
     public ResponseEntity<List<HotPlaceResponse>> getHotPlaceList(
-        @ModelAttribute final HotPlaceSearchRequest searchRequest
-    ) {
+            @ModelAttribute final HotPlaceSearchRequest searchRequest) {
         return ResponseEntity.ok(hotPlaceService.selectAllHotPlace(searchRequest));
     }
 
     @NoAuth
     @GetMapping("/{hotPlaceId}")
     public ResponseEntity<HotPlaceDetailResponse> getHotPlaceDetail(
-        @PathVariable final String hotPlaceId
-    ) {
+            @PathVariable final String hotPlaceId) {
         return ResponseEntity.ok(hotPlaceService.selectAllByHotPlaceId(hotPlaceId));
     }
 
     @NoAuth
     @GetMapping("/{hotPlaceId}/article/{articleId}")
     public ResponseEntity<HotPlaceArticleResponse> getHotPlaceArticleDetail(
-        @PathVariable final String hotPlaceId,
-        @PathVariable final Long articleId
-    ) {
+            @PathVariable final String hotPlaceId, @PathVariable final Long articleId) {
         return ResponseEntity.ok(
-            hotPlaceService.selectHotPlaceArticleByArticleId(hotPlaceId, articleId));
+                hotPlaceService.selectHotPlaceArticleByArticleId(hotPlaceId, articleId));
     }
 
     @PutMapping("/{hotPlaceId}/vote")
     public ResponseEntity<Void> voteHotPlace(
-        @PathVariable final String hotPlaceId,
-        @RequestBody final HotPlaceVoteRequest hotPlaceVoteRequest
-    ) {
+            @PathVariable final String hotPlaceId,
+            @RequestBody final HotPlaceVoteRequest hotPlaceVoteRequest) {
         hotPlaceService.updateVoteCount(hotPlaceId, hotPlaceVoteRequest);
         return ResponseEntity.ok().build();
     }

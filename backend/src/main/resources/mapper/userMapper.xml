@@ -14,17 +14,17 @@
 
   <select id="selectByUserId" parameterType="string" resultType="user">
     select *
-    from user
+    from users
     where user_id = #{userId};
   </select>
 
   <insert id="insertByUser" parameterType="user">
-    insert into user(user_id, name, address, password, email, salt)
-      value (#{userId},#{name},#{address},#{password},#{email},#{salt});
+    insert into users(user_id, name, address, password, email, salt)
+    values (#{userId}, #{name}, #{address}, #{password}, #{email}, #{salt});
   </insert>
 
   <update id="updateByUser" parameterType="string">
-    update user
+    update users
     set name    = #{name},
         address=#{address},
         password=#{password},
@@ -34,7 +34,7 @@
 
   <delete id="deleteByUserId" parameterType="string">
     delete
-    from user
+    from users
     where user_id = #{userId};
   </delete>
 </mapper>

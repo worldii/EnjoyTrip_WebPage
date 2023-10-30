@@ -21,8 +21,7 @@ import org.springframework.test.context.jdbc.Sql;
 @DisplayName("BoardService 통합 테스트")
 class BoardServiceTest {
 
-    @Autowired
-    private BoardService boardService;
+    @Autowired private BoardService boardService;
 
     @Test
     @Sql({"/truncate.sql", "/user.sql"})
@@ -30,19 +29,18 @@ class BoardServiceTest {
     void insertBoardTest() {
         // given
         String userId = "test";
-        BoardSaveRequest boardSaveRequest = BoardSaveRequest.builder()
-            .boardType(BoardType.NOTICE)
-            .content("test")
-            .subject("test")
-            .fileUrls(List.of("abc", "def"))
-            .build();
+        BoardSaveRequest boardSaveRequest =
+                BoardSaveRequest.builder()
+                        .boardType(BoardType.NOTICE)
+                        .content("test")
+                        .subject("test")
+                        .fileUrls(List.of("abc", "def"))
+                        .build();
 
         // when & then
-        assertThatCode(
-            () -> boardService.saveBoard(boardSaveRequest, userId))
-            .doesNotThrowAnyException();
+        assertThatCode(() -> boardService.saveBoard(boardSaveRequest, userId))
+                .doesNotThrowAnyException();
     }
-
 
     @Test
     @Sql({"/truncate.sql", "/user.sql"})
@@ -50,28 +48,26 @@ class BoardServiceTest {
     void insertBoardFailTest() {
         // given
         String wrongUserId = "wrong";
-        BoardSaveRequest boardSaveRequest = BoardSaveRequest.builder()
-            .boardType(BoardType.NOTICE)
-            .content("test")
-            .subject("test")
-            .fileUrls(List.of("abc", "def"))
-            .build();
+        BoardSaveRequest boardSaveRequest =
+                BoardSaveRequest.builder()
+                        .boardType(BoardType.NOTICE)
+                        .content("test")
+                        .subject("test")
+                        .fileUrls(List.of("abc", "def"))
+                        .build();
 
         // when & then
-        assertThatCode(
-            () -> boardService.saveBoard(boardSaveRequest, wrongUserId))
-            .isInstanceOf(BoardException.class)
-            .hasMessage("해당 userId에 해당하는 user가 없습니다.");
+        assertThatCode(() -> boardService.saveBoard(boardSaveRequest, wrongUserId))
+                .isInstanceOf(BoardException.class)
+                .hasMessage("해당 userId에 해당하는 user가 없습니다.");
     }
 
     @Test
     @DisplayName("게시판 조회 테스트")
     void selectBoardTest() {
         // when
-        BoardSearchRequest boardSearchRequest = BoardSearchRequest.builder()
-            .page(1)
-            .pageSize(1)
-            .build();
+        BoardSearchRequest boardSearchRequest =
+                BoardSearchRequest.builder().page(1).pageSize(1).build();
 
         // when
         PageResponse boardList = boardService.getBoardList(boardSearchRequest);
@@ -79,7 +75,6 @@ class BoardServiceTest {
         // then
         assertThat(boardList).isNotNull();
     }
-
 
     @Test
     @Sql({"/truncate.sql", "/user.sql", "/board.sql"})

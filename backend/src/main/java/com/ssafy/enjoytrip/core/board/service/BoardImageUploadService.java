@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.board.service;
 
+
 import com.ssafy.enjoytrip.core.board.dao.BoardImageRepository;
 import com.ssafy.enjoytrip.core.board.dao.BoardRepository;
 import com.ssafy.enjoytrip.core.board.model.dto.response.BoardImageUrlResponse;
@@ -25,27 +26,19 @@ public class BoardImageUploadService {
     private final BoardImageRepository boardImageRepository;
 
     public List<BoardImageUrlResponse> uploadMedias(
-        final List<MultipartFile> files,
-        final Long boardId,
-        final String userId
-    ) {
+            final List<MultipartFile> files, final Long boardId, final String userId) {
         final Board board = findBoardByBoardId(boardId);
         final User user = findUserByUserId(userId);
 
         validateUser(board.getUserId(), user.getUserId());
-        final List<String> imageUrls = imageUploader.uploadMedias(files,
-            "/board/" + board.getBoardId());
+        final List<String> imageUrls =
+                imageUploader.uploadMedias(files, "/board/" + board.getBoardId());
 
-        return imageUrls.stream()
-            .map(BoardImageUrlResponse::new)
-            .collect(Collectors.toList());
+        return imageUrls.stream().map(BoardImageUrlResponse::new).collect(Collectors.toList());
     }
 
     public List<BoardImageUrlResponse> modifyMedias(
-        final List<MultipartFile> files,
-        final Long boardId,
-        final String userId
-    ) {
+            final List<MultipartFile> files, final Long boardId, final String userId) {
         deleteMedias(boardId, userId);
         return uploadMedias(files, boardId, userId);
     }
@@ -56,11 +49,10 @@ public class BoardImageUploadService {
 
         validateUser(board.getUserId(), user.getUserId());
 
-        final List<String> imageUrls = boardImageRepository
-            .selectFileByBoardId(boardId)
-            .stream()
-            .map(BoardImageInfo::getImageUrl)
-            .collect(Collectors.toList());
+        final List<String> imageUrls =
+                boardImageRepository.selectFileByBoardId(boardId).stream()
+                        .map(BoardImageInfo::getImageUrl)
+                        .collect(Collectors.toList());
         imageUploader.deleteMedias(imageUrls);
     }
 
@@ -69,14 +61,16 @@ public class BoardImageUploadService {
             throw new BoardException("해당 게시글의 작성자가 아닙니다.");
         }
     }
-    
+
     private Board findBoardByBoardId(final Long boardId) {
-        return boardRepository.selectBoard(boardId)
-            .orElseThrow(() -> new BoardException("해당 boardId에 해당하는 Board가 없습니다."));
+        return boardRepository
+                .selectBoard(boardId)
+                .orElseThrow(() -> new BoardException("해당 boardId에 해당하는 Board가 없습니다."));
     }
 
     private User findUserByUserId(final String userId) {
-        return userRepository.selectByUserId(userId)
-            .orElseThrow(() -> new BoardException("해당 userId에 해당하는 user가 없습니다."));
+        return userRepository
+                .selectByUserId(userId)
+                .orElseThrow(() -> new BoardException("해당 userId에 해당하는 user가 없습니다."));
     }
 }

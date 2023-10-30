@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.user.service;
 
+
 import com.ssafy.enjoytrip.core.user.model.dto.request.UserAddRequest;
 import com.ssafy.enjoytrip.core.user.model.dto.request.UserLoginRequest;
 import com.ssafy.enjoytrip.core.user.model.dto.request.UserModifyRequest;

@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.hotplace.model.entity;
 
+
 import com.ssafy.enjoytrip.global.error.HotPlaceException;
 import java.util.List;
 import lombok.AccessLevel;
@@ -24,16 +25,16 @@ public class HotPlace {
 
     @Builder
     public HotPlace(
-        final String hotPlaceId,
-        final String hotPlaceName,
-        final Double x, final Double y,
-        final Long vote,
-        final String imageUrl,
-        final String roadAddressName,
-        final String addressName,
-        final List<HotPlaceArticle> hotPlaceArticles,
-        final List<HotPlaceTag> hotPlaceTags
-    ) {
+            final String hotPlaceId,
+            final String hotPlaceName,
+            final Double x,
+            final Double y,
+            final Long vote,
+            final String imageUrl,
+            final String roadAddressName,
+            final String addressName,
+            final List<HotPlaceArticle> hotPlaceArticles,
+            final List<HotPlaceTag> hotPlaceTags) {
         validateHotPlaceId(hotPlaceId);
         validateHotPlaceName(hotPlaceName);
         validateX(x);
@@ -77,7 +78,6 @@ public class HotPlace {
             throw new HotPlaceException("y좌표가 없습니다.");
         }
     }
-
 
     private void validateAddressName(final String addressName) {
         if (addressName == null || addressName.isEmpty()) {

@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.user.dao;
 
+
 import com.ssafy.enjoytrip.core.user.model.entity.User;
 import com.ssafy.enjoytrip.core.user.model.mapper.UserMapper;
 import java.util.Optional;

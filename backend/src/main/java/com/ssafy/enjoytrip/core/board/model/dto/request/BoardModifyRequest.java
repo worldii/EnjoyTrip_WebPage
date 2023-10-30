@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.board.model.dto.request;
 
+
 import com.ssafy.enjoytrip.core.board.model.entity.BoardType;
 import java.util.List;
 import lombok.AllArgsConstructor;

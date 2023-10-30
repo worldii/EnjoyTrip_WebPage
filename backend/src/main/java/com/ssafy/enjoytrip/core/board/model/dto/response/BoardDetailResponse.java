@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.board.model.dto.response;
 
+
 import com.ssafy.enjoytrip.core.board.model.entity.Board;
 import com.ssafy.enjoytrip.core.board.model.entity.BoardImageInfo;
 import com.ssafy.enjoytrip.core.board.model.entity.BoardType;
@@ -28,19 +29,18 @@ public class BoardDetailResponse {
     private List<Comment> comments;
 
     public static BoardDetailResponse of(
-        final Board board, final List<Comment> comments,
-        final List<BoardImageInfo> imageFiles
-    ) {
+            final Board board,
+            final List<Comment> comments,
+            final List<BoardImageInfo> imageFiles) {
         return new BoardDetailResponse(
-            board.getBoardId(),
-            board.getUserId(),
-            board.getSubject(),
-            board.getContent(),
-            board.getHit(),
-            board.getCurrentUpdate(),
-            board.getBoardType(),
-            imageFiles,
-            comments
-        );
+                board.getBoardId(),
+                board.getUserId(),
+                board.getSubject(),
+                board.getContent(),
+                board.getHit(),
+                board.getCurrentUpdate(),
+                board.getBoardType(),
+                imageFiles,
+                comments);
     }
 }

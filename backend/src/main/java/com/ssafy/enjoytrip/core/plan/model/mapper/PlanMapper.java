@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.plan.model.mapper;
 
+
 import com.ssafy.enjoytrip.core.plan.model.entity.Plan;
 import com.ssafy.enjoytrip.core.plan.model.entity.PlanBoard;
 import java.util.List;

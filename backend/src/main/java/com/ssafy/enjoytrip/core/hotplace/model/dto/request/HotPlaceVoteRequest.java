@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.hotplace.model.dto.request;
 
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

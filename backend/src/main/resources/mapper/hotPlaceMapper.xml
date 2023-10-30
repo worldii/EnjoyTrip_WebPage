@@ -62,10 +62,22 @@
     where hot_place_id = #{hotPlaceId}
   </select>
 
+
   <select id="selectAllByHotPlaceId" resultMap="combinedResultMap">
-    select hp.*,
-           hpa.*,
-           hpt.*
+    select hp.hot_place_id,
+           hp.hot_place_name,
+           hp.x,
+           hp.y,
+           hp.vote,
+           hp.image_url,
+           hp.road_address_name,
+           hp.address_name,
+           hpa.hot_place_article_id,
+           hpa.user_id,
+           hpa.content,
+           hpa.create_at,
+           hpt.tag_name,
+           hpt.count
     from hot_place hp
            left join hot_place_article hpa on hp.hot_place_id = hpa.hot_place_id
            left join hot_place_tag hpt on hp.hot_place_id = hpt.hot_place_id

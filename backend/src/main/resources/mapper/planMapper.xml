@@ -41,12 +41,12 @@
       )
     </foreach>
   </insert>
-  
+
   <insert id="insertPlanBoard" parameterType="planBoard">
     <selectKey resultType="Long" keyProperty="planBoardId" order="AFTER">
       select last_insert_id()
     </selectKey>
-    insert into plan_board(title, user_id, start_date, end_date) value
+    insert into plan_board(title, user_id, start_date, end_date) values
     (#{title},#{userId},#{startDate},#{endDate})
   </insert>
 

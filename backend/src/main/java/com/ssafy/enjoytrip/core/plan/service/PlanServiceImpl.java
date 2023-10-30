@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.plan.service;
 
+
 import com.ssafy.enjoytrip.core.plan.model.dao.PlanRepository;
 import com.ssafy.enjoytrip.core.plan.model.dto.request.PlanBoardSaveRequest;
 import com.ssafy.enjoytrip.core.plan.model.dto.response.PlanBoardResponse;
@@ -29,27 +30,31 @@ public class PlanServiceImpl implements PlanService {
     @Transactional
     @Override
     public Long savePlanBoard(final PlanBoardSaveRequest planBoardRequest) {
-        final PlanBoard planBoard = PlanBoard
-            .builder()
-            .startDate(Date.valueOf(planBoardRequest.getStartDate()))
-            .endDate(Date.valueOf(planBoardRequest.getEndDate()))
-            .title(planBoardRequest.getTitle())
-            .userId(planBoardRequest.getUserId())
-            .build();
+        final PlanBoard planBoard =
+                PlanBoard.builder()
+                        .startDate(Date.valueOf(planBoardRequest.getStartDate()))
+                        .endDate(Date.valueOf(planBoardRequest.getEndDate()))
+                        .title(planBoardRequest.getTitle())
+                        .userId(planBoardRequest.getUserId())
+                        .build();
 
         planRepository.insertPlanBoard(planBoard);
 
-        final List<Plan> plans = planBoardRequest.getPlanList().stream()
-            .map(plan -> Plan.builder()
-                .planBoardId(planBoard.getPlanBoardId())
-                .planOrder(plan.getPlanOrder())
-                .expectDate(Date.valueOf(plan.getExpectDate()))
-                .expectDuration(plan.getExpectDuration())
-                .startTime(Time.valueOf(plan.getStartTime()))
-                .endTime(Time.valueOf(plan.getEndTime()))
-                .placeName(plan.getPlaceName())
-                .content(plan.getContent())
-                .build()).collect(Collectors.toList());
+        final List<Plan> plans =
+                planBoardRequest.getPlanList().stream()
+                        .map(
+                                plan ->
+                                        Plan.builder()
+                                                .planBoardId(planBoard.getPlanBoardId())
+                                                .planOrder(plan.getPlanOrder())
+                                                .expectDate(Date.valueOf(plan.getExpectDate()))
+                                                .expectDuration(plan.getExpectDuration())
+                                                .startTime(Time.valueOf(plan.getStartTime()))
+                                                .endTime(Time.valueOf(plan.getEndTime()))
+                                                .placeName(plan.getPlaceName())
+                                                .content(plan.getContent())
+                                                .build())
+                        .collect(Collectors.toList());
 
         planRepository.insertPlanList(plans);
         return planBoard.getPlanBoardId();
@@ -63,10 +68,10 @@ public class PlanServiceImpl implements PlanService {
         final PlanBoard planBoard = findByPlanBoardById(planBoardId);
         validateSameUserId(userId, planBoard.getUserId());
 
-        final List<PlanResponse> plans = planRepository.selectPlanByPlanBoardId(planBoardId)
-            .stream()
-            .map(PlanResponse::from)
-            .collect(Collectors.toList());
+        final List<PlanResponse> plans =
+                planRepository.selectPlanByPlanBoardId(planBoardId).stream()
+                        .map(PlanResponse::from)
+                        .collect(Collectors.toList());
 
         return PlanBoardResponse.of(planBoard, plans);
     }
@@ -76,10 +81,9 @@ public class PlanServiceImpl implements PlanService {
         final User user = findUserByUserId(userId);
         validateSameUserId(userId, user.getUserId());
 
-        return planRepository.selectPlanBoardByUserId(userId)
-            .stream()
-            .map(PlanBoardResponse::from)
-            .collect(Collectors.toList());
+        return planRepository.selectPlanBoardByUserId(userId).stream()
+                .map(PlanBoardResponse::from)
+                .collect(Collectors.toList());
     }
 
     private static void validateSameUserId(String userId, String userUserId) {
@@ -89,13 +93,14 @@ public class PlanServiceImpl implements PlanService {
     }
 
     private User findUserByUserId(final String userId) {
-        return userRepository.selectByUserId(userId)
-            .orElseThrow(() -> new HotPlaceException("존재하지 않는 유저입니다."));
+        return userRepository
+                .selectByUserId(userId)
+                .orElseThrow(() -> new HotPlaceException("존재하지 않는 유저입니다."));
     }
 
     private PlanBoard findByPlanBoardById(Long planBoardId) {
-        return planRepository.selectPlanBoardByPlanBoardId(planBoardId)
-            .orElseThrow(() -> new PlanException("해당 일정이 존재하지 않습니다."));
+        return planRepository
+                .selectPlanBoardByPlanBoardId(planBoardId)
+                .orElseThrow(() -> new PlanException("해당 일정이 존재하지 않습니다."));
     }
-
 }

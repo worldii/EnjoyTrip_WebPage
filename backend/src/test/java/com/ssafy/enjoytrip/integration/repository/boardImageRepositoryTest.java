@@ -16,8 +16,7 @@ import org.springframework.test.context.jdbc.Sql;
 @SpringBootTest
 class boardImageRepositoryTest {
 
-    @Autowired
-    private BoardImageRepository boardImageRepository;
+    @Autowired private BoardImageRepository boardImageRepository;
 
     @Test
     @Sql({"/truncate.sql", "/boardImageInfo.sql"})
@@ -39,20 +38,14 @@ class boardImageRepositoryTest {
     void insertFileInfoTest() {
         // given
         Long boardId = 1L;
-        List<BoardImageInfo> imageFiles = List.of(
-            BoardImageInfo.builder()
-                .boardId(boardId)
-                .imageUrl("test")
-                .build(),
-            BoardImageInfo.builder()
-                .boardId(boardId)
-                .imageUrl("test")
-                .build()
-        );
+        List<BoardImageInfo> imageFiles =
+                List.of(
+                        BoardImageInfo.builder().boardId(boardId).imageUrl("test").build(),
+                        BoardImageInfo.builder().boardId(boardId).imageUrl("test").build());
 
         // when & then
         assertThatCode(() -> boardImageRepository.insertFile(boardId, imageFiles))
-            .doesNotThrowAnyException();
+                .doesNotThrowAnyException();
     }
 
     @Test

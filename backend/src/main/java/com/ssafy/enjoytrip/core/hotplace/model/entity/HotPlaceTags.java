@@ -1,5 +1,6 @@
 package com.ssafy.enjoytrip.core.hotplace.model.entity;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,10 +15,7 @@ public class HotPlaceTags {
     private final Map<String, HotPlaceTag> hotPlaceTagMap;
 
     public HotPlaceTags(
-        final List<HotPlaceTag> tagList,
-        final String hotPlaceId,
-        final List<String> tagName
-    ) {
+            final List<HotPlaceTag> tagList, final String hotPlaceId, final List<String> tagName) {
         this.hotPlaceTagMap = new HashMap<>();
 
         for (final HotPlaceTag tag : tagList) {
@@ -29,8 +27,10 @@ public class HotPlaceTags {
     // 각각의 tagname을 increase 하는 과정
     private void increaseTagCount(final String hotPlaceId, final List<String> tagName) {
         for (final String name : tagName) {
-            final HotPlaceTag newHotPlaceTag = hotPlaceTagMap
-                .getOrDefault(name, HotPlaceTag.of(name, hotPlaceId)).increaseTagCount();
+            final HotPlaceTag newHotPlaceTag =
+                    hotPlaceTagMap
+                            .getOrDefault(name, HotPlaceTag.of(name, hotPlaceId))
+                            .increaseTagCount();
 
             hotPlaceTagMap.put(name, newHotPlaceTag);
         }

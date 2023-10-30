@@ -25,16 +25,18 @@ class HotPlaceTest {
         String roadAddressName = "서울";
 
         // when & then
-        assertThatCode(() -> HotPlace.builder()
-            .hotPlaceId(hotPlaceId)
-            .hotPlaceName(hotPlaceName)
-            .addressName(addressName)
-            .imageUrl(placeUrl)
-            .x(x)
-            .y(y)
-            .roadAddressName(roadAddressName)
-            .build())
-            .doesNotThrowAnyException();
+        assertThatCode(
+                        () ->
+                                HotPlace.builder()
+                                        .hotPlaceId(hotPlaceId)
+                                        .hotPlaceName(hotPlaceName)
+                                        .addressName(addressName)
+                                        .imageUrl(placeUrl)
+                                        .x(x)
+                                        .y(y)
+                                        .roadAddressName(roadAddressName)
+                                        .build())
+                .doesNotThrowAnyException();
     }
 
     @ParameterizedTest
@@ -50,17 +52,19 @@ class HotPlaceTest {
         String roadAddressName = "서울";
 
         // when & then
-        assertThatCode(() -> HotPlace.builder()
-            .hotPlaceId(hotPlaceId)
-            .hotPlaceName(hotPlaceName)
-            .addressName(addressName)
-            .imageUrl(placeUrl)
-            .x(x)
-            .y(y)
-            .roadAddressName(roadAddressName)
-            .build())
-            .isInstanceOf(HotPlaceException.class)
-            .hasMessage("핫플레이스 아이디가 없습니다.");
+        assertThatCode(
+                        () ->
+                                HotPlace.builder()
+                                        .hotPlaceId(hotPlaceId)
+                                        .hotPlaceName(hotPlaceName)
+                                        .addressName(addressName)
+                                        .imageUrl(placeUrl)
+                                        .x(x)
+                                        .y(y)
+                                        .roadAddressName(roadAddressName)
+                                        .build())
+                .isInstanceOf(HotPlaceException.class)
+                .hasMessage("핫플레이스 아이디가 없습니다.");
     }
 
     @ParameterizedTest
@@ -76,17 +80,19 @@ class HotPlaceTest {
         String roadAddressName = "서울";
 
         // when & then
-        assertThatCode(() -> HotPlace.builder()
-            .hotPlaceId(hotPlaceId)
-            .hotPlaceName(hotPlaceName)
-            .addressName(addressName)
-            .imageUrl(placeUrl)
-            .x(x)
-            .y(y)
-            .roadAddressName(roadAddressName)
-            .build())
-            .isInstanceOf(HotPlaceException.class)
-            .hasMessage("핫플레이스 이름이 없습니다.");
+        assertThatCode(
+                        () ->
+                                HotPlace.builder()
+                                        .hotPlaceId(hotPlaceId)
+                                        .hotPlaceName(hotPlaceName)
+                                        .addressName(addressName)
+                                        .imageUrl(placeUrl)
+                                        .x(x)
+                                        .y(y)
+                                        .roadAddressName(roadAddressName)
+                                        .build())
+                .isInstanceOf(HotPlaceException.class)
+                .hasMessage("핫플레이스 이름이 없습니다.");
     }
 
     @Test
@@ -102,17 +108,19 @@ class HotPlaceTest {
         String roadAddressName = "서울";
 
         // when & then
-        assertThatCode(() -> HotPlace.builder()
-            .hotPlaceId(hotPlaceId)
-            .hotPlaceName(hotPlaceName)
-            .addressName(addressName)
-            .imageUrl(placeUrl)
-            .x(x)
-            .y(y)
-            .roadAddressName(roadAddressName)
-            .build())
-            .isInstanceOf(HotPlaceException.class)
-            .hasMessage("x좌표가 없습니다.");
+        assertThatCode(
+                        () ->
+                                HotPlace.builder()
+                                        .hotPlaceId(hotPlaceId)
+                                        .hotPlaceName(hotPlaceName)
+                                        .addressName(addressName)
+                                        .imageUrl(placeUrl)
+                                        .x(x)
+                                        .y(y)
+                                        .roadAddressName(roadAddressName)
+                                        .build())
+                .isInstanceOf(HotPlaceException.class)
+                .hasMessage("x좌표가 없습니다.");
     }
 
     @Test
@@ -128,17 +136,19 @@ class HotPlaceTest {
         String roadAddressName = "서울";
 
         // when & then
-        assertThatCode(() -> HotPlace.builder()
-            .hotPlaceId(hotPlaceId)
-            .hotPlaceName(hotPlaceName)
-            .addressName(addressName)
-            .imageUrl(placeUrl)
-            .x(x)
-            .y(y)
-            .roadAddressName(roadAddressName)
-            .build())
-            .isInstanceOf(HotPlaceException.class)
-            .hasMessage("y좌표가 없습니다.");
+        assertThatCode(
+                        () ->
+                                HotPlace.builder()
+                                        .hotPlaceId(hotPlaceId)
+                                        .hotPlaceName(hotPlaceName)
+                                        .addressName(addressName)
+                                        .imageUrl(placeUrl)
+                                        .x(x)
+                                        .y(y)
+                                        .roadAddressName(roadAddressName)
+                                        .build())
+                .isInstanceOf(HotPlaceException.class)
+                .hasMessage("y좌표가 없습니다.");
     }
 
     @ParameterizedTest
@@ -154,17 +164,19 @@ class HotPlaceTest {
         String roadAddressName = "서울";
 
         // when & then
-        assertThatCode(() -> HotPlace.builder()
-            .hotPlaceId(hotPlaceId)
-            .hotPlaceName(hotPlaceName)
-            .addressName(addressName)
-            .imageUrl(placeUrl)
-            .x(x)
-            .y(y)
-            .roadAddressName(roadAddressName)
-            .build())
-            .isInstanceOf(HotPlaceException.class)
-            .hasMessage("주소가 없습니다.");
+        assertThatCode(
+                        () ->
+                                HotPlace.builder()
+                                        .hotPlaceId(hotPlaceId)
+                                        .hotPlaceName(hotPlaceName)
+                                        .addressName(addressName)
+                                        .imageUrl(placeUrl)
+                                        .x(x)
+                                        .y(y)
+                                        .roadAddressName(roadAddressName)
+                                        .build())
+                .isInstanceOf(HotPlaceException.class)
+                .hasMessage("주소가 없습니다.");
     }
 
     @ParameterizedTest
@@ -180,17 +192,19 @@ class HotPlaceTest {
         Double y = 1.0;
 
         // when & then
-        assertThatCode(() -> HotPlace.builder()
-            .hotPlaceId(hotPlaceId)
-            .hotPlaceName(hotPlaceName)
-            .addressName(addressName)
-            .imageUrl(placeUrl)
-            .x(x)
-            .y(y)
-            .roadAddressName(roadAddressName)
-            .build())
-            .isInstanceOf(HotPlaceException.class)
-            .hasMessage("도로명 주소가 없습니다.");
+        assertThatCode(
+                        () ->
+                                HotPlace.builder()
+                                        .hotPlaceId(hotPlaceId)
+                                        .hotPlaceName(hotPlaceName)
+                                        .addressName(addressName)
+                                        .imageUrl(placeUrl)
+                                        .x(x)
+                                        .y(y)
+                                        .roadAddressName(roadAddressName)
+                                        .build())
+                .isInstanceOf(HotPlaceException.class)
+                .hasMessage("도로명 주소가 없습니다.");
     }
 
     @ParameterizedTest
@@ -206,16 +220,18 @@ class HotPlaceTest {
         String roadAddressName = "서울";
 
         // when & then
-        assertThatCode(() -> HotPlace.builder()
-            .hotPlaceId(hotPlaceId)
-            .hotPlaceName(hotPlaceName)
-            .addressName(addressName)
-            .imageUrl(placeUrl)
-            .x(x)
-            .y(y)
-            .roadAddressName(roadAddressName)
-            .build())
-            .isInstanceOf(HotPlaceException.class)
-            .hasMessage("핫플레이스 URL이 없습니다.");
+        assertThatCode(
+                        () ->
+                                HotPlace.builder()
+                                        .hotPlaceId(hotPlaceId)
+                                        .hotPlaceName(hotPlaceName)
+                                        .addressName(addressName)
+                                        .imageUrl(placeUrl)
+                                        .x(x)
+                                        .y(y)
+                                        .roadAddressName(roadAddressName)
+                                        .build())
+                .isInstanceOf(HotPlaceException.class)
+                .hasMessage("핫플레이스 URL이 없습니다.");
     }
 }
