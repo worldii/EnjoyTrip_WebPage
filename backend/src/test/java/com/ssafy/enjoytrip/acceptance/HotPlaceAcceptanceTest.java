@@ -33,133 +33,61 @@ class HotPlaceAcceptanceTest extends AcceptanceTest {
     void createHotPlace() {
         // given
         UserAddRequest userAddRequest =
-                UserAddRequest.builder()
-                        .userId("jongha")
-                        .name("jongha")
-                        .address("test")
-                        .password("test")
-                        .email("test")
-                        .authority(1)
-                        .build();
+            UserAddRequest.builder()
+                .userId("jongha")
+                .name("jongha")
+                .address("test")
+                .password("test")
+                .email("test")
+                .authority(1)
+                .build();
 
         RestAssured.given()
+            .contentType(APPLICATION_JSON_VALUE)
+            .body(userAddRequest)
+            .log()
+            .all()
+            .when()
+            .post("/user")
+            .then()
+            .log()
+            .all()
+            .extract();
+
+        UserLoginRequest userLoginRequest =
+            UserLoginRequest.builder().userId("jongha").password("test").build();
+
+        String accessToken =
+            RestAssured.given()
                 .contentType(APPLICATION_JSON_VALUE)
-                .body(userAddRequest)
+                .body(userLoginRequest)
                 .log()
                 .all()
                 .when()
-                .post("/user")
+                .post("/user/login")
                 .then()
                 .log()
                 .all()
-                .extract();
-
-        UserLoginRequest userLoginRequest =
-                UserLoginRequest.builder().userId("jongha").password("test").build();
-
-        String accessToken =
-                RestAssured.given()
-                        .contentType(APPLICATION_JSON_VALUE)
-                        .body(userLoginRequest)
-                        .log()
-                        .all()
-                        .when()
-                        .post("/user/login")
-                        .then()
-                        .log()
-                        .all()
-                        .extract()
-                        .as(TokenResponse.class)
-                        .getAccessToken();
+                .extract()
+                .as(TokenResponse.class)
+                .getAccessToken();
 
         // when
         HotPlaceSaveRequest hotPlaceSaveRequest =
-                HotPlaceSaveRequest.builder()
-                        .hotPlaceId("test")
-                        .hotPlaceName("test")
-                        .x(1.0)
-                        .y(1.0)
-                        .imageUrl("test")
-                        .addressName("test")
-                        .roadAddressName("test")
-                        .build();
+            HotPlaceSaveRequest.builder()
+                .hotPlaceId("test")
+                .hotPlaceName("test")
+                .x(1.0)
+                .y(1.0)
+                .imageUrl("test")
+                .addressName("test")
+                .roadAddressName("test")
+                .build();
 
         ExtractableResponse<Response> response =
-                RestAssured.given()
-                        .header("Authorization", accessToken)
-                        .body(hotPlaceSaveRequest)
-                        .contentType(APPLICATION_JSON_VALUE)
-                        .log()
-                        .all()
-                        .when()
-                        .post("/hotplace")
-                        .then()
-                        .log()
-                        .all()
-                        .extract();
-        // then
-        assertThat(response.statusCode()).isEqualTo(CREATED.value());
-    }
-
-    @Test
-    @DisplayName("HotPlace Article을  생성한다.")
-    void selectHotPlace() {
-        // given
-        UserAddRequest userAddRequest =
-                UserAddRequest.builder()
-                        .userId("jongha")
-                        .name("jongha")
-                        .address("test")
-                        .password("test")
-                        .email("test")
-                        .authority(1)
-                        .build();
-
-        RestAssured.given()
-                .contentType(APPLICATION_JSON_VALUE)
-                .body(userAddRequest)
-                .log()
-                .all()
-                .when()
-                .post("/user")
-                .then()
-                .log()
-                .all()
-                .extract();
-
-        UserLoginRequest userLoginRequest =
-                UserLoginRequest.builder().userId("jongha").password("test").build();
-
-        String accessToken =
-                RestAssured.given()
-                        .contentType(APPLICATION_JSON_VALUE)
-                        .body(userLoginRequest)
-                        .log()
-                        .all()
-                        .when()
-                        .post("/user/login")
-                        .then()
-                        .log()
-                        .all()
-                        .extract()
-                        .as(TokenResponse.class)
-                        .getAccessToken();
-
-        // when
-        HotPlaceSaveRequest hotPlaceSaveRequest =
-                HotPlaceSaveRequest.builder()
-                        .hotPlaceId("test")
-                        .hotPlaceName("test")
-                        .x(1.0)
-                        .y(1.0)
-                        .imageUrl("test")
-                        .addressName("test")
-                        .roadAddressName("test")
-                        .build();
-
-        RestAssured.given()
-                .body(hotPlaceSaveRequest)
+            RestAssured.given()
                 .header("Authorization", accessToken)
+                .body(hotPlaceSaveRequest)
                 .contentType(APPLICATION_JSON_VALUE)
                 .log()
                 .all()
@@ -169,27 +97,99 @@ class HotPlaceAcceptanceTest extends AcceptanceTest {
                 .log()
                 .all()
                 .extract();
+        // then
+        assertThat(response.statusCode()).isEqualTo(CREATED.value());
+    }
+
+    @Test
+    @DisplayName("HotPlace Article을  생성한다.")
+    void selectHotPlace() {
+        // given
+        UserAddRequest userAddRequest =
+            UserAddRequest.builder()
+                .userId("jongha")
+                .name("jongha")
+                .address("test")
+                .password("test")
+                .email("test")
+                .authority(1)
+                .build();
+
+        RestAssured.given()
+            .contentType(APPLICATION_JSON_VALUE)
+            .body(userAddRequest)
+            .log()
+            .all()
+            .when()
+            .post("/user")
+            .then()
+            .log()
+            .all()
+            .extract();
+
+        UserLoginRequest userLoginRequest =
+            UserLoginRequest.builder().userId("jongha").password("test").build();
+
+        String accessToken =
+            RestAssured.given()
+                .contentType(APPLICATION_JSON_VALUE)
+                .body(userLoginRequest)
+                .log()
+                .all()
+                .when()
+                .post("/user/login")
+                .then()
+                .log()
+                .all()
+                .extract()
+                .as(TokenResponse.class)
+                .getAccessToken();
+
+        // when
+        HotPlaceSaveRequest hotPlaceSaveRequest =
+            HotPlaceSaveRequest.builder()
+                .hotPlaceId("test")
+                .hotPlaceName("test")
+                .x(1.0)
+                .y(1.0)
+                .imageUrl("test")
+                .addressName("test")
+                .roadAddressName("test")
+                .build();
+
+        RestAssured.given()
+            .body(hotPlaceSaveRequest)
+            .header("Authorization", accessToken)
+            .contentType(APPLICATION_JSON_VALUE)
+            .log()
+            .all()
+            .when()
+            .post("/hotplace")
+            .then()
+            .log()
+            .all()
+            .extract();
 
         HotPlaceArticleSaveRequest hotPlaceArticleSaveRequest =
-                HotPlaceArticleSaveRequest.builder()
-                        .hotPlaceName("test")
-                        .imageUrl(List.of("www.naver.com"))
-                        .content("test")
-                        .build();
+            HotPlaceArticleSaveRequest.builder()
+                .hotPlaceName("test")
+                .imageUrl(List.of("www.naver.com"))
+                .content("test")
+                .build();
 
         ExtractableResponse<Response> response =
-                RestAssured.given()
-                        .header("Authorization", accessToken)
-                        .contentType(APPLICATION_JSON_VALUE)
-                        .body(hotPlaceArticleSaveRequest)
-                        .log()
-                        .all()
-                        .when()
-                        .post("/hotplace/{hotPlaceName}", "test")
-                        .then()
-                        .log()
-                        .all()
-                        .extract();
+            RestAssured.given()
+                .header("Authorization", accessToken)
+                .contentType(APPLICATION_JSON_VALUE)
+                .body(hotPlaceArticleSaveRequest)
+                .log()
+                .all()
+                .when()
+                .post("/hotplace/{hotPlaceName}", "test")
+                .then()
+                .log()
+                .all()
+                .extract();
 
         // then
         assertThat(response.statusCode()).isEqualTo(CREATED.value());
@@ -197,65 +197,66 @@ class HotPlaceAcceptanceTest extends AcceptanceTest {
 
     @Test
     @DisplayName("HotPlace 목록을 조회한다")
-    @Sql({"/truncate.sql", "/hotplace.sql"})
+    @Sql({"/truncate.sql", "/hotPlace.sql"})
     void getHotPlaceListTest() {
         // given
         HotPlaceSearchRequest hotPlaceSearchRequest =
-                HotPlaceSearchRequest.builder().page(1).keyword("Example").pageSize(2).build();
+            HotPlaceSearchRequest.builder().page(1).keyword("Example").pageSize(2).build();
         String keyword = "Example";
 
         // when
         ExtractableResponse<Response> response =
-                RestAssured.given()
-                        .param("page", hotPlaceSearchRequest.getPage())
-                        .param("pageSize", hotPlaceSearchRequest.getPageSize())
-                        .param("keyword", hotPlaceSearchRequest.getKeyword())
-                        .contentType(APPLICATION_JSON_VALUE)
-                        .log()
-                        .all()
-                        .when()
-                        .get("/hotplace")
-                        .then()
-                        .log()
-                        .all()
-                        .extract();
+            RestAssured.given()
+                .param("page", hotPlaceSearchRequest.getPage())
+                .param("pageSize", hotPlaceSearchRequest.getPageSize())
+                .param("keyword", hotPlaceSearchRequest.getKeyword())
+                .contentType(APPLICATION_JSON_VALUE)
+                .log()
+                .all()
+                .when()
+                .get("/hotplace")
+                .then()
+                .log()
+                .all()
+                .extract();
 
         // then
         assertThat(response.statusCode()).isEqualTo(OK.value());
-        assertThat(response.body().as(new TypeRef<List<HotPlaceResponse>>() {}).size())
-                .isEqualTo(2);
+        assertThat(response.body().as(new TypeRef<List<HotPlaceResponse>>() {
+        }).size())
+            .isEqualTo(2);
     }
 
     @Test
     @DisplayName("HotPlace detail 목록을 조회한다")
-    @Sql({"/truncate.sql", "/hotplace.sql", "/hotplaceArticle.sql"})
+    @Sql({"/truncate.sql", "/hotPlace.sql", "/hotPlaceArticle.sql"})
     void getHotPlaceDetailTest() {
         // given
         String hotPlaceId = "1";
 
         // when
         ExtractableResponse<Response> response =
-                RestAssured.given()
-                        .contentType(APPLICATION_JSON_VALUE)
-                        .log()
-                        .all()
-                        .when()
-                        .get("/hotplace/{hotPlaceId}", hotPlaceId)
-                        .then()
-                        .log()
-                        .all()
-                        .extract();
+            RestAssured.given()
+                .contentType(APPLICATION_JSON_VALUE)
+                .log()
+                .all()
+                .when()
+                .get("/hotplace/{hotPlaceId}", hotPlaceId)
+                .then()
+                .log()
+                .all()
+                .extract();
 
         // then
         assertThat(response.statusCode()).isEqualTo(OK.value());
         assertThat(response.body().as(HotPlaceDetailResponse.class))
-                .extracting("hotPlaceId")
-                .isEqualTo(hotPlaceId);
+            .extracting("hotPlaceId")
+            .isEqualTo(hotPlaceId);
     }
 
     @Test
     @DisplayName("HotPlace Article을 조회한다")
-    @Sql({"/truncate.sql", "/hotplaceArticle.sql", "/hotplace.sql"})
+    @Sql({"/truncate.sql", "/hotPlaceArticle.sql", "/hotPlace.sql"})
     void getHotPlaceArticleDetailTest() {
         // given
         String hotPlaceId = "1";
@@ -263,123 +264,123 @@ class HotPlaceAcceptanceTest extends AcceptanceTest {
 
         // when
         ExtractableResponse<Response> response =
-                RestAssured.given()
-                        .contentType(APPLICATION_JSON_VALUE)
-                        .log()
-                        .all()
-                        .when()
-                        .get(
-                                "/hotplace/{hotPlaceId}/article/{hotPlaceArticleId}",
-                                hotPlaceId,
-                                hotPlaceArticleId)
-                        .then()
-                        .log()
-                        .all()
-                        .extract();
-
-        // then
-        assertThat(response.statusCode()).isEqualTo(OK.value());
-        assertThat(response.body().as(HotPlaceArticleResponse.class))
-                .extracting("hotPlaceArticleId")
-                .isEqualTo(hotPlaceArticleId);
-    }
-
-    @Test
-    @DisplayName("HotPlace의 투표 수를 업데이트 한다")
-    @Sql({"/truncate.sql", "/hotplace.sql", "/user.sql"})
-    void voteHotPlaceTest() {
-        // given
-        String hotPlaceId = "1";
-        Long voteCount =
-                RestAssured.given()
-                        .contentType(APPLICATION_JSON_VALUE)
-                        .log()
-                        .all()
-                        .when()
-                        .get("/hotplace/{hotPlaceId}", hotPlaceId)
-                        .then()
-                        .log()
-                        .all()
-                        .extract()
-                        .body()
-                        .as(HotPlaceDetailResponse.class)
-                        .getVote();
-
-        UserAddRequest userAddRequest =
-                UserAddRequest.builder()
-                        .userId("jongha")
-                        .name("jongha")
-                        .address("test")
-                        .password("test")
-                        .email("test")
-                        .authority(1)
-                        .build();
-
-        RestAssured.given()
+            RestAssured.given()
                 .contentType(APPLICATION_JSON_VALUE)
-                .body(userAddRequest)
                 .log()
                 .all()
                 .when()
-                .post("/user")
+                .get(
+                    "/hotplace/{hotPlaceId}/article/{hotPlaceArticleId}",
+                    hotPlaceId,
+                    hotPlaceArticleId)
                 .then()
                 .log()
                 .all()
                 .extract();
 
+        // then
+        assertThat(response.statusCode()).isEqualTo(OK.value());
+        assertThat(response.body().as(HotPlaceArticleResponse.class))
+            .extracting("hotPlaceArticleId")
+            .isEqualTo(hotPlaceArticleId);
+    }
+
+    @Test
+    @DisplayName("HotPlace의 투표 수를 업데이트 한다")
+    @Sql({"/truncate.sql", "/hotPlace.sql", "/user.sql"})
+    void voteHotPlaceTest() {
+        // given
+        String hotPlaceId = "1";
+        Long voteCount =
+            RestAssured.given()
+                .contentType(APPLICATION_JSON_VALUE)
+                .log()
+                .all()
+                .when()
+                .get("/hotplace/{hotPlaceId}", hotPlaceId)
+                .then()
+                .log()
+                .all()
+                .extract()
+                .body()
+                .as(HotPlaceDetailResponse.class)
+                .getVote();
+
+        UserAddRequest userAddRequest =
+            UserAddRequest.builder()
+                .userId("jongha")
+                .name("jongha")
+                .address("test")
+                .password("test")
+                .email("test")
+                .authority(1)
+                .build();
+
+        RestAssured.given()
+            .contentType(APPLICATION_JSON_VALUE)
+            .body(userAddRequest)
+            .log()
+            .all()
+            .when()
+            .post("/user")
+            .then()
+            .log()
+            .all()
+            .extract();
+
         UserLoginRequest userLoginRequest =
-                UserLoginRequest.builder().userId("jongha").password("test").build();
+            UserLoginRequest.builder().userId("jongha").password("test").build();
 
         String accessToken =
-                RestAssured.given()
-                        .contentType(APPLICATION_JSON_VALUE)
-                        .body(userLoginRequest)
-                        .log()
-                        .all()
-                        .when()
-                        .post("/user/login")
-                        .then()
-                        .log()
-                        .all()
-                        .extract()
-                        .as(TokenResponse.class)
-                        .getAccessToken();
+            RestAssured.given()
+                .contentType(APPLICATION_JSON_VALUE)
+                .body(userLoginRequest)
+                .log()
+                .all()
+                .when()
+                .post("/user/login")
+                .then()
+                .log()
+                .all()
+                .extract()
+                .as(TokenResponse.class)
+                .getAccessToken();
 
         // when
         HotPlaceVoteRequest hotPlaceVoteRequest =
-                HotPlaceVoteRequest.builder().voteCount(voteCount + 1).build();
+            HotPlaceVoteRequest.builder().voteCount(voteCount + 1).build();
 
         ExtractableResponse<Response> response =
-                RestAssured.given()
-                        .contentType(APPLICATION_JSON_VALUE)
-                        .header("Authorization", accessToken)
-                        .body(hotPlaceVoteRequest)
-                        .log()
-                        .all()
-                        .when()
-                        .put("/hotplace/{hotPlaceId}/vote", hotPlaceId)
-                        .then()
-                        .log()
-                        .all()
-                        .extract();
+            RestAssured.given()
+                .contentType(APPLICATION_JSON_VALUE)
+                .header("Authorization", accessToken)
+                .body(hotPlaceVoteRequest)
+                .log()
+                .all()
+                .when()
+                .put("/hotplace/{hotPlaceId}/vote", hotPlaceId)
+                .then()
+                .log()
+                .all()
+                .extract();
 
         // then
         assertThat(response.statusCode()).isEqualTo(OK.value());
 
         Long newVoteCount =
-                RestAssured.given()
-                        .contentType(APPLICATION_JSON_VALUE)
-                        .log()
-                        .all()
-                        .when()
-                        .get("/hotplace/{hotPlaceId}", hotPlaceId)
-                        .then()
-                        .log()
-                        .all()
-                        .extract()
-                        .body()
-                        .as(HotPlaceDetailResponse.class)
-                        .getVote();
+            RestAssured.given()
+                .contentType(APPLICATION_JSON_VALUE)
+                .log()
+                .all()
+                .when()
+                .get("/hotplace/{hotPlaceId}", hotPlaceId)
+                .then()
+                .log()
+                .all()
+                .extract()
+                .body()
+                .as(HotPlaceDetailResponse.class)
+                .getVote();
         assertThat(newVoteCount).isEqualTo(voteCount + 1);
     }
 }
