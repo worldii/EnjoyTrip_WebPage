@@ -45,7 +45,10 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build # 프로젝트 빌드
         shell: bash
-
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
+          S3_SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
       - name: Get current time
         uses: 1466587594/get-current-time@v2  # 빌드 완료 시간 가져오기
         id: current-time
