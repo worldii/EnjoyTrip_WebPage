@@ -84,7 +84,9 @@ sonar {
         property 'sonar.java.coveragePlugin', 'jacoco'
     }
 }
-
+jar {
+    enabled = false
+}
 
 jacocoTestReport {
     reports {
