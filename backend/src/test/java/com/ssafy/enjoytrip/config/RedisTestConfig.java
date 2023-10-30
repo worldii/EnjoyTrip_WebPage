@@ -9,17 +9,13 @@ import org.testcontainers.utility.DockerImageName;
 @TestConfiguration
 public class RedisTestConfig {
 
-    private static final GenericContainer<?> REDIS_CONTAINER;
+    private GenericContainer<?> REDIS_CONTAINER;
 
-    static {
+    @BeforeAll
+    void beforeAll() {
         REDIS_CONTAINER =
             new GenericContainer<>(DockerImageName.parse("redis:latest"))
                 .withExposedPorts(6379);
-
-    }
-
-    @BeforeAll
-    static void beforeAll() {
         REDIS_CONTAINER.start();
         System.setProperty("spring.redis.host", REDIS_CONTAINER.getHost());
         System.setProperty("spring.redis.port",
@@ -27,7 +23,7 @@ public class RedisTestConfig {
     }
 
     @AfterAll
-    static void afterAll() {
+    void afterAll() {
         REDIS_CONTAINER.stop();
     }
 }
