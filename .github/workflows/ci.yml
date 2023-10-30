@@ -39,3 +39,17 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
           S3_SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
+      - name: Build with Gradle
+        run: ./gradlew clean build # 프로젝트 빌드
+        shell: bash
+
+      - name: Get current time
+        uses: 1466587594/get-current-time@v2  # 빌드 완료 시간 가져오기
+        id: current-time
+        with:
+          format: YYYY-MM-DDTHH-mm-ss
+          utcOffset: "+09:00"
+
+      - name: Show Current Time
+        run: echo "CurrentTime=${{steps.current-time.outputs.formattedTime}}" # 빌드 완료 시간 출력하기
+        shell: bash
