@@ -4,19 +4,16 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-import com.ssafy.enjoytrip.config.RedisTestConfig;
 import com.ssafy.enjoytrip.global.auth.dao.TokenRepository;
 import com.ssafy.enjoytrip.global.auth.model.entity.RefreshToken;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 
 @DisplayName("JwtRepository 통합 테스트")
 @SpringBootTest
-@ExtendWith(RedisTestConfig.class)
 class TokenRepositoryTest {
 
     @Autowired

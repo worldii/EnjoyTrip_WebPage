@@ -3,7 +3,6 @@ package com.ssafy.enjoytrip.integration.service;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 
-import com.ssafy.enjoytrip.config.RedisTestConfig;
 import com.ssafy.enjoytrip.core.user.model.dto.request.UserAddRequest;
 import com.ssafy.enjoytrip.core.user.model.dto.request.UserLoginRequest;
 import com.ssafy.enjoytrip.core.user.service.UserService;
@@ -21,14 +20,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.jdbc.Sql;
 
 @DisplayName("Token Service 통합 테스트")
 @SpringBootTest
 @Sql({"/truncate.sql", "/user.sql"})
-@Import(RedisTestConfig.class)
 class TokenServiceTest {
 
     @Autowired
