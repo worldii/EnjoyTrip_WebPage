@@ -15,16 +15,16 @@ import com.ssafy.enjoytrip.global.auth.model.dto.response.TokenResponse;
 import com.ssafy.enjoytrip.global.error.UserException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.jdbc.Sql;
 
 @DisplayName("유저 서비스 통합 테스트")
 @SpringBootTest
 @Sql({"/truncate.sql", "/user.sql"})
-@Import(RedisTestConfig.class)
+@ExtendWith(RedisTestConfig.class)
 class UserServiceTest {
 
     @Autowired

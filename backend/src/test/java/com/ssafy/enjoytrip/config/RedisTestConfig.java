@@ -1,18 +1,19 @@
 package com.ssafy.enjoytrip.config;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.AfterEachCallback;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.utility.DockerImageName;
 
 @TestConfiguration
-public class RedisTestConfig {
+public class RedisTestConfig implements BeforeEachCallback, AfterEachCallback {
 
     private GenericContainer<?> REDIS_CONTAINER;
 
-    @BeforeEach
-    void beforeAll() {
+    @Override
+    public void beforeEach(ExtensionContext context) throws Exception {
         REDIS_CONTAINER =
             new GenericContainer<>(DockerImageName.parse("redis:latest"))
                 .withExposedPorts(6379);
@@ -22,8 +23,9 @@ public class RedisTestConfig {
             String.valueOf(REDIS_CONTAINER.getFirstMappedPort()));
     }
 
-    @AfterEach
-    void afterAll() {
+    @Override
+    public void afterEach(ExtensionContext context) throws Exception {
         REDIS_CONTAINER.stop();
+        REDIS_CONTAINER.close();
     }
 }

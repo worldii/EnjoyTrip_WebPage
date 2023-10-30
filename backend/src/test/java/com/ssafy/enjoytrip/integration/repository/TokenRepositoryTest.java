@@ -9,14 +9,14 @@ import com.ssafy.enjoytrip.global.auth.dao.TokenRepository;
 import com.ssafy.enjoytrip.global.auth.model.entity.RefreshToken;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.data.redis.core.RedisTemplate;
 
 @DisplayName("JwtRepository 통합 테스트")
 @SpringBootTest
-@Import(RedisTestConfig.class)
+@ExtendWith(RedisTestConfig.class)
 class TokenRepositoryTest {
 
     @Autowired
