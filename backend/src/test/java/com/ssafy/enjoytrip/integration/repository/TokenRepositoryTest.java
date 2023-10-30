@@ -16,11 +16,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 @SpringBootTest
 class TokenRepositoryTest {
 
-    @Autowired
-    private TokenRepository tokenRepository;
+    @Autowired private TokenRepository tokenRepository;
 
-    @Autowired
-    private RedisTemplate<String, String> redisTemplate;
+    @Autowired private RedisTemplate<String, String> redisTemplate;
 
     @Test
     @DisplayName("JwtRepository Bean 주입 테스트")
@@ -40,8 +38,8 @@ class TokenRepositoryTest {
         // then
         assertNotNull(redisTemplate.opsForValue().get(refreshToken.getUserId()));
         assertEquals(
-            refreshToken.getTokenName(),
-            redisTemplate.opsForValue().get(refreshToken.getUserId()));
+                refreshToken.getTokenName(),
+                redisTemplate.opsForValue().get(refreshToken.getUserId()));
     }
 
     @Test
@@ -54,15 +52,15 @@ class TokenRepositoryTest {
 
         // when
         RefreshToken existTokenDto =
-            tokenRepository.findRefreshTokenByUserId(refreshToken.getUserId()).orElse(null);
+                tokenRepository.findRefreshTokenByUserId(refreshToken.getUserId()).orElse(null);
         RefreshToken notExistTokenDto =
-            tokenRepository.findRefreshTokenByUserId(wrongUserId).orElse(null);
+                tokenRepository.findRefreshTokenByUserId(wrongUserId).orElse(null);
 
         // then
         assertAll(
-            () -> assertEquals(refreshToken.getTokenName(), existTokenDto.getTokenName()),
-            () -> assertEquals(refreshToken.getUserId(), existTokenDto.getUserId()),
-            () -> assertEquals(null, notExistTokenDto));
+                () -> assertEquals(refreshToken.getTokenName(), existTokenDto.getTokenName()),
+                () -> assertEquals(refreshToken.getUserId(), existTokenDto.getUserId()),
+                () -> assertEquals(null, notExistTokenDto));
     }
 
     @Test
