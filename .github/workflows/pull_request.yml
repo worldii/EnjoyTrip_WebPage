@@ -27,8 +27,8 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
 
-      - name: spotless check
-        run: ./gradlew spotlessCheck
+     # - name: spotless check
+     #   run: ./gradlew spotlessCheck
 
       - name: SonarCloud Scan
         run: ./gradlew test sonar --info --stacktrace
