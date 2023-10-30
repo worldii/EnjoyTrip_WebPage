@@ -4,6 +4,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatCode;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
+import com.ssafy.enjoytrip.config.RedisTestConfig;
 import com.ssafy.enjoytrip.core.user.model.dto.request.UserAddRequest;
 import com.ssafy.enjoytrip.core.user.model.dto.request.UserLoginRequest;
 import com.ssafy.enjoytrip.core.user.model.dto.request.UserModifyRequest;
@@ -11,7 +12,6 @@ import com.ssafy.enjoytrip.core.user.model.dto.response.UserResponse;
 import com.ssafy.enjoytrip.core.user.service.UserService;
 import com.ssafy.enjoytrip.global.auth.model.dto.request.LogoutRequest;
 import com.ssafy.enjoytrip.global.auth.model.dto.response.TokenResponse;
-import com.ssafy.enjoytrip.global.config.RedisConfig;
 import com.ssafy.enjoytrip.global.error.UserException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ import org.springframework.test.context.jdbc.Sql;
 @DisplayName("유저 서비스 통합 테스트")
 @SpringBootTest
 @Sql({"/truncate.sql", "/user.sql"})
-@Import(RedisConfig.class)
+@Import(RedisTestConfig.class)
 class UserServiceTest {
 
     @Autowired
