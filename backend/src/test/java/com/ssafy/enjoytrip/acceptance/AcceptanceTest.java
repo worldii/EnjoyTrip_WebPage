@@ -1,7 +1,7 @@
 package com.ssafy.enjoytrip.acceptance;
 
 
-import com.ssafy.enjoytrip.global.config.RedisConfig;
+import com.ssafy.enjoytrip.config.RedisTestConfig;
 import io.restassured.RestAssured;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,7 +13,7 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
-@Import(RedisConfig.class)
+@Import(RedisTestConfig.class)
 public abstract class AcceptanceTest {
 
     @LocalServerPort

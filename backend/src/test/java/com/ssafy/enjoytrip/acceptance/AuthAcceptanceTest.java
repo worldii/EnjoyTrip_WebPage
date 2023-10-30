@@ -22,58 +22,58 @@ class AuthAcceptanceTest extends AcceptanceTest {
     void createRefreshToken() {
         // given
         UserAddRequest userAddRequest =
-                UserAddRequest.builder()
-                        .userId("jongha")
-                        .name("jongha")
-                        .address("test")
-                        .password("test")
-                        .email("test")
-                        .authority(1)
-                        .build();
+            UserAddRequest.builder()
+                .userId("jongha")
+                .name("jongha")
+                .address("test")
+                .password("test")
+                .email("test")
+                .authority(1)
+                .build();
 
         RestAssured.given()
+            .contentType(APPLICATION_JSON_VALUE)
+            .body(userAddRequest)
+            .log()
+            .all()
+            .when()
+            .post("/user")
+            .then()
+            .log()
+            .all()
+            .extract();
+
+        UserLoginRequest userLoginRequest =
+            UserLoginRequest.builder().userId("jongha").password("test").build();
+
+        // when
+        String accessToken =
+            RestAssured.given()
                 .contentType(APPLICATION_JSON_VALUE)
-                .body(userAddRequest)
+                .body(userLoginRequest)
                 .log()
                 .all()
                 .when()
-                .post("/user")
+                .post("/user/login")
+                .then()
+                .log()
+                .all()
+                .extract()
+                .as(TokenResponse.class)
+                .getAccessToken();
+
+        // when
+        ExtractableResponse<Response> response =
+            RestAssured.given()
+                .header("Authorization", accessToken)
+                .log()
+                .all()
+                .when()
+                .post("/auth/refresh-token")
                 .then()
                 .log()
                 .all()
                 .extract();
-
-        UserLoginRequest userLoginRequest =
-                UserLoginRequest.builder().userId("jongha").password("test").build();
-
-        // when
-        String accessToken =
-                RestAssured.given()
-                        .contentType(APPLICATION_JSON_VALUE)
-                        .body(userLoginRequest)
-                        .log()
-                        .all()
-                        .when()
-                        .post("/user/login")
-                        .then()
-                        .log()
-                        .all()
-                        .extract()
-                        .as(TokenResponse.class)
-                        .getAccessToken();
-
-        // when
-        ExtractableResponse<Response> response =
-                RestAssured.given()
-                        .header("Authorization", accessToken)
-                        .log()
-                        .all()
-                        .when()
-                        .post("/auth/refresh-token")
-                        .then()
-                        .log()
-                        .all()
-                        .extract();
 
         // then
         assertThat(response.statusCode()).isEqualTo(OK.value());
@@ -84,62 +84,62 @@ class AuthAcceptanceTest extends AcceptanceTest {
     void createAccessToken() {
         // given
         UserAddRequest userAddRequest =
-                UserAddRequest.builder()
-                        .userId("jongha")
-                        .name("jongha")
-                        .address("test")
-                        .password("test")
-                        .email("test")
-                        .authority(1)
-                        .build();
+            UserAddRequest.builder()
+                .userId("jongha")
+                .name("jongha")
+                .address("test")
+                .password("test")
+                .email("test")
+                .authority(1)
+                .build();
 
         RestAssured.given()
+            .contentType(APPLICATION_JSON_VALUE)
+            .body(userAddRequest)
+            .log()
+            .all()
+            .when()
+            .post("/user")
+            .then()
+            .log()
+            .all()
+            .extract();
+
+        UserLoginRequest userLoginRequest =
+            UserLoginRequest.builder().userId("jongha").password("test").build();
+
+        // when
+        String refreshToken =
+            RestAssured.given()
                 .contentType(APPLICATION_JSON_VALUE)
-                .body(userAddRequest)
+                .body(userLoginRequest)
                 .log()
                 .all()
                 .when()
-                .post("/user")
+                .post("/user/login")
+                .then()
+                .log()
+                .all()
+                .extract()
+                .as(TokenResponse.class)
+                .getRefreshToken();
+
+        AccessTokenRequest accessTokenRequest =
+            AccessTokenRequest.builder().userId("jongha").refreshToken(refreshToken).build();
+
+        // when
+        ExtractableResponse<Response> response =
+            RestAssured.given()
+                .body(accessTokenRequest)
+                .contentType(APPLICATION_JSON_VALUE)
+                .log()
+                .all()
+                .when()
+                .post("/auth/access-token")
                 .then()
                 .log()
                 .all()
                 .extract();
-
-        UserLoginRequest userLoginRequest =
-                UserLoginRequest.builder().userId("jongha").password("test").build();
-
-        // when
-        String refreshToken =
-                RestAssured.given()
-                        .contentType(APPLICATION_JSON_VALUE)
-                        .body(userLoginRequest)
-                        .log()
-                        .all()
-                        .when()
-                        .post("/user/login")
-                        .then()
-                        .log()
-                        .all()
-                        .extract()
-                        .as(TokenResponse.class)
-                        .getRefreshToken();
-
-        AccessTokenRequest accessTokenRequest =
-                AccessTokenRequest.builder().userId("jongha").refreshToken(refreshToken).build();
-
-        // when
-        ExtractableResponse<Response> response =
-                RestAssured.given()
-                        .body(accessTokenRequest)
-                        .contentType(APPLICATION_JSON_VALUE)
-                        .log()
-                        .all()
-                        .when()
-                        .post("/auth/access-token")
-                        .then()
-                        .log()
-                        .all()
-                        .extract();
 
         // then
         assertThat(response.statusCode()).isEqualTo(OK.value());
