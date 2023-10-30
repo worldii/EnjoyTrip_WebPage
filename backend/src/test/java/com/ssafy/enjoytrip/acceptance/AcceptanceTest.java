@@ -13,8 +13,7 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 public abstract class AcceptanceTest {
 
-    @LocalServerPort
-    int port;
+    @LocalServerPort int port;
 
     @BeforeEach
     void setUp() {
