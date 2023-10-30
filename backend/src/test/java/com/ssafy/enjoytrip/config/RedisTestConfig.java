@@ -1,7 +1,7 @@
 package com.ssafy.enjoytrip.config;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.utility.DockerImageName;
@@ -11,7 +11,7 @@ public class RedisTestConfig {
 
     private GenericContainer<?> REDIS_CONTAINER;
 
-    @BeforeAll
+    @BeforeEach
     void beforeAll() {
         REDIS_CONTAINER =
             new GenericContainer<>(DockerImageName.parse("redis:latest"))
@@ -22,7 +22,7 @@ public class RedisTestConfig {
             String.valueOf(REDIS_CONTAINER.getFirstMappedPort()));
     }
 
-    @AfterAll
+    @AfterEach
     void afterAll() {
         REDIS_CONTAINER.stop();
     }
