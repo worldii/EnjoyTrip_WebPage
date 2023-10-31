@@ -12,8 +12,7 @@ import org.springframework.test.context.jdbc.Sql;
 @Sql({"/truncate.sql"})
 public abstract class AcceptanceTest {
 
-    @LocalServerPort
-    int port;
+    @LocalServerPort int port;
 
     @BeforeEach
     void setUp() {
