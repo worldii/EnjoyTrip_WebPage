@@ -73,3 +73,6 @@ jobs:
       - name: Show Current Time
         run: echo "CurrentTime=${{steps.current-time.outputs.formattedTime}}" # 빌드 완료 시간 출력하기
         shell: bash
+
+      - name: Code Deploy
+        run: aws deploy create-deployment --application-name enjoytrip-codedeploy --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name enjoytrip-group --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
