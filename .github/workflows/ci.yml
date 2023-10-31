@@ -47,12 +47,12 @@ jobs:
       - name: make application-dev.yml
         run: |
           cd ./src/main/resources
-          echo "${{ secrets.S3_ACCESS_KEY }}" >> ./application-dev.yml
-          echo "${{ secrets.S3_SECRET_KEY }}" >> ./application-dev.yml
-          echo "${{ secrets.S3_ACCESS_KEY }}" >> ./application.yml
-          echo "${{ secrets.S3_SECRET_KEY }}" >> ./application.yml
-          echo "${{ secrets.S3_ACCESS_KEY }}" >> ./application-prod.yml
-          echo "${{ secrets.S3_SECRET_KEY }}" >> ./application-prod.yml
+          echo "S3_ACCESS_KEY=${{ secrets.S3_ACCESS_KEY }}" >> ./application-dev.properties
+          echo "S3_SECRET_KEY=${{ secrets.S3_SECRET_KEY }}" >> ./application-dev.properties
+          echo "S3_ACCESS_KEY=${{ secrets.S3_ACCESS_KEY }}" >> ./application.properties
+          echo "S3_SECRET_KEY=${{ secrets.S3_SECRET_KEY }}" >> ./application.properties
+          echo "S3_ACCESS_KEY=${{ secrets.S3_ACCESS_KEY }}" >> ./application-prod.properties
+          echo "S3_SECRET_KEY=${{ secrets.S3_SECRET_KEY }}" >> ./application-prod.properties
         shell: bash
 
       - name: Build with Gradle
