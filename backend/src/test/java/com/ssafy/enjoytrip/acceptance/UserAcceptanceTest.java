@@ -24,18 +24,48 @@ class UserAcceptanceTest extends AcceptanceTest {
     void 유저_회원가입_성공() {
         // given
         UserAddRequest userAddRequest =
-            UserAddRequest.builder()
-                .userId("jongha")
-                .name("jongha")
-                .address("test")
-                .password("test")
-                .email("test")
-                .authority(1)
-                .build();
+                UserAddRequest.builder()
+                        .userId("jongha")
+                        .name("jongha")
+                        .address("test")
+                        .password("test")
+                        .email("test")
+                        .authority(1)
+                        .build();
 
         // when
         ExtractableResponse<Response> response =
-            RestAssured.given()
+                RestAssured.given()
+                        .contentType(APPLICATION_JSON_VALUE)
+                        .body(userAddRequest)
+                        .log()
+                        .all()
+                        .when()
+                        .post("/user")
+                        .then()
+                        .log()
+                        .all()
+                        .extract();
+
+        // then
+        assertThat(response.statusCode()).isEqualTo(OK.value());
+    }
+
+    @Test
+    @DisplayName("유저가 정상적으로 로그인한다.")
+    void 유저_로그인_성공() {
+        // given
+        UserAddRequest userAddRequest =
+                UserAddRequest.builder()
+                        .userId("jongha")
+                        .name("jongha")
+                        .address("test")
+                        .password("test")
+                        .email("test")
+                        .authority(1)
+                        .build();
+
+        RestAssured.given()
                 .contentType(APPLICATION_JSON_VALUE)
                 .body(userAddRequest)
                 .log()
@@ -47,52 +77,22 @@ class UserAcceptanceTest extends AcceptanceTest {
                 .all()
                 .extract();
 
-        // then
-        assertThat(response.statusCode()).isEqualTo(OK.value());
-    }
-
-    @Test
-    @DisplayName("유저가 정상적으로 로그인한다.")
-    void 유저_로그인_성공() {
-        // given
-        UserAddRequest userAddRequest =
-            UserAddRequest.builder()
-                .userId("jongha")
-                .name("jongha")
-                .address("test")
-                .password("test")
-                .email("test")
-                .authority(1)
-                .build();
-
-        RestAssured.given()
-            .contentType(APPLICATION_JSON_VALUE)
-            .body(userAddRequest)
-            .log()
-            .all()
-            .when()
-            .post("/user")
-            .then()
-            .log()
-            .all()
-            .extract();
-
         UserLoginRequest userLoginRequest =
-            UserLoginRequest.builder().userId("jongha").password("test").build();
+                UserLoginRequest.builder().userId("jongha").password("test").build();
 
         // when
         ExtractableResponse<Response> response =
-            RestAssured.given()
-                .contentType(APPLICATION_JSON_VALUE)
-                .body(userLoginRequest)
-                .log()
-                .all()
-                .when()
-                .post("/user/login")
-                .then()
-                .log()
-                .all()
-                .extract();
+                RestAssured.given()
+                        .contentType(APPLICATION_JSON_VALUE)
+                        .body(userLoginRequest)
+                        .log()
+                        .all()
+                        .when()
+                        .post("/user/login")
+                        .then()
+                        .log()
+                        .all()
+                        .extract();
 
         // then
         assertThat(response.statusCode()).isEqualTo(OK.value());
@@ -103,57 +103,57 @@ class UserAcceptanceTest extends AcceptanceTest {
     void 유저_정상_정보_조회() {
         // given
         UserAddRequest userAddRequest =
-            UserAddRequest.builder()
-                .userId("jongha")
-                .name("jongha")
-                .address("test")
-                .password("test")
-                .email("test")
-                .authority(1)
-                .build();
+                UserAddRequest.builder()
+                        .userId("jongha")
+                        .name("jongha")
+                        .address("test")
+                        .password("test")
+                        .email("test")
+                        .authority(1)
+                        .build();
 
         RestAssured.given()
-            .contentType(APPLICATION_JSON_VALUE)
-            .body(userAddRequest)
-            .log()
-            .all()
-            .when()
-            .post("/user")
-            .then()
-            .log()
-            .all()
-            .extract();
-
-        UserLoginRequest userLoginRequest =
-            UserLoginRequest.builder().userId("jongha").password("test").build();
-
-        // when
-        String accessToken =
-            RestAssured.given()
                 .contentType(APPLICATION_JSON_VALUE)
-                .body(userLoginRequest)
+                .body(userAddRequest)
                 .log()
                 .all()
                 .when()
-                .post("/user/login")
-                .then()
-                .log()
-                .all()
-                .extract()
-                .as(TokenResponse.class)
-                .getAccessToken();
-
-        ExtractableResponse<Response> response =
-            RestAssured.given()
-                .header("Authorization", accessToken)
-                .log()
-                .all()
-                .when()
-                .get("/user/info/jongha")
+                .post("/user")
                 .then()
                 .log()
                 .all()
                 .extract();
+
+        UserLoginRequest userLoginRequest =
+                UserLoginRequest.builder().userId("jongha").password("test").build();
+
+        // when
+        String accessToken =
+                RestAssured.given()
+                        .contentType(APPLICATION_JSON_VALUE)
+                        .body(userLoginRequest)
+                        .log()
+                        .all()
+                        .when()
+                        .post("/user/login")
+                        .then()
+                        .log()
+                        .all()
+                        .extract()
+                        .as(TokenResponse.class)
+                        .getAccessToken();
+
+        ExtractableResponse<Response> response =
+                RestAssured.given()
+                        .header("Authorization", accessToken)
+                        .log()
+                        .all()
+                        .when()
+                        .get("/user/info/jongha")
+                        .then()
+                        .log()
+                        .all()
+                        .extract();
 
         // then
         assertThat(response.statusCode()).isEqualTo(OK.value());
@@ -164,67 +164,67 @@ class UserAcceptanceTest extends AcceptanceTest {
     void 유저_정상_정보_수정() {
         // given
         UserAddRequest userAddRequest =
-            UserAddRequest.builder()
-                .userId("jongha")
-                .name("jongha")
-                .address("test")
-                .password("test")
-                .email("test")
-                .authority(1)
-                .build();
+                UserAddRequest.builder()
+                        .userId("jongha")
+                        .name("jongha")
+                        .address("test")
+                        .password("test")
+                        .email("test")
+                        .authority(1)
+                        .build();
 
         RestAssured.given()
-            .contentType(APPLICATION_JSON_VALUE)
-            .body(userAddRequest)
-            .log()
-            .all()
-            .when()
-            .post("/user")
-            .then()
-            .log()
-            .all()
-            .extract();
-        UserLoginRequest userLoginRequest =
-            UserLoginRequest.builder().userId("jongha").password("test").build();
-
-        // when
-        String accessToken =
-            RestAssured.given()
                 .contentType(APPLICATION_JSON_VALUE)
-                .body(userLoginRequest)
+                .body(userAddRequest)
                 .log()
                 .all()
                 .when()
-                .post("/user/login")
-                .then()
-                .log()
-                .all()
-                .extract()
-                .as(TokenResponse.class)
-                .getAccessToken();
-
-        // when
-        UserModifyRequest userModifyRequest =
-            UserModifyRequest.builder()
-                .name("jongha")
-                .address("test")
-                .password("test")
-                .email("test")
-                .build();
-
-        ExtractableResponse<Response> response =
-            RestAssured.given()
-                .contentType(APPLICATION_JSON_VALUE)
-                .body(userModifyRequest)
-                .header("Authorization", accessToken)
-                .log()
-                .all()
-                .when()
-                .put("/user")
+                .post("/user")
                 .then()
                 .log()
                 .all()
                 .extract();
+        UserLoginRequest userLoginRequest =
+                UserLoginRequest.builder().userId("jongha").password("test").build();
+
+        // when
+        String accessToken =
+                RestAssured.given()
+                        .contentType(APPLICATION_JSON_VALUE)
+                        .body(userLoginRequest)
+                        .log()
+                        .all()
+                        .when()
+                        .post("/user/login")
+                        .then()
+                        .log()
+                        .all()
+                        .extract()
+                        .as(TokenResponse.class)
+                        .getAccessToken();
+
+        // when
+        UserModifyRequest userModifyRequest =
+                UserModifyRequest.builder()
+                        .name("jongha")
+                        .address("test")
+                        .password("test")
+                        .email("test")
+                        .build();
+
+        ExtractableResponse<Response> response =
+                RestAssured.given()
+                        .contentType(APPLICATION_JSON_VALUE)
+                        .body(userModifyRequest)
+                        .header("Authorization", accessToken)
+                        .log()
+                        .all()
+                        .when()
+                        .put("/user")
+                        .then()
+                        .log()
+                        .all()
+                        .extract();
 
         // then
         assertThat(response.statusCode()).isEqualTo(OK.value());
@@ -235,57 +235,57 @@ class UserAcceptanceTest extends AcceptanceTest {
     void 유저_정상_회원_탈퇴() {
         // given
         UserAddRequest userAddRequest =
-            UserAddRequest.builder()
-                .userId("jongha")
-                .name("jongha")
-                .address("test")
-                .password("test")
-                .email("test")
-                .authority(1)
-                .build();
+                UserAddRequest.builder()
+                        .userId("jongha")
+                        .name("jongha")
+                        .address("test")
+                        .password("test")
+                        .email("test")
+                        .authority(1)
+                        .build();
 
         RestAssured.given()
-            .contentType(APPLICATION_JSON_VALUE)
-            .body(userAddRequest)
-            .log()
-            .all()
-            .when()
-            .post("/user")
-            .then()
-            .log()
-            .all()
-            .extract();
-
-        UserLoginRequest userLoginRequest =
-            UserLoginRequest.builder().userId("jongha").password("test").build();
-
-        // when
-        String accessToken =
-            RestAssured.given()
                 .contentType(APPLICATION_JSON_VALUE)
-                .body(userLoginRequest)
+                .body(userAddRequest)
                 .log()
                 .all()
                 .when()
-                .post("/user/login")
-                .then()
-                .log()
-                .all()
-                .extract()
-                .as(TokenResponse.class)
-                .getAccessToken();
-
-        ExtractableResponse<Response> response =
-            RestAssured.given()
-                .header("Authorization", accessToken)
-                .log()
-                .all()
-                .when()
-                .delete("/user/jongha")
+                .post("/user")
                 .then()
                 .log()
                 .all()
                 .extract();
+
+        UserLoginRequest userLoginRequest =
+                UserLoginRequest.builder().userId("jongha").password("test").build();
+
+        // when
+        String accessToken =
+                RestAssured.given()
+                        .contentType(APPLICATION_JSON_VALUE)
+                        .body(userLoginRequest)
+                        .log()
+                        .all()
+                        .when()
+                        .post("/user/login")
+                        .then()
+                        .log()
+                        .all()
+                        .extract()
+                        .as(TokenResponse.class)
+                        .getAccessToken();
+
+        ExtractableResponse<Response> response =
+                RestAssured.given()
+                        .header("Authorization", accessToken)
+                        .log()
+                        .all()
+                        .when()
+                        .delete("/user/jongha")
+                        .then()
+                        .log()
+                        .all()
+                        .extract();
 
         // then
         assertThat(response.statusCode()).isEqualTo(NO_CONTENT.value());
@@ -296,61 +296,61 @@ class UserAcceptanceTest extends AcceptanceTest {
     void 유저_정상_로그아웃() {
         // given
         UserAddRequest userAddRequest =
-            UserAddRequest.builder()
-                .userId("jongha")
-                .name("jongha")
-                .address("test")
-                .password("test")
-                .email("test")
-                .authority(1)
-                .build();
+                UserAddRequest.builder()
+                        .userId("jongha")
+                        .name("jongha")
+                        .address("test")
+                        .password("test")
+                        .email("test")
+                        .authority(1)
+                        .build();
 
         RestAssured.given()
-            .contentType(APPLICATION_JSON_VALUE)
-            .body(userAddRequest)
-            .log()
-            .all()
-            .when()
-            .post("/user")
-            .then()
-            .log()
-            .all()
-            .extract();
-
-        UserLoginRequest userLoginRequest =
-            UserLoginRequest.builder().userId("jongha").password("test").build();
-
-        // when
-        String accessToken =
-            RestAssured.given()
                 .contentType(APPLICATION_JSON_VALUE)
-                .body(userLoginRequest)
+                .body(userAddRequest)
                 .log()
                 .all()
                 .when()
-                .post("/user/login")
-                .then()
-                .log()
-                .all()
-                .extract()
-                .as(TokenResponse.class)
-                .getAccessToken();
-
-        LogoutRequest logoutRequest = LogoutRequest.builder().accessToken(accessToken).build();
-
-        ExtractableResponse<Response> response =
-            RestAssured.given()
-                .contentType(APPLICATION_JSON_VALUE)
-                .header("Authorization", accessToken)
-                .body(logoutRequest)
-                .log()
-                .all()
-                .when()
-                .post("/user/logout")
+                .post("/user")
                 .then()
                 .log()
                 .all()
                 .extract();
+
+        UserLoginRequest userLoginRequest =
+                UserLoginRequest.builder().userId("jongha").password("test").build();
+
+        // when
+        String accessToken =
+                RestAssured.given()
+                        .contentType(APPLICATION_JSON_VALUE)
+                        .body(userLoginRequest)
+                        .log()
+                        .all()
+                        .when()
+                        .post("/user/login")
+                        .then()
+                        .log()
+                        .all()
+                        .extract()
+                        .as(TokenResponse.class)
+                        .getAccessToken();
+
+        LogoutRequest logoutRequest = LogoutRequest.builder().accessToken(accessToken).build();
+
+        ExtractableResponse<Response> response =
+                RestAssured.given()
+                        .contentType(APPLICATION_JSON_VALUE)
+                        .header("Authorization", accessToken)
+                        .body(logoutRequest)
+                        .log()
+                        .all()
+                        .when()
+                        .post("/user/logout")
+                        .then()
+                        .log()
+                        .all()
+                        .extract();
 
         // then
         assertThat(response.statusCode()).isEqualTo(OK.value());

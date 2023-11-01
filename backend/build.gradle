@@ -1,6 +1,5 @@
 plugins {
     id 'java'
-    id 'war'
     id 'org.springframework.boot' version '2.7.11'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
     id 'jacoco'
@@ -49,7 +48,6 @@ dependencies {
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.mysql:mysql-connector-j'
-    providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     testImplementation "org.junit.jupiter:junit-jupiter:5.8.1"
     testImplementation 'org.projectlombok:lombok:1.18.26'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -84,7 +82,9 @@ sonar {
         property 'sonar.java.coveragePlugin', 'jacoco'
     }
 }
-
+jar {
+    enabled = false
+}
 
 jacocoTestReport {
     reports {
