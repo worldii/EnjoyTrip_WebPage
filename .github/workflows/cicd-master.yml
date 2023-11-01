@@ -1,7 +1,7 @@
 name: cicd
 on:
   push:
-    branches: ['develop' , 'master']
+    branches: ['master']
 env: 
   S3_BUCKET_NAME: junyoung-jongha-bucket
   PROJECT_NAME: enjoyTrip
@@ -10,7 +10,7 @@ env:
   S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
   S3_SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
   CODEDEPLOY_APPLCIATION_NAME : ${{ secrets.CODEDEPLOY_APPLCIATION_NAME}}
-  CODEDEPLOY_DEPLOY_GROUP : $ {{secrets.CODEDEPLOY_DEPLOY_GROUP}}
+  CODEDEPLOY_DEPLOY_GROUP : ${{secrets.CODEDEPLOY_DEPLOY_GROUP}}
 
 jobs:
   spotlessJavaCheck:
@@ -81,4 +81,7 @@ jobs:
         shell: bash
 
       - name: Code Deploy
-        run: aws deploy create-deployment --application-name $CODEDEPLOY_APPLCIATION_NAME --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name $CODEDEPLOY_DEPLOY_GROUP --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
+        run: aws deploy create-deployment --application-name $CODEDEPLOY_APPLCIATION_NAME
+          --deployment-config-name CodeDeployDefault.AllAtOnce 
+          --deployment-group-name $CODEDEPLOY_DEPLOY_GROUP 
+          --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
