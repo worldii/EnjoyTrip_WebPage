@@ -1,8 +1,8 @@
-name: cicd
+name: ci
 on:
   push:
     branches: ['develop' , 'master']
-env: 
+env:
   S3_BUCKET_NAME: junyoung-jongha-bucket
   PROJECT_NAME: enjoyTrip
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -36,49 +36,30 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-            
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew 
+
+      # - name: spotless check
+      #   run: ./gradlew spotlessCheck
         
       - name: SonarCloud Scan
         run: ./gradlew test sonar --info
-
-      - name: make application.yml
-        run: |
-          cd ./src/main/resources
-          echo "S3_ACCESS_KEY=${{ secrets.S3_ACCESS_KEY }}" >> ./application-dev.properties
-          echo "S3_SECRET_KEY=${{ secrets.S3_SECRET_KEY }}" >> ./application-dev.properties
-          echo "S3_ACCESS_KEY=${{ secrets.S3_ACCESS_KEY }}" >> ./application.properties
-          echo "S3_SECRET_KEY=${{ secrets.S3_SECRET_KEY }}" >> ./application.properties
-          echo "S3_ACCESS_KEY=${{ secrets.S3_ACCESS_KEY }}" >> ./application-prod.properties
-          echo "S3_SECRET_KEY=${{ secrets.S3_SECRET_KEY }}" >> ./application-prod.properties
-        shell: bash
-
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
+          S3_SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
       - name: Build with Gradle
         run: ./gradlew clean build # 프로젝트 빌드
         shell: bash
+
       - name: Get current time
         uses: 1466587594/get-current-time@v2  # 빌드 완료 시간 가져오기
         id: current-time
         with:
           format: YYYY-MM-DDTHH-mm-ss
           utcOffset: "+09:00"
-      - name: Make zip file
-        run: zip -r ./$GITHUB_SHA.zip .
-        shell: bash
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.S3_ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.S3_SECRET_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-      - name: Upload to S3
-        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://$S3_BUCKET_NAME/$PROJECT_NAME/$GITHUB_SHA.zip
 
       - name: Show Current Time
         run: echo "CurrentTime=${{steps.current-time.outputs.formattedTime}}" # 빌드 완료 시간 출력하기
         shell: bash
-
-      - name: Code Deploy
-        run: aws deploy create-deployment --application-name $CODEDEPLOY_APPLCIATION_NAME --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name $CODEDEPLOY_DEPLOY_GROUP --s3-location bucket=$S3_BUCKET_NAME,bundleType=zip,key=$PROJECT_NAME/$GITHUB_SHA.zip
