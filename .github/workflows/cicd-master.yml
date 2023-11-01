@@ -46,10 +46,7 @@ jobs:
       - name: make application.yml
         run: |
           cd ./src/main/resources
-          echo "S3_ACCESS_KEY=${{ secrets.S3_ACCESS_KEY }}" >> ./application-dev.properties
-          echo "S3_SECRET_KEY=${{ secrets.S3_SECRET_KEY }}" >> ./application-dev.properties
-          echo "S3_ACCESS_KEY=${{ secrets.S3_ACCESS_KEY }}" >> ./application.properties
-          echo "S3_SECRET_KEY=${{ secrets.S3_SECRET_KEY }}" >> ./application.properties
+          echo "spring.profiles.active=prod" >> application.properties
           echo "S3_ACCESS_KEY=${{ secrets.S3_ACCESS_KEY }}" >> ./application-prod.properties
           echo "S3_SECRET_KEY=${{ secrets.S3_SECRET_KEY }}" >> ./application-prod.properties
         shell: bash
