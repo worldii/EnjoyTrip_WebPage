@@ -38,9 +38,9 @@ public class UserServiceImpl implements UserService {
         }
 
         final RefreshTokenResponse refreshToken =
-            tokenService.generateRefreshToken(request.getUserId());
+                tokenService.generateRefreshToken(request.getUserId());
         final AccessTokenResponse accessToken =
-            tokenService.generateAccessToken(request.getUserId(), refreshToken.getTokenName());
+                tokenService.generateAccessToken(request.getUserId(), refreshToken.getTokenName());
 
         return TokenResponse.of(accessToken.getTokenName(), refreshToken.getTokenName());
     }
@@ -95,8 +95,8 @@ public class UserServiceImpl implements UserService {
 
     private User findUserByUserId(final String userId) {
         return userRepository
-            .selectByUserId(userId)
-            .orElseThrow(() -> new UserException("해당 유저가 없습니다."));
+                .selectByUserId(userId)
+                .orElseThrow(() -> new UserException("해당 유저가 없습니다."));
     }
 
     private void validateEqualMember(final String userId, final String requestUserId) {
